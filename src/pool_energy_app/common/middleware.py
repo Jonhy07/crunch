@@ -53,6 +53,8 @@ class UsersPermissions():
             else:
                 print('************** con tiendas ******************')
                 lastStore = UserStore.objects.filter(user=nId).order_by('-id').values_list('store',flat=True)[0]
+                print(lastStore)
+                print('*********************************************')
                 if nConnectors == 0:
                    return redirect("/forms/token/{}/buttons/".format(lastStore))
                 else:
