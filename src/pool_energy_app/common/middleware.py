@@ -34,6 +34,7 @@ class UsersPermissions():
             nConnectors = Connector.objects.filter(user__pk=nId).count()
             print('*************************')
             print(lConnectors)
+            print(list(lConnectors))
             if nConnectors > 0:
                 nMarketplace = MarketplaceConnector.objects.filter(connector__pk=lConnectors).count()
             else:
