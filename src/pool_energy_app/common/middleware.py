@@ -15,8 +15,8 @@ class UsersPermissions():
         #if str(request.user) != 'AnonymousUser' :
         response=self.get_response(request)
         return response
-    
-#Se ejecuta antes y despues 
+
+    #Se ejecuta antes y despues 
     def process_view(self, request, view_fun, view_args, view_kwargs):
         #Comprueba si no es un usuario anonimo para redirects
         if str(request.user) != 'AnonymousUser' :
@@ -29,6 +29,8 @@ class UsersPermissions():
                 return redirect('/accounts/login/')
         #Comprueba si tiene rol o es nuevo
         if str(request.user) != 'AnonymousUser':
+            if str(request.path).startswith('/accounts'):
+                return None
             nId=request.user.id
             lConnectors = Connector.objects.filter(user__pk=nId).values_list('id',flat=True)
             nConnectors = Connector.objects.filter(user__pk=nId).count()
@@ -45,23 +47,16 @@ class UsersPermissions():
 
             stores = UserStore.objects.filter(user=nId).values_list('store',flat=True)
             nTiendas = Store.objects.filter(pk__in=[stores]).count()
-            print('-------')
-            print(nTiendas)
-            print('-------')
-            if nTiendas == 0:#  (str(request.path).startswith('/accounts/logout/')):
+            if nTiendas == 0:
                 return redirect("/forms/newClient/")
             else:
-                print('************** con tiendas ******************')
                 lastStore = UserStore.objects.filter(user=nId).order_by('-id').values_list('store',flat=True)[0]
                 if nConnectors == 0:
                    return redirect("/forms/token/{}/buttons/".format(lastStore))
                 else:
                     lastConnector = Connector.objects.filter(user=nId,social_application_id__in=[1]).order_by('-id').values_list('id',flat=True)
-                    print(lastConnector)
                     if (lastConnector.count()>0):
-                        print(lastConnector[0])
                         nMarketplace = MarketplaceConnector.objects.filter(connector_id=list(lastConnector)[0]).count()
-                        print('******************************')
                         if nMarketplace == 0:
                             return redirect("/forms/marketplace/{}/".format(list(lastConnector)[0]))
 
