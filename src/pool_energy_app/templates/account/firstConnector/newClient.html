@@ -8,52 +8,52 @@
 
 {% block content %}
 <!-- Start Content-->
-<div class="account-pages mt-5 mb-5">
-	<div class="container">
-		<div class="row justify-content-center">
-			<div class="col-md-8 col-lg-6 col-xl-4">
-				<div class="card">
-					<div class="card-body p-4">
 
-						<div class="text-center w-75 m-auto">
-							<div class="auth-logo">
-								<a href="" class="logo logo-dark text-center">
-									<span class="logo-lg">
-										<img src="{% static 'images/Logo_The_Crunch.png' %}" alt="" height="50">
-									</span>
-								</a>
-								<a href="" class="logo logo-light text-center">
-									<span class="logo-lg">
-										<img src="{% static 'images/Logo_The_Crunch.png' %}" alt="" height="50">
-									</span>
-								</a>
-							</div>
-							<p class="text-white mb-4 mt-3">Datos de la tienda</p>
-						</div>
-						<!-- <form action="{% url 'create_item' %}" method="POST" enctype="multipart/form-data"> -->
-							<form action="#" method="POST" enctype="multipart/form-data">
-								{% csrf_token %}
-								{% if form.errors %}
-									{% for field in form %}
-										{% for error in field.errors %}
-											<div class="alert alert-danger">
-												<strong>{{ error|escape }}</strong>
-											</div>
-										{% endfor %}
-									{% endfor %}
-									{% for error in form.non_field_errors %}
-										<div class="alert alert-danger">
-											<strong>{{ error|escape }}</strong>
-										</div>
-									{% endfor %}
-								{% endif %}
-								{{ form | crispy }}
-								<button type="submit" class="btn btn-primary">{{Text}}</button>
-							</form>
+	<form action="#" method="POST" enctype="multipart/form-data">
+		{% csrf_token %}
+		{% if form.errors %}
+			{% for field in form %}
+				{% for error in field.errors %}
+					<div class="alert alert-danger">
+						<strong>{{ error|escape }}</strong>
 					</div>
+				{% endfor %}
+			{% endfor %}
+			{% for error in form.non_field_errors %}
+				<div class="alert alert-danger">
+					<strong>{{ error|escape }}</strong>
 				</div>
-			</div>
+			{% endfor %}
+		{% endif %}
+		<div class="container">
+
+			<div class="row">
+				<div class="col"></div>
+				<div class="col-5">
+					<div class="row">
+						<h1 class="text-center py-4">Datos de la tienda</h1>
+						<div class="col">
+							<p class="fw-bold fs-5">Nombre del cliente</p>
+							{{ form.name }} 
+						</div>
+						<div class="col">
+							<p class="fw-bold fs-5">Nombre de la tienda</p>
+							{{ form.owner_name }} 
+						</div>
+						<span class="my-2"> </span>
+						<div class="d-grid gap-3">
+							<button type="submit" class="btn btn-primary btn-lg">{{Text}}</button>
+						</div>
+					</div>
+						
+				</div>
+				<div class="col"></div>
+				
+					
+				
+		
+			</div>	
 		</div>
-	</div>
-</div>
+	</form>
+					
 {% endblock %}

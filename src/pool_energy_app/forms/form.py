@@ -54,8 +54,8 @@ class ClientNew(forms.ModelForm):
 		model = Client
 		fields = ['name','owner_name']
 		widgets = {
-			'name': forms.TextInput(attrs={'class': 'form-control-lg'}),
-			'owner_name': forms.TextInput(attrs={'class': 'form-control-lg'}),
+			'name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
+			'owner_name': forms.TextInput(attrs={'class': 'form-control form-control-lg'}),
 		}
 
 class StoreModelForm(forms.ModelForm):

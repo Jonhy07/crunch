@@ -34,6 +34,7 @@ class UsersPermissions():
 
             if str(request.path).startswith('/oauth'):
                 return None
+
             #pendiente de incluir la conexión aouth
             nId=request.user.id
             lConnectors = Connector.objects.filter(user__pk=nId).values_list('id',flat=True)
@@ -63,6 +64,8 @@ class UsersPermissions():
                         nMarketplace = MarketplaceConnector.objects.filter(connector_id=list(lastConnector)[0]).count()
                         if nMarketplace == 0:
                             return redirect("/forms/marketplace/{}/".format(list(lastConnector)[0]))
+                        else:
+                            return redirect("/")
 
             if not(request.user.is_superuser):
                 #No tiene rol le asigna uno

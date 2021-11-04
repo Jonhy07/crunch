@@ -7,52 +7,32 @@
 {% block head_title %}{% trans "Signup" %}{% endblock %}
 
 {% block content %}
+<div class="container">
+	<h1 class="text-center py-4">Crear Connector</h1>
+<div class="row  row-cols-md-6">
+		
+									
+						
+		{% for object in objects_list %}
+		<div class="col">
+			<button type="button" class="ms-3" style="background-color:transparent; border-color:transparent;" data-toggle="modal" data-target="#exampleModal" data-url="{{object.url}}" data-appid="{{object.application_id}}" data-client="{{object.client_id}}" data-redirect="{{object.redirect_uri}}" data-user="{{object.user}}" data-store="{{object.store}}" data-social-app="{{object.social_application}}" data-scope="{{object.scope}}">
+				<img class="img-fluid mx-auto" border="0" alt="{{object.nombre}}" src="/static/images/{{object.logo.url}}" width="155" height="155">
+			</button>
+			<p class="fw-bold fs-5 text-center">{{object.nombre}}</p>
+		</div>
+			{% endfor %}
 
 
-<div class="account-pages mt-5 mb-5">
-	<div class="container">
-		<div class="row justify-content-center">
-			<div class="col-md-8 col-lg-6 col-xl-4">
-				<div class="card">
-					<div class="card-body p-4">
-					<!-- Logo-->
-						<div class="text-center w-75 m-auto">
-							<div class="auth-logo">
-								<a href="" class="logo logo-dark text-center">
-									<span class="logo-lg">
-										<img src="{% static 'images/Logo_The_Crunch.png' %}" alt="" height="50">
-									</span>
-								</a>
-								<a href="" class="logo logo-light text-center">
-									<span class="logo-lg">
-										<img src="{% static 'images/Logo_The_Crunch.png' %}" alt="" height="50">
-									</span>
-								</a>
-							</div>
-							<p class="text-white mb-4 mt-3">CONEXIÓN OAUTH</p>
-						</div>
-
-						<div class="card-body">
-							<div class="table-responsive">
-								<br/>
-									{% for object in objects_list %}
-										<button type="button" class="btn btn-outline-light" style="background-color:transparent; border-color:transparent;" data-toggle="modal" data-target="#exampleModal" data-url="{{object.url}}" data-appid="{{object.application_id}}" data-client="{{object.client_id}}" data-redirect="{{object.redirect_uri}}" data-user="{{object.user}}" data-store="{{object.store}}" data-social-app="{{object.social_application}}" data-scope="{{object.scope}}">
-											<img border="0" alt="{{object.nombre}}" src="/static/images/{{object.logo.url}}" width="100" height="100"  width="100" height="100">
-										</button>
-										<span class="text-white">
-											{{object.nombre}}
-										</span>
-									{% endfor %}
-									<a href="/forms/liniostore/{{ store_id }}/list" class="btn btn-outline-light" role="button">
-										<img border="0" alt="" src="/static/images/linio.png" width="100" height="100" />
-									</a>
-									<span class="text-white">
-										LinioStore
-									</span>
-								<br/>
-							</div>
-						</div>
-
+			<div class="col">
+				<a href="/forms/liniostore/{{ store_id }}/list" class="ms-3" role="button">
+					<img class="img-fluid mx-auto" border="0" alt="" src="/static/images/Linio-store.png" width="155" height="155" />
+				</a>
+				<p class="fw-bold fs-5 text-center">LinioStore</p>
+			</div>
+			
+		
+</div>								
+</div>
 						<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 							<div class="modal-dialog" role="document">
 								<div class="modal-content">
@@ -65,7 +45,7 @@
 									<div class="modal-body">
 										<form>
 										<div class="form-group">
-											<label for="connector-name" class="col-form-label">Nombre:</label>
+											<label for="connector-name" class="col-form-label fw-bold fs-5">Nombre:</label>
 											<input type="text" class="form-control" id="connector-name">
 										</div>
 										</form>
