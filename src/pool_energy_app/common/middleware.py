@@ -57,10 +57,11 @@ class UsersPermissions():
                    return redirect("/forms/token/{}/buttons/".format(lastStore))
                 else:
                     # lastConnector = Connector.objects.filter(user=nId).order_by('-id').values_list('id',flat=True)[0] -- ver que solo funcione con amazon
-                    lastConnector = Connector.objects.filter(user=nId,social_application_id__in=[1,2]).order_by('-id').values_list('id',flat=True)[0]
+                    lastConnector = Connector.objects.filter(user=nId,social_application_id__in=[1]).order_by('-id').values_list('id',flat=True)[0]
                     print(lastConnector)
-                    print('*********************************************')
                     nMarketplace = MarketplaceConnector.objects.filter(connector_id=lastConnector).count()
+                    print(nMarketplace)
+                    print('*********************************************')
                     if nMarketplace == 0:
                         return redirect("/forms/marketplace/{}/".format(lastConnector))
 
