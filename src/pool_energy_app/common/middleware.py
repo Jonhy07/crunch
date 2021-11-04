@@ -31,6 +31,7 @@ class UsersPermissions():
         if str(request.user) != 'AnonymousUser':
             if str(request.path).startswith('/accounts'):
                 return None
+            #pendiente de incluir la conexión aouth
             nId=request.user.id
             lConnectors = Connector.objects.filter(user__pk=nId).values_list('id',flat=True)
             nConnectors = Connector.objects.filter(user__pk=nId).count()
