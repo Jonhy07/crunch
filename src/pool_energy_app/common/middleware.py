@@ -58,15 +58,12 @@ class UsersPermissions():
                 else:
                     # lastConnector = Connector.objects.filter(user=nId).order_by('-id').values_list('id',flat=True)[0] -- ver que solo funcione con amazon
                     lastConnector = Connector.objects.filter(user=nId,social_application_id__in=[1]).order_by('-id').values_list('id',flat=True)
-                    print(lastConnector.count())
+                    print(lastConnector)
                     if (lastConnector.count()>0):
                         nMarketplace = MarketplaceConnector.objects.filter(connector_id=lastConnector[0]).count()
+                        print('******************************')
                         if nMarketplace == 0:
                             return redirect("/forms/marketplace/{}/".format(lastConnector))
-                    print(nMarketplace)
-                    print('*********************************************')
-
-
 
             if not(request.user.is_superuser):
                 #No tiene rol le asigna uno
