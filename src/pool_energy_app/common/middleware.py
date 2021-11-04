@@ -30,8 +30,13 @@ class UsersPermissions():
         #Comprueba si tiene rol o es nuevo
         if str(request.user) != 'AnonymousUser':
             nId=request.user.id
+            lConnectors = Connector.objects.filter(user__pk=nId)
+            print('*************************')
+            print(lConnectors)
             nConnectors = Connector.objects.filter(user__pk=nId).count()
-            nMarketplace = MarketplaceConnector.objects.filter(connector__pk=nConnectors).count()
+            print(nConnectors)
+            print('*************************')
+            nMarketplace = MarketplaceConnector.objects.filter(connector__pk=lConnectors).count()
             if str(request.path).startswith('/forms/newClient/'):
                 return None
             if str(request.path).startswith('/forms/token/'):
