@@ -1,0 +1,45 @@
+{% extends "pool_base_without_sidebar.html" %}
+{% load static i18n %}
+{% load crispy_forms_tags %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block content %}
+<!-- Start Content-->
+<div class="container-fluid">
+
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    
+                </div>
+                <h4 class="page-title"></h4>
+            </div>
+        </div>
+    </div>     
+    <!-- end page title --> 
+    <!--Body-->
+    <div class="row">
+        <div class="col-3">
+        </div>
+        <div class="col-6">
+            <div style="padding-top:2em; text-align:center">
+                <h2 class="display-2"><span class="badge bg-soft-primary text-primary">YOUR PLAN IS EXPIRED</span></h2>
+            </div>
+            <div style="padding-top:2em;">
+                <img src="{% static 'images/app/expirated.png' %}" alt="user-img" title="Mat Helme">
+            </div>
+        </div>
+        <div class="col-3">
+        
+
+        </div>
+    <!--End Body-->       
+</div>
+<!-- container -->
+{% endblock %}
+{% block extra_javascript %}
+{% endblock%}

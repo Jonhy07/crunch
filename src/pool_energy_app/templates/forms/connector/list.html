@@ -1,0 +1,100 @@
+{% extends "pool_base.html" %}
+{% load static i18n %}
+{% load crispy_forms_tags %}
+
+{% block extra_css %}
+<style>
+    .hide{
+display: none;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Start Content-->
+<div class="container-fluid">
+
+	<!-- start page title -->
+	<div class="row" style="padding-top: 0.6em;">
+		<div class="col-12">
+			<div class="page-title-box">
+				<h4 class="page-title"><b>Connectors</b></h4>
+			</div>
+		</div>
+	</div>
+	<!-- end page title --> 
+
+	<!--Body-->
+	<div class="row">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-body">
+					<a href="/forms/list_client" class="btn btn-blue btn">
+						<i class="mdi mdi-plus-circle-outline"></i> Nuevo
+					</a>
+					<div id="cardCollpase1" class="collapse pt-3 show">
+						<table id="list_users" class="table dt-responsive nowrap w-100">
+						<!-- <table class="table-centered table-nowrap table-borderless mb-0" style="width:100%;"> -->
+							<thead>
+								<tr>            
+									<th>Tienda</th>
+									<th>Plataforma</th>
+									<th>Marketplace</th>
+									<th>KTP</th>
+									<th>SKU</th>
+									<th>Costo</th>
+									<th>Estado</th>
+									<th >Acciones</th>
+									<th>Nombre</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for object in objects_list %}
+								<tr>
+									<td>{{object.store}}</td>
+									<td>{{object.plataforma}}</td>
+									<td>{{object.marketplace}}</td>
+									<td>{{object.ktp}}</td>
+									<td>{{object.sku}}</td>
+									<td>{{object.costo}}</td>
+									<td>{{object.status}}</td>
+									<td>
+										{% if 'forms.change_item' in request.user.get_group_permissions %}
+										<small><a href="/forms{{ object.get_update_url }}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fe-edit text-warning"></i></a></small>
+										{% endif %}
+										{% if 'forms.delete_item' in request.user.get_group_permissions %}
+										<small><a href="/forms{{ object.get_delete_url }}" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="fe-trash-2"></i></a></small>
+										{% endif %}
+										<a href="/forms{{ object.get_delete_url }}" class="btn btn-xs btn-light"><i class="mdi mdi-pencil"></i></a>
+									</td>
+									<td>{{object.nombre}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div> 
+                </div> 
+            </div>
+        </div>
+    </div> 
+</div>
+
+
+<!-- container -->
+{% endblock %}
+{% block extra_javascript %}
+<script>
+    var a=$('#list_users').DataTable({scrollY:'50em',scrollCollapse:!0,lengthChange:!1,language:{paginate:{previous:"<i class='mdi mdi-chevron-left'>",next:"<i class='mdi mdi-chevron-right'>"}},drawCallback:function(){$(".dataTables_paginate > .pagination").addClass("pagination-rounded")}});
+    a.buttons().container().appendTo('#list_users_wrapper .col-md-6:eq(0)')
+</script>
+<script>
+var date =new Date('{{ usuario.expirate|date:"D, d M Y H:i:s"}}');
+var day = date.getDate();
+var month = date.getMonth() + 1;
+var year = date.getFullYear();
+if (month < 10) month = "0" + month;
+if (day < 10) day = "0" + day;
+var today = year + "-" + month + "-" + day;
+    document.getElementById("expirate").value = today;
+</script>
+{% endblock%}

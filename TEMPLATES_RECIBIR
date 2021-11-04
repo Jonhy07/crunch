@@ -1,0 +1,113 @@
+//GRAFICOS 
+    //BARRAS VERTICAL
+    {
+    xAxis: {
+        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']     //Parametros X
+    },
+    series: [
+            {
+                name: 'Budget 2011',                                //Nombre columna
+                data: [120, 200, 150, 80, 70, 110, 130],            //Datos
+            },
+            {
+                name: 'Budget 2012',                                //Si hay mas de una columna
+                data: [120, 200, 150, 80, 70, 110, 130],
+            }
+        ]
+    }
+
+
+    //BARRAS HORIZONTAL
+    {
+    yAxis: {
+        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']     //Parametros Y
+    },
+    series: [
+            {
+                name: 'Budget 2011',                                //Nombre columna
+                data: [120, 200, 150, 80, 70, 110, 130],            //Datos
+            },
+            {
+                name: 'Budget 2012',                                //Si hay mas de una columna
+                data: [120, 200, 150, 80, 70, 110, 130],
+            }
+        ]
+    }
+
+    //TENDENCIAS
+    {
+        xAxis: {
+            data: ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo']
+        },
+        series: [
+            {
+                name: 'uno',
+                data: [120, 132, 101, 134, 90, 230, 210]
+            },
+            {
+                name: 'dos',
+                data: [220, 182, 191, 234, 290, 330, 310]
+            },
+            {
+                name: 'tres',
+                data: [150, 232, 201, 154, 190, 330, 410]
+            },
+            {
+                name: 'cuatro',
+                data: [320, 332, 301, 334, 390, 330, 320]
+            },
+            {
+                name: 'cinco',
+                data: [820, 932, 901, 934, 1290, 1330, 1320]
+            }
+        ]
+    }
+
+    //GRAFICO DE PIE
+    {
+        series: [
+            {
+                name: 'dias', 
+                data: [
+                    {value: 1048, name: 'lunes'},
+                    {value: 735, name: 'martes'},
+                    {value: 580, name: 'miercoles'},
+                    {value: 484, name: 'jueves'},
+                    {value: 300, name: 'viernes'}
+                ]
+            }
+        ]
+    }
+
+    //GRAFICO DE PUNTOS
+    {
+        series: [{
+            data: [
+                {value: [15, 16], name: 'lunes'},
+                {value: [14, 15], name: 'martes'},
+                {value: [13, 14], name: 'miercoles'},
+                {value: [12, 13], name: 'jueves'},
+                {value: [11, 12], name: 'viernes'},
+                {value: [10, 11], name: 'sabado'},
+            ]
+        }]
+    }   
+
+
+
+    //TABLA
+
+    {
+        "head":["nombre", "Apellido", "edad"],
+        "data":[
+            ["juan", "perez",5],
+            ["pedro", "martinez", 6]
+        ]
+    }
+
+
+    //CARD
+    {
+        "head":"Hola",
+        "data":"50"
+    }

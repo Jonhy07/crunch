@@ -1,0 +1,73 @@
+{% extends "pool_base.html" %}
+{% load static i18n %}
+{% load crispy_forms_tags %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block content %}
+<!-- Start Content-->
+<div class="container-fluid">
+
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <form class="d-flex align-items-center mb-3">
+                        <div class="input-group input-group-sm">
+                            <input type="text" class="form-control border-0 shadow" id="dash-daterange">
+                            <span class="input-group-text bg-blue border-blue text-white">
+                                <i class="mdi mdi-calendar-range"></i>
+                            </span>
+                        </div>
+                        <a  href="javascript:window.location.reload()" class="btn btn-blue btn-sm ms-2">
+                            <i class="mdi mdi-autorenew"></i>
+                        </a>
+                        <!--a href="javascript: void(0);" class="btn btn-blue btn-sm ms-1">
+                            <i class="mdi mdi-filter-variant"></i>
+                        </a-->
+                    </form>
+                </div>
+                <h4 class="page-title">PRUEBAS</h4>
+            </div>
+        </div>
+    </div>     
+    <!-- end page title --> 
+
+
+    <!--Body-->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <form action="{% url 'dashboard_add' %}" method="POST", enctype="multipart/form-data"></form>
+                       {% csrf_token %}
+                       {% if form.errors %}
+                          {% for field in form %}
+                              {% for error in field.errors %}
+                                  <div class="alert alert-danger">
+                                      <strong>{{ error|escape }}</strong>
+                                  </div>
+                              {% endfor %}
+                          {% endfor %}
+                          {% for error in form.non_field_errors %}
+                              <div class="alert alert-danger">
+                                  <strong>{{ error|escape }}</strong>
+                              </div>
+                          {% endfor %}
+                      {% endif %}
+                       {{ form | crispy }}
+                      <button type="submit" class="btn btn-primary">{{Text}}</button>
+                    </form>
+                </div>
+              </div>
+        </div>
+    </div> 
+    <!--End Body-->       
+</div>
+<!-- container -->
+{% endblock %}
+{% block extra_javascript %}
+
+{% endblock%}

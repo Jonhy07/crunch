@@ -1,0 +1,49 @@
+{% extends "auth_base.html" %}
+{% load static i18n %}
+{% load crispy_forms_tags %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block content %}
+
+<!-- Start Content-->
+<div class="container-fluid">
+  <!-- start page title -->
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title-box">
+        <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item"><a href="javascript: void(0);">list</a></li>
+            <li class="breadcrumb-item active">List</li>
+          </ol>
+        </div>
+        <h4 class="page-title">Marketplace ID's</h4>
+      </div>
+    </div>
+  </div>
+  <!-- end page title -->
+  <!-- start content -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+			<form action="#" method="POST">
+			   {% csrf_token %}
+			   <input type="hidden" name="connector_id" value="{{ connector_id }}" />
+			   {% for object in objects_list %}
+						<input type="checkbox" id="item{{object.id}}" name="mktplc_list" value="{{object.id}}">
+						<label for="item{{object.id}}"> {{object.country}} </label><br>
+				{% endfor %}
+			  <button type="submit" class="btn btn-primary">Guardar</button>
+			</form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- container -->
+{% endblock %}
+{% block extra_javascript %}
+{% endblock %}

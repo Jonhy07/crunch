@@ -1,0 +1,51 @@
+{% load static i18n %}
+{% load crispy_forms_tags %}
+<div class="overlay" id="overlay-newrow">
+    <div class="popup" id="popup-newrow">
+        <a href="#" id="btn-cerrar-popup-newrow" class="btn-cerrar-popup"><i class="fas fa-times"></i></a>
+        <h3>NUEVA FILA</h3>
+        <h4>Especificaciones</h4>
+        <form action="{% url 'dashboard_add_row' %}" method="POST", enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="contenedor-inputs">
+                    {% csrf_token %}
+                    {% if form.errors %}
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <div class="alert alert-danger">
+                                    <strong>{{ error|escape }}</strong>
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    {{ form | crispy }} 
+                    <input type="hidden" name="id_dashboard" value={{ dashboard.id }}>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary">{{Text}}</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    var btnAbrirPopup1 = document.getElementById('btn-abrir-popup-newrow'),
+	overlay1 = document.getElementById('overlay-newrow'),
+	popup1 = document.getElementById('popup-newrow'),
+	btnCerrarPopup1 = document.getElementById('btn-cerrar-popup-newrow');
+
+    btnAbrirPopup1.addEventListener('click', function(){
+        overlay1.classList.add('active');
+        popup1.classList.add('active');
+    });
+
+    btnCerrarPopup1.addEventListener('click', function(e){
+        e.preventDefault();
+        overlay1.classList.remove('active');
+        popup1.classList.remove('active');
+    });
+</script>

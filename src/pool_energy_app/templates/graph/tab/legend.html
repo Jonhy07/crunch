@@ -1,0 +1,176 @@
+{% extends "pool_base.html" %}
+{% load static i18n %}
+{% load crispy_forms_tags %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block content %}
+<!-- Start Content-->
+<div class="container-fluid" style="padding-left: 2em;">                   
+    <!-- start page title -->
+    <div class="row" style="padding-top: 3em;">
+        <div class="col-11">
+            <h2 style="margin: 0%; padding-bottom: 0.2em;">Nuevo Gráfico</h2>
+            <p>Continue detallando el gráfico de {{ type }}</p>
+        </div>
+    </div>
+    
+    <!-- end page title --> 
+    
+    <!--Body-->
+    
+        <div class="row" style="padding-top: 2em;">
+            <div class="col-5" style="padding-left: 8em; padding-right: 2em;">
+                <div class="card" style="border-radius: 35px; height: 35em">
+                    <div class="card-body">
+                        <h4 class="header-title mb-0" style="color: #6c757d;">Gráfico:</h4>
+                        <div class="table-responsive" style="padding-top: 1em;">
+                            <table class="table-centered table-nowrap table-borderless mb-0" style="width:100%;">
+                                <thead class="table-light">
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><h4 style="color: #6c757d;">Título</h4></td>
+                                        <td><h4 style="color: #6c757d;">{{graph.title}}</h4></td>
+                                    </tr>
+                                    <tr>
+                                        <td><h5 style="color: #6c757d;">Dataset Seleccionado</h5></td>
+                                        <td><h5 style="color: #6c757d;">{{graph.endpoint}}</h5></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td><h5 style="color: #6c757d;">Tipo de Grafico</h5></td>
+                                        <td><h5 style="color: #6c757d;"><i class="{{graph.type_graph.icon}}"></i> {{graph.type_graph}}</h5></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td><h5 style="color: #6c757d;">Columnas Ocupadas</h5></td>
+                                        <td><h5 style="color: #6c757d;"> {{graph.column}}</h5></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td><h5 style="color: #6c757d;">Tipo de Agrupación</h5></td>
+                                        <td><h5 style="color: #6c757d;"> {{graph.type_agrupation}}</h5></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td><h5 style="color: #6c757d;">Columnas Seleccionadas:</h5></td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="table-responsive" style="height: 11em;">
+                            <table class="table table-borderless  table-nowrap table-centered m-0">
+
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Columna Dataset</th>
+                                        <th>Cálculo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for yrow in yrows%}
+                                    <tr>
+                                        <td><p class="mb-0 text-muted"></p>{{yrow.name}}</td>
+                                        <td><p class="mb-0 text-muted"></p>{{yrow.value}}</td>
+                                        {% if yrow.type_calculate %}
+                                            <td><p class="mb-0 text-muted"></p>{{yrow.type_calculate}}</td>
+                                        {% else %}
+                                            <td><p class="mb-0 text-muted"></p>Agrupador</td>
+                                        {% endif %}
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6" style="padding-left: 2em; padding-right: 8em;" >
+                <div class="card" style="border-radius: 35px;">
+                    <div class="card-body">
+                        <label class="form-label requiredField">Añadir una nueva columna </label>
+                        <form action="{% url 'add_col_legend' %}" method="POST", enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input type="hidden" name="id_graph" value={{ graph.id }}>
+
+                            <div id="div_id_name" class="mb-3"> <label for="id_name" class="form-label requiredField">
+                                Name<span class="asteriskField">*</span> </label> <input type="text" name="name" maxlength="250" class="textinput textInput form-control" required="" id="id_name">
+                             </div>
+                            <div id="div_id_type_calculate" class="mb-3"> 
+                                <label for="id_type_calculate" class="form-label requiredField">Tipo de cálculo <span class="asteriskField">*</span> </label> 
+                                <select name="type_calculate" class="select form-select" required="" id="id_type_calculate"> 
+                                    <option value="" selected="">Please select the type of calculation you want for the tab .</option> 
+                                    {% for calculate in type_calculate %}
+                                        <option value="{{ calculate.pk }}">{{ calculate.name }}</option>
+                                    {% endfor %}
+                                        <option value="0">Agrupador</option>
+                                </select> 
+                            </div>
+                            <div id="div_id_yrow" class="mb-3"> 
+                                <label for="id_yrow" class="form-label requiredField">Columna<span class="asteriskField">*</span> </label> 
+                                <select name="yrow" class="select form-select" required="" id="id_yrow"> 
+                                    <option value="" selected="">Please select the column.</option> 
+                                </select> 
+                            </div>
+                            
+                            <div style="text-align: end;">
+                                <button type="submit" class="btn btn-primary" style="width: 8em;">{{Text}}</button>
+                            </div>
+                        </form>
+                        <div class="mb-3" style="padding-top: 1em;"> 
+                            <div id="div_id_filtros" class="form-check"> 
+                                <input type="checkbox" name="filtros" class="checkboxinput form-check-input" id="filtros"> 
+                                <label for="id_filtros" class="form-check-label requiredField">
+                                    Habilitar filtros<span class="asteriskField"></span> 
+                                </label> 
+                            </div> 
+                        </div>
+                        <div style="padding-top: 0.5em;">
+                            <form action="{% url 'create_tab_name' %}" method="POST", enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <input type="hidden" name="id_graph" value={{ graph.id }}>
+                                <div style="text-align: center;">
+                                    <button type="submit" class="btn btn-primary btn-lg" style="width: 16em;">Finalizar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>         
+    <!--End Body-->       
+</div>
+<!-- container -->
+{% endblock %}
+{% block extra_javascript %}
+<script>
+    $(document).ready( function ()
+    {
+        var a = ("{{yrow|escapejs}}");
+        var b = ("{{yrowf|escapejs}}");
+        $(function() {
+            $("#id_type_calculate").on('change', function() {
+                var selectValue = $(this).val();
+                if( selectValue!=""){
+                    $('#id_yrow').empty();
+                    if(selectValue<2){
+                        $('#id_yrow').append(a);
+                    }else{
+                        $('#id_yrow').append(b);
+                    }                    
+                }else{
+                    $('#id_yrow').empty();
+                    $('#id_yrow').append('<option value="" selected="">Please select the count value.</option>');
+                }
+                
+            }).change();
+        });
+    });
+    
+</script>
+{% endblock%}

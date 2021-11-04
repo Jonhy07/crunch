@@ -1,0 +1,61 @@
+{% extends "pool_base.html" %}
+{% load static i18n %}
+{% load crispy_forms_tags %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block content %}
+<!-- Start Content-->
+<div class="container-fluid" style="padding-left: 2em;">                   
+    <!-- start page title -->
+    <div class="row" style="padding-top: 3em;">
+        <div class="col-11">
+            <h2 style="margin: 0%; padding-bottom: 0.2em;">Nuevo Gráfico</h2>
+            <p>Detalle el nuevo gráfico</p>
+        </div>
+    </div>
+    
+    <!-- end page title --> 
+    
+    <!--Body-->
+    <div class="container">
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col-6">
+                <div class="card" style="border-radius: 25px;">
+                    <div class="card-body">
+                        <form action="{% url 'add_graph' %}" method="POST", enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input type="hidden" name="id_row" value={{ row.id }}>
+                                    {% if form.errors %}
+                                        {% for field in form %}
+                                            {% for error in field.errors %}
+                                                <div class="alert alert-danger">
+                                                    <strong>{{ error|escape }}</strong>
+                                                </div>
+                                            {% endfor %}
+                                        {% endfor %}
+                                        {% for error in form.non_field_errors %}
+                                            <div class="alert alert-danger">
+                                                <strong>{{ error|escape }}</strong>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                    {{ form | crispy }} 
+                            <br>
+                            <div style="text-align: end;">
+                                <button type="submit" class="btn btn-primary">{{Text}}</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>         
+    </div> 
+    <!--End Body-->       
+</div>
+<!-- container -->
+{% endblock %}
+{% block extra_javascript %}
+{% endblock%}

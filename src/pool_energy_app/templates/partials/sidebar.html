@@ -1,0 +1,355 @@
+{% load static i18n %}
+<!-- ========== Left Sidebar Start ========== -->
+<div class="left-side-menu">
+    <div class="h-100" data-simplebar>
+
+        <!-- User box -->
+        <div class="user-box text-center">
+            <!--img src="{% static 'images/users/user-1.jpg' %}" alt="user-img" title="Mat Helme"-->
+            <!--img src="{% static '/users/user-1.jpg' %}" alt="User" title="Mat Helme"
+                class="rounded-circle avatar-md"-->
+            <div class="dropdown">
+                <a href="javascript: void(0);" class="text-dark dropdown-toggle h5 mt-2 mb-1 d-block"
+                    data-bs-toggle="dropdown">{{user}}</a>
+                <div class="dropdown-menu user-pro-dropdown">
+
+                    <!-- item-->
+                    <a href="javascript:void(0);" class="dropdown-item notify-item">
+                        <i class="fe-user me-1"></i>
+                        <span>My Account</span>
+                    </a>
+
+                    <!-- item-->
+                    {% if  user.rol.get_rol == 'Admin' %}
+                        <a href="{% url 'admin:index' %}" class="dropdown-item notify-item">
+                            <i class="fe-settings me-1"></i>
+                            <span>Settings</span>
+                        </a>
+                    {% endif %}
+                    <!-- item-->
+                    <a href="{% url 'account_change_password' %}" class="dropdown-item notify-item">
+                        <i class="fe-lock me-1"></i>
+                        <span>Password Change</span>
+                    </a>
+
+                    <!-- item-->
+                    <a href="{% url 'account_logout' %}" class="dropdown-item notify-item">
+                        <i class="fe-log-out me-1"></i>
+                        <span>Logout</span>
+                    </a>
+
+                </div>
+            </div>
+            <p class="text-muted">{{request.user.rol}}</p>
+        </div>
+
+        <!--- Sidemenu -->
+        <div id="sidebar-menu">
+
+            <ul id="side-menu">
+
+                <!-- {% if  user.rol.get_rol == 'Admin' %} -->
+                <li class="menu-title">Clasificación 1</li>
+                <li>
+                    <a href="#sidebarClients" data-bs-toggle="collapse">
+                        <i data-feather="users"></i>
+                        <span class="menu-arrow"></span>
+                        <span> Clients </span>
+                    </a>
+                    <div class="collapse" id="sidebarClients">
+                        <ul class="nav-second-level">
+                            <li>
+                                <form action="{% url 'list_client' %}">
+									<button type="submit" class="btn btn-lin text-left" style="width: 14em; height: 2.3em; padding-left: 1.4em;"><i class="mdi mdi-table"></i>Lista</button>
+                                </form>
+                            </li>
+                            <li>
+                                <form action="{% url 'create_client' %}">
+                                    <button type="submit" class="btn btn-lin text-left" style="width: 14em; height: 2.3em; padding-left: 1.4em;"><i class="mdi mdi-plus-circle-outline"></i>Agregar</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- ------------------------------------------------------------------------ -->
+                    <!-- ------------------------------------------------------------------------ -->
+                    <a href="#sidebarStores" data-bs-toggle="collapse">
+                        <i data-feather="shopping-cart"></i>
+                        <span class="menu-arrow"></span>
+                        <span> Stores </span>
+                    </a>
+                    <div class="collapse" id="sidebarStores">
+                        <ul class="nav-second-level">
+                            <li>
+                                <form action="{% url 'list_store' %}">
+                                    <button type="submit" class="btn btn-lin text-left" style="width: 14em; height: 2.3em; padding-left: 1.4em;"><i class="mdi mdi-table"></i>Lista</button>
+                                </form>
+                            </li>
+                            <li>
+                                <form action="{% url 'create_store' %}">
+                                    <button type="submit" class="btn btn-lin text-left" style="width: 14em; height: 2.3em; padding-left: 1.4em;"><i class="mdi mdi-plus-circle-outline"></i>Agregar</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- ------------------------------------------------------------------------ -->
+                    <!-- ------------------------------------------------------------------------ -->
+                    <a href="#sidebarItems" data-bs-toggle="collapse">
+                        <i data-feather="gift"></i>
+                        <span class="menu-arrow"></span>
+                        <span> Items </span>
+                    </a>
+                    <div class="collapse" id="sidebarItems">
+                        <ul class="nav-second-level">
+                            <li>
+                                <form action="{% url 'list_item' %}">
+                                    <button type="submit" class="btn btn-lin text-left" style="width: 14em; height: 2.3em; padding-left: 1.4em;"><i class="mdi mdi-table"></i>Lista</button>
+                                </form>
+                            </li>
+                            <li>
+                                <form action="{% url 'create_item' %}">
+                                    <button type="submit" class="btn btn-lin text-left" style="width: 14em; height: 2.3em; padding-left: 1.4em;"><i class="mdi mdi-plus-circle-outline"></i>Agregar</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <!-- {% endif %} -->
+
+                <li class="menu-title">Clasificación 2 (Toolkit) </li>
+                <li>
+                    <a href="#sidebarMonthGoals" data-bs-toggle="collapse">
+                        <i data-feather="trending-up"></i>
+                        <span class="menu-arrow"></span>
+                        <span> Month Goals </span>
+                    </a>
+                    <div class="collapse" id="sidebarMonthGoals">
+                        <ul class="nav-second-level">
+                            <li>
+                                <form action="{% url 'list_monthgoals' %}">
+                                    <button type="submit" class="btn btn-lin text-left" style="width: 14em; height: 2.3em; padding-left: 1.4em;"><i class="mdi mdi-table"></i>Lista</button>
+                                </form>
+                            </li>
+                            <li>
+                                <form action="{% url 'create_monthgoals' %}">
+                                    <button type="submit" class="btn btn-lin text-left" style="width: 14em; height: 2.3em; padding-left: 1.4em;"><i class="mdi mdi-plus-circle-outline"></i>Agregar</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                    <a href="#sidebarProductTypes" data-bs-toggle="collapse">
+                        <i data-feather="bar-chart"></i>
+                        <span class="menu-arrow"></span>
+                        <span> Item Actions </span>
+                    </a>
+                    <div class="collapse" id="sidebarProductTypes">
+                        <ul class="nav-second-level">
+                            <li>
+                                <form action="{% url 'list_itemaction' %}">
+                                    <button type="submit" class="btn btn-lin text-left" style="width: 14em; height: 2.3em; padding-left: 1.4em;"><i class="mdi mdi-table"></i>Lista</button>
+                                </form>
+                            </li>
+                            <li>
+                                <form action="{% url 'create_itemaction' %}">
+                                    <button type="submit" class="btn btn-lin text-left" style="width: 14em; height: 2.3em; padding-left: 1.4em;"><i class="mdi mdi-plus-circle-outline"></i>Agregar**</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                    <a href="#sidebarHomologations" data-bs-toggle="collapse">
+                        <i data-feather="link-2"></i>
+                        <span class="menu-arrow"></span>
+                        <span> Homologations </span>
+                    </a>
+                    <div class="collapse" id="sidebarHomologations">
+                        <ul class="nav-second-level">
+                            <li>
+                                <form action="{% url 'list_homologation' %}">
+                                    <button type="submit" class="btn btn-lin text-left" style="width: 14em; height: 2.3em; padding-left: 1.4em;"><i class="mdi mdi-table"></i>Lista</button>
+                                </form>
+                            </li>
+                            <li>
+                                <form action="{% url 'create_homologation' %}">
+                                    <button type="submit" class="btn btn-lin text-left" style="width: 14em; height: 2.3em; padding-left: 1.4em;"><i class="mdi mdi-plus-circle-outline"></i>Agregar**</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                    <a href="#sidebarActionTypes" data-bs-toggle="collapse">
+                        <i data-feather="list"></i>
+                        <span class="menu-arrow"></span>
+                        <span> Actions Types </span>
+                    </a>
+                    <div class="collapse" id="sidebarActionTypes">
+                        <ul class="nav-second-level">
+                            <li>
+                                <form action="{% url 'list_action' %}">
+                                    <button type="submit" class="btn btn-lin text-left" style="width: 14em; height: 2.3em; padding-left: 1.4em;"><i class="mdi mdi-table"></i>Lista</button>
+                                </form>
+                            </li>
+                            <li>
+                                <form action="{% url 'create_action' %}">
+                                    <button type="submit" class="btn btn-lin text-left" style="width: 14em; height: 2.3em; padding-left: 1.4em;"><i class="mdi mdi-plus-circle-outline"></i>Agregar</button>
+                                </form>
+                            </li>
+                        </ul>
+                   </div>
+                </li>
+
+                <!-- <li class="menu-title">Analytics</li>
+                <li>
+                    <a href="#sidebarDashboards" data-bs-toggle="collapse">
+                        <i data-feather="airplay"></i>
+                        <span class="badge bg-success rounded-pill float-end">{{request.user.Assigned_user.count|add:request.user.get_dashboars_count }}</span>
+                        <span> Dashboards </span>
+                    </a>
+                    <div class="collapse" id="sidebarDashboards">
+                        <ul class="nav-second-level">
+                            
+                            {% if  user.rol.get_create == 1 %}
+                            <li>
+                                <a id="btn-abrir-popup-newdashboard" class="btn-abrir-popup" href="#">
+                                    <span> Nuevo Dashboard </span>
+                                </a>
+                            </li>
+                            {% endif %}
+                            {% for object in request.user.get_dashboars %}
+                                <li>
+                                    <form action="{% url 'dashboard' %}" method="GET", enctype="multipart/form-data">
+                                        <input type="hidden" name="id_dashboard" value={{ object.id }}>
+                                        <button type="submit" class="btn btn-lin text-left" style="width: 14em; height: 2.3em; padding-left: 1.4em;">{{object.name}}</button>
+                                    </form>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </li> -->
+
+                {% if  user.rol.get_rol == 'Admin' %}
+                <li class="menu-title">Admin</li>
+
+                <!-- <li>
+                    <a href="#sidebarDashboards" data-bs-toggle="collapse">
+                        <i data-feather="airplay"></i>
+                        <span class="badge bg-success rounded-pill float-end">{{request.user.Assigned_user.count|add:request.user.get_dashboars_count }}</span>
+                        <span> Dashboards </span>
+                    </a>
+                    <div class="collapse" id="sidebarDashboards">
+                        <ul class="nav-second-level">
+                            
+                            {% if  user.rol.get_create == 1 %}
+                            <li>
+                                <a id="btn-abrir-popup-newdashboard" class="btn-abrir-popup" href="#">
+                                    <span> Nuevo Dashboard </span>
+                                </a>
+                            </li>
+                            {% endif %}
+                            {% for object in request.user.get_dashboars %}
+                                <li>
+                                    <form action="{% url 'dashboard' %}" method="GET", enctype="multipart/form-data">
+                                        <input type="hidden" name="id_dashboard" value={{ object.id }}>
+                                        <button type="submit" class="btn btn-lin text-left" style="width: 14em; height: 2.3em; padding-left: 1.4em;">{{object.name}}</button>
+                                    </form>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </li> -->
+
+                    <li>
+                        <a id="btn-abrir-popup-newdashboard" class="btn-abrir-popup" href="#">
+                            <i data-feather="airplay"></i>
+                            <span> Admin Panel </span>
+                        </a>
+                    </li>
+                    
+                    <!-- ------------------------------------------------------------------------ -->
+                    <!-- ------------------------------------------------------------------------ -->
+					<li>
+						<a href="#sidebarApplications" data-bs-toggle="collapse">
+							<i data-feather="codepen"></i>
+							<span class="menu-arrow"></span>
+							<span> Applications </span>
+						</a>
+						<div class="collapse" id="sidebarApplications">
+							<ul class="nav-second-level">
+								<li>
+									<form action="{% url 'list_social_application' %}">
+										<button type="submit" class="btn btn-lin text-left" style="width: 14em; height: 2.3em; padding-left: 1.4em;"><i class="mdi mdi-table"></i>Lista</button>
+									</form>
+								</li>
+								<li>
+									<form action="{% url 'create_social_application' %}">
+										<button type="submit" class="btn btn-lin text-left" style="width: 14em; height: 2.3em; padding-left: 1.4em;"><i class="mdi mdi-plus-circle-outline"></i>Agregar</button>
+									</form>
+								</li>
+							</ul>
+						</div>
+					</li>
+					
+					<li>
+					<a href="#sidebarUserStore" data-bs-toggle="collapse">
+                        <i data-feather="user-check"></i>
+                        <span class="menu-arrow"></span>
+                        <span> User - Store </span>
+                    </a>
+                    <div class="collapse" id="sidebarUserStore">
+                        <ul class="nav-second-level">
+                            <li>
+                                <form action="{% url 'list_userstore' %}">
+                                    <button type="submit" class="btn btn-lin text-left" style="width: 14em; height: 2.3em; padding-left: 1.4em;"><i class="mdi mdi-table"></i>Lista</button>
+                                </form>
+                            </li>
+                            <li>
+                                <form action="{% url 'create_userstore' %}">
+                                    <button type="submit" class="btn btn-lin text-left" style="width: 14em; height: 2.3em; padding-left: 1.4em;"><i class="mdi mdi-plus-circle-outline"></i>Agregar</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+				</li>
+                    <!-- ------------------------------------------------------------------------ -->
+                    <!-- ------------------------------------------------------------------------ -->
+                    <li>
+                        <a href="#sidebarUsers" data-bs-toggle="collapse">
+                            <i data-feather="unlock"></i>
+                            <span class="menu-arrow"></span>
+                            <span> User Levels </span>
+                        </a>
+                        <div class="collapse" id="sidebarUsers">
+                            <ul class="nav-second-level">
+                                <li>
+                                    <form action="{% url 'list_users' %}" method="GET", enctype="multipart/form-data">
+                                        <input type="hidden" name="rol" value=0>
+                                        <button type="submit" class="btn btn-lin text-left" style="width: 14em; height: 2.3em; padding-left: 1.4em;">Todos</button>
+                                    </form>
+                                </li>
+                                <li>
+                                    <form action="{% url 'list_users' %}" method="GET", enctype="multipart/form-data">
+                                        <input type="hidden" name="rol" value=1>
+                                        <button type="submit" class="btn btn-lin text-left" style="width: 14em; height: 2.3em; padding-left: 1.4em;">Nivel 1</button>
+                                    </form>
+                                </li>
+                                <li>
+                                    <form action="{% url 'list_users' %}" method="GET", enctype="multipart/form-data">
+                                        <input type="hidden" name="rol" value=2>
+                                        <button type="submit" class="btn btn-lin text-left" style="width: 14em; height: 2.3em; padding-left: 1.4em;">Nivel 2</button>
+                                    </form>
+                                </li>
+                                <li>
+                                    <form action="{% url 'list_users' %}" method="GET", enctype="multipart/form-data">
+                                        <input type="hidden" name="rol" value=3>
+                                        <button type="submit" class="btn btn-lin text-left" style="width: 14em; height: 2.3em; padding-left: 1.4em;">Nivel 3</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    <li>
+                {% endif %}
+            </ul>
+        </div>
+        <!-- End Sidebar -->
+        <div class="clearfix"></div>
+    </div>
+    <!-- Sidebar -left -->
+</div>
+<!-- Left Sidebar End -->

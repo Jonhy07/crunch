@@ -1,0 +1,53 @@
+{% load static i18n %}
+<div class="overlay" id="overlay-newdashboard">
+    <div class="popup" id="popup-newdashboard">
+        <a href="#" id="btn-cerrar-popup-newdashboard" class="btn-cerrar-popup"><i class="fas fa-times"></i></a>
+        <h3>NUEVO DASHBOARD</h3>
+        <h4>Especificaciones</h4>
+        <form action="{% url 'dashboard_add' %}" method="POST", enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="contenedor-inputs">
+                <input type="text" placeholder="Nombre" name="name" maxlength="100" class="textinput textInput form-control" required="" id="id_name">
+
+                {% if bandera_rol %}
+                    <select name="id_rol" class="select form-select" required="" id="id_rol" maxlength="100" class="textinput textInput form-control" style="height: 3.5em; font-size: medium;">
+                            <option value=0> Ninguno</option>
+                        {% for rol in roles %}
+                                <option value={{rol.id}}> {{rol}}</option>
+                        {% endfor %}
+                    </select> 
+                {% endif %}
+                <br>
+
+
+                <textarea placeholder="Description" name="description" maxlength="1000" class="textinput textInput form-control" required="" id="id_description" rows="3"></textarea>
+            </div>
+            <br>
+            <input type="submit" class="btn-submit" value="Create">
+        </form>
+    </div>
+</div>
+
+<script>
+    var btnAbrirPopup = document.getElementById('btn-abrir-popup-newdashboard');
+    var btnAbrirPopup1 = document.getElementById('btn-abrir-popup-newdashboard1');
+	overlay = document.getElementById('overlay-newdashboard');
+	popup = document.getElementById('popup-newdashboard');
+	btnCerrarPopup = document.getElementById('btn-cerrar-popup-newdashboard');
+
+    btnAbrirPopup.addEventListener('click', function(){
+        overlay.classList.add('active');
+        popup.classList.add('active');
+    });
+
+    btnAbrirPopup1.addEventListener('click', function(){
+        overlay.classList.add('active');
+        popup.classList.add('active');
+    });
+
+    btnCerrarPopup.addEventListener('click', function(e){
+        e.preventDefault();
+        overlay.classList.remove('active');
+        popup.classList.remove('active');
+    });
+</script>

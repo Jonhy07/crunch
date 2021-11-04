@@ -1,0 +1,280 @@
+al parecer legend puede ir vacio
+
+
+GRAFICO DE BARRAS NORMAL /INCLINADO
+
+option = {
+     title: {
+        text: 'Hola',                                                //Variable titulo
+        subtext: 'saber'
+    },
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data: ['Budget 2011', 'Budget 2012']                        //cariable nombre columnas
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: true,
+        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']     //Parametros X
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+            {
+                name: 'Budget 2011',                                //Nombre columna
+                type: 'bar',                                    
+                data: [120, 200, 150, 80, 70, 110, 130],            //Datos
+            },
+            {
+                name: 'Budget 2012',
+                type: 'bar',
+                data: [120, 200, 150, 80, 70, 110, 130],
+            }
+        ]
+};
+
+PARA INVERTIRLO CAMBIAR xAxis POR yAxis
+__________________________________________________________________________________________________________
+
+
+GRAFICO DE TENDENCIAS:
+option = {
+    title: {
+        text: 'Hola'
+    },
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data: ['uno', 'dos', 'tres', 'cuatro', 'cinco']
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo']
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+        {
+            name: 'uno',
+            type: 'line',
+            data: [120, 132, 101, 134, 90, 230, 210]
+        },
+        {
+            name: 'dos',
+            type: 'line',
+            data: [220, 182, 191, 234, 290, 330, 310]
+        },
+        {
+            name: 'tres',
+            type: 'line',
+            data: [150, 232, 201, 154, 190, 330, 410]
+        },
+        {
+            name: 'cuatro',
+            type: 'line',
+            data: [320, 332, 301, 334, 390, 330, 320]
+        },
+        {
+            name: 'cinco',
+            type: 'line',
+            data: [820, 932, 901, 934, 1290, 1330, 1320]
+        }
+    ]
+}
+
+
+__________________________________________________________________________________________________________
+GRAFICO TENDENCIAS SUMADAS
+option = {
+    title: {
+        text: 'Hola'
+    },
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data: ['uno', 'dos', 'tres', 'cuatro', 'cinco']
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo']
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+        {
+            name: 'uno',
+            type: 'line',
+            stack: 'Total',
+            //areaStyle: {}, Ashurado
+            data: [120, 132, 101, 134, 90, 230, 210]
+        },
+        {
+            name: 'dos',
+            type: 'line',
+            stack: 'Total',
+            //areaStyle: {}, Ashurado
+            data: [220, 182, 191, 234, 290, 330, 310]
+        },
+        {
+            name: 'tres',
+            type: 'line',
+            stack: 'Total',
+            //areaStyle: {}, Ashurado
+            data: [150, 232, 201, 154, 190, 330, 410]
+        },
+        {
+            name: 'cuatro',
+            type: 'line',
+            stack: 'Total',
+            //areaStyle: {}, Ashurado
+            data: [320, 332, 301, 334, 390, 330, 320]
+        },
+        {
+            name: 'cinco',
+            type: 'line',
+            stack: 'Total',
+            //areaStyle: {}, Ashurado
+            data: [820, 932, 901, 934, 1290, 1330, 1320]
+        }
+    ]
+};
+
+______________________________________________________________________________________________________________
+GRAFICO DE PIE ESTOLOS 2
+option = {
+    title: {
+        text: 'PIE',
+        subtext: 'grafico 1',
+        left: 'center'
+    },
+    tooltip: {
+        trigger: 'item'
+    },
+    legend: {
+        orient: 'vertical',
+        left: 'left',
+    },
+    series: [
+        {
+            name: 'dias',
+            type: 'pie',
+            radius: '50%', // radius: ['40%', '70%'],
+            data: [
+                {value: 1048, name: 'lunes'},
+                {value: 735, name: 'martes'},
+                {value: 580, name: 'miercoles'},
+                {value: 484, name: 'jueves'},
+                {value: 300, name: 'viernes'}
+            ],
+            emphasis: {
+                itemStyle: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        }
+    ]
+};
+
+__________________________________________________________________________________________________________
+GRAFICO DE PUNTOS
+option = {
+    title: {
+        text: 'Puntos',
+        subtext: 'grafico 1',
+        left: 'center'
+    },
+    tooltip: {
+        trigger: 'item'
+    },
+    xAxis: {},
+    yAxis: {},
+    series: [{
+        symbolSize: 15,
+        data: [
+            {value: [15, 16], name: 'lunes'},
+            {value: [14, 15], name: 'lunes'},
+            {value: [13, 14], name: 'lunes'},
+            {value: [12, 13], name: 'lunes'},
+            {value: [11, 12], name: 'lunes'},
+            {value: [10, 11], name: 'lunes'},
+        ],
+        type: 'scatter'
+    }]
+};
+
+
+
+
+
+<div class="card">
+    <div class="card-body">
+        <div class="dropdown float-end">
+            <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="mdi mdi-dots-vertical"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end">
+                <!-- item-->
+                <a href="javascript:void(0);" class="dropdown-item">Sales Report</a>
+            </div>
+        </div>
+
+        <h4 class="header-title mb-0">Titulo</h4>
+
+                        
+    </div>
+</div>
+
+
+__________________________________________________________________________________________________________
+TABLAS
+{
+    "head":["nombre", "Apellido", "edad"],
+    "data":[
+        ["juan", "perez",5],
+        ["pedro", "martinez", 6]
+    ]
+}

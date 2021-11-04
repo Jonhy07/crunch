@@ -1,0 +1,7 @@
+{% load i18n %}{% autoescape off %}{% blocktrans with site_name="The-Crunch" %}{% endblocktrans %}
+
+{% block content %}{% endblock %}
+
+{% blocktrans with site_name="The-Crunch" site_domain="The-Crunch.com" %}Thank you for using {{ site_name }}!
+{{ site_domain }}{% endblocktrans %}
+{% endautoescape %}

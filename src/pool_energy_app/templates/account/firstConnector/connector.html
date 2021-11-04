@@ -1,0 +1,144 @@
+{% extends "account/base.html" %}
+
+{% load i18n static %}
+{% load account socialaccount %}
+{% load crispy_forms_tags %}
+
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+
+{% block content %}
+
+
+<div class="account-pages mt-5 mb-5">
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-md-8 col-lg-6 col-xl-4">
+				<div class="card">
+					<div class="card-body p-4">
+					<!-- Logo-->
+						<div class="text-center w-75 m-auto">
+							<div class="auth-logo">
+								<a href="" class="logo logo-dark text-center">
+									<span class="logo-lg">
+										<img src="{% static 'images/Logo_The_Crunch.png' %}" alt="" height="50">
+									</span>
+								</a>
+								<a href="" class="logo logo-light text-center">
+									<span class="logo-lg">
+										<img src="{% static 'images/Logo_The_Crunch.png' %}" alt="" height="50">
+									</span>
+								</a>
+							</div>
+							<p class="text-white mb-4 mt-3">CONEXIÓN OAUTH</p>
+						</div>
+
+						<div class="card-body">
+							<div class="table-responsive">
+								<br/>
+									{% for object in objects_list %}
+										<button type="button" class="btn btn-outline-light" style="background-color:transparent; border-color:transparent;" data-toggle="modal" data-target="#exampleModal" data-url="{{object.url}}" data-appid="{{object.application_id}}" data-client="{{object.client_id}}" data-redirect="{{object.redirect_uri}}" data-user="{{object.user}}" data-store="{{object.store}}" data-social-app="{{object.social_application}}" data-scope="{{object.scope}}">
+											<img border="0" alt="{{object.nombre}}" src="/static/images/{{object.logo.url}}" width="100" height="100"  width="100" height="100">
+										</button>
+										<span class="text-white">
+											{{object.nombre}}
+										</span>
+									{% endfor %}
+									<a href="/forms/liniostore/{{ store_id }}/list" class="btn btn-outline-light" role="button">
+										<img border="0" alt="" src="/static/images/linio.png" width="100" height="100" />
+									</a>
+									<span class="text-white">
+										LinioStore
+									</span>
+								<br/>
+							</div>
+						</div>
+
+						<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="exampleModalLabel">Nuevo Conector</h5>
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<div class="modal-body">
+										<form>
+										<div class="form-group">
+											<label for="connector-name" class="col-form-label">Nombre:</label>
+											<input type="text" class="form-control" id="connector-name">
+										</div>
+										</form>
+									</div>
+									<div class="modal-footer">
+										<a class="btn btn-secondary" href="#" role="button" data-dismiss="modal">Cerrar</a>
+										<button type="button" class="btn btn-primary">Guardar</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- end row -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block extra_javascript %}
+<script>
+	$('#exampleModal').on('show.bs.modal', function (event) {
+		var button = $(event.relatedTarget) // Button that triggered the modal
+		var url = button.data('url') // Extract info from data-* attributes
+		// If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+		// Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+		var modal = $(this)
+		modal.find('.modal-body input').val("")
+
+		var btnOk = modal.find('.modal-footer button');
+		btnOk.on('click', function(){
+			var nombre = modal.find('.modal-body input').val();
+			var strUrl = button.data("url");
+			var nuevaUrl = "";
+			if(strUrl.indexOf("myshopify") > 0){
+				nuevaUrl = strUrl.replace("{shop}", nombre);
+			}else{
+				nuevaUrl = strUrl;
+			}
+			let url = new URL(nuevaUrl);
+			if(strUrl.indexOf("sellercentral.amazon") > 0){
+				url.searchParams.set('application_id', button.data("appid"));
+			}else{
+				url.searchParams.set('client_id', button.data("client"));
+				url.searchParams.set('redirect_uri', button.data("redirect"));
+				url.searchParams.set('response_type', 'code');
+				url.searchParams.set('access_type', 'offline');
+				url.searchParams.set('prompt', 'consent');
+
+				var strScope = button.data("scope");
+				if(strScope.length > 0){
+					url.searchParams.set('scope', strScope);
+				}
+			}
+
+			var state = {user: button.data("user"), store: button.data("store"), social_application: button.data("social-app"), name: nombre };
+
+			url.searchParams.set('state',  JSON.stringify(state));
+
+			console.log('VA SALIENDO A');
+			console.log(url);
+			console.log('VA SALIENDO Z');
+
+			window.open(url,'_self');
+
+			$('#exampleModal').modal('hide'); // Hide Modal
+		});
+		modal.on('hide.bs.modal', function() {
+			btnOk.off('click');
+		});
+	});
+	
+</script>
+{% endblock %}

@@ -1,0 +1,72 @@
+getLine(), getBar()
+{
+	dataset: Redes,
+	type: 1,
+	type_time: 1,
+	x: fecha,
+	y:{
+		0:{
+			name: Clicks,
+			value: clicks,
+			calculate: sum
+			},
+		1:{
+			name: Gasto,
+			value: spend,
+			calculate: max
+			},
+		2:{
+			name: vistas,
+			value: impressions,
+			calculate: avg
+			}
+			
+	}
+}
+
+{
+	dataset: Redes,
+	type: 2,
+	x:fecha,
+	y:{
+		0:{
+			value: clicks,
+			calculate: sum
+			legend: red
+			},
+	}
+}
+
+
+getPie()
+{
+	dataset: Redes,
+	x:fecha,
+	y:{
+			value: clicks,
+			calculate: sum
+	}
+}
+
+getTable()
+{
+	dataset: Redes,
+	columns:[
+		{field='red', calculate='text'},
+		{field='date', calculate='text'},
+		{field='clicks', calculate='sum'},
+	]
+}
+
+getCard(){
+	dataset: Redes,
+	type: 1,
+	columns:[
+		{field='clicks', calculate='sum'},
+	]
+}
+
+
+filters:[
+	{field='id', equal='>', value='5'}
+]

@@ -1,0 +1,150 @@
+{% extends "pool_base.html" %}
+{% load static i18n %}
+{% load crispy_forms_tags %}
+
+{% block extra_css %}
+<style>
+    .hide{
+display: none;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Start Content-->
+<div class="container-fluid">
+
+    <!-- start page title -->
+    <div class="row" style="padding-top: 0.6em;">
+        <div class="col-12">
+            <div class="page-title-box">
+                <h4 class="page-title"><b>INFORMACION DEL USUARIO</b></h4>
+            </div>
+        </div>
+    </div>
+    <!-- end page title --> 
+    
+    <!--Body-->
+    <div class="row">
+
+        <div class="col-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-widgets">
+                        <a href="javascript: void(0);" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
+                        <a data-bs-toggle="collapse" href="#cardCollpase0" role="button" aria-expanded="false" aria-controls="cardCollpase0"><i class="mdi mdi-minus"></i></a>
+                        <a href="javascript: void(0);" data-toggle="remove"><i class="mdi mdi-close"></i></a>
+                    </div>
+                    <h4 class="header-title mb-0">Usuario</h4>
+                    <div id="cardCollpase0" class="collapse pt-3 show">
+                        <form action="{% url 'config_update_user' %}" method="POST", enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input type="hidden" name="id_usuario" value={{ usuario.id }}>
+                            <table class="table table-borderless mb-0">
+                                <tbody>
+                                    <tr>
+                                        <td>Usuario: </td>
+                                        <td style="text-align: end;padding-right: 3em;">{{ usuario }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Correo: </td>
+                                        <td style="text-align: end;padding-right: 3em;">{{ usuario.email }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="vertical-align: middle;">Rol: </td>
+                                        <td style="text-align: end;padding-right: 3em;">
+                                            <select name="id_rol" class="select form-select" required="" id="id_rol"> 
+                                                {% for rol in roles %}
+                                                    {% if rol == usuario.rol %}
+                                                        <option value={{rol.id}} selected>{{rol}}</option> 
+                                                    {% else %}
+                                                        <option value={{rol.id}}> {{rol}}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select> 
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="vertical-align: middle;">Fecha De Expiración</td>
+                                        <td style="text-align: end;padding-right: 3em;">
+                                            <input class="form-control" type="date" class="textinput textInput form-control" name="expirate" required="" id="expirate">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            <button class="ladda-button btn btn-primary" dir="ltr" data-style="zoom-in">Actualizar</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div> 
+                </div> 
+            </div>
+        </div>
+
+
+        <div class="col-8">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-widgets">
+                        <a href="javascript: void(0);" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
+                        <a data-bs-toggle="collapse" href="#cardCollpase1" role="button" aria-expanded="false" aria-controls="cardCollpase1"><i class="mdi mdi-minus"></i></a>
+                        <a href="javascript: void(0);" data-toggle="remove"><i class="mdi mdi-close"></i></a>
+                    </div>
+                    <h4 class="header-title mb-0">Dashboards</h4>
+
+                    <div id="cardCollpase1" class="collapse pt-3 show">
+                        <table id="list_users" class="table dt-responsive nowrap w-100">
+                            <thead>
+                                <tr>            
+                                    <th>Id</th>
+                                    <th>Correo</th>
+                                    <th>Usuario</th>
+                                    <th>Expiración</th>
+                                    <th>Rol</th>
+                                    <th style="text-align: end; padding-right: 3em;">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in usuarios %}
+                                <tr>
+                                    <td>{{ user.id }}</td>
+                                    <td>{{ user.email }}</td>
+                                    <td>{{ user }}</td>
+                                    <td>{{ user.expirate }}</td>
+                                    <td>{{ user.rol }}</td>
+                                    <td style="text-align: end; padding-right: 3em;">
+                                        <a href="{% url 'config_user'%}?user={{ user.id }}" class="btn btn-xs btn-light"><i class="mdi mdi-pencil"></i></a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div> 
+                </div> 
+            </div>
+        </div>
+    </div> 
+</div>
+
+
+<!-- container -->
+{% endblock %}
+{% block extra_javascript %}
+<script>
+    var a=$('#list_users').DataTable({scrollY:'50em',scrollCollapse:!0,lengthChange:!1,language:{paginate:{previous:"<i class='mdi mdi-chevron-left'>",next:"<i class='mdi mdi-chevron-right'>"}},drawCallback:function(){$(".dataTables_paginate > .pagination").addClass("pagination-rounded")}});
+    a.buttons().container().appendTo('#list_users_wrapper .col-md-6:eq(0)')
+</script>
+<script>
+var date =new Date('{{ usuario.expirate|date:"D, d M Y H:i:s"}}');
+var day = date.getDate();
+var month = date.getMonth() + 1;
+var year = date.getFullYear();
+if (month < 10) month = "0" + month;
+if (day < 10) day = "0" + day;
+var today = year + "-" + month + "-" + day;
+    document.getElementById("expirate").value = today;
+</script>
+{% endblock%}

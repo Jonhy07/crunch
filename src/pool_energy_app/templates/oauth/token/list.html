@@ -1,0 +1,44 @@
+{% extends "auth_base.html" %}
+{% load static i18n %}
+{% load crispy_forms_tags %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block content %}
+
+<!-- Start Content-->
+<div class="container-fluid">
+  <!-- start page title -->
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title-box">
+        <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item"><a href="javascript: void(0);">list</a></li>
+            <li class="breadcrumb-item active">List</li>
+          </ol>
+        </div>
+        <h4 class="page-title">Actualizar Tokens de Acceso</h4>
+      </div>
+    </div>
+  </div>
+  <!-- end page title -->
+  <!-- start content -->
+  
+  <div class="table-responsive">
+	<br/>
+	{% for object in objects_list %}
+		<p>
+		<a href="{{object.url}}">
+		<img border="0" alt="{{object.name}}" src="{{object.logo.url}}" width="100" height="100">
+		{{object.name}}
+		</a>
+	</p>
+	{% endfor %}
+  </div>
+
+<!-- container -->
+{% endblock %}
+{% block extra_javascript %}
+{% endblock %}

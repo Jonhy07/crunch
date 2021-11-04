@@ -1,0 +1,80 @@
+{% extends "pool_base.html" %}
+{% load static i18n %}
+{% load crispy_forms_tags %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block content %}
+<!-- Start Content-->
+<div class="container-fluid">
+
+    <!-- start page title -->
+	<div class="row" style="padding-top: 0.6em;">
+		<div class="col-12">
+			<div class="page-title-box">
+				<h1 class="page-title"><b>New Item - Action</b></h1>
+			</div>
+		</div>
+	</div>   
+	<!-- end page title --> 
+
+	<!--Body-->
+	<div class="row">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-body">
+					<form action="#" method="POST" id='formsCompleto'>
+						{% csrf_token %}
+						<span>Store *</span>
+						<div class="form-group" id='selector'>
+							{{form.store}}
+						 </div>
+						 <span>Item *</span>
+						 <div class="form-group">
+							 {{form.item}}
+						 </div>
+						 <span>Action *</span>
+						 <div class="form-group">
+							 {{form.action}}
+						 </div>
+						 <span>Comment *</span>
+						 <div class="form-group">
+							 {{form.comment}}
+						 </div>
+					   <button type="submit" class="btn btn-primary">Crear</button>
+					 </form>
+				</div>
+			</div>
+		</div>
+	</div> 
+	<!--End Body-->       
+</div>
+<!-- container -->
+{% endblock %}
+{% block extra_javascript %}
+<script type="text/javascript">
+	$("#selector").change(function(){
+		const url = '/forms/itemaction/cargarStore'
+		if ($(this)[0].children['store']!= undefined)
+		{
+			const storeId = $(this)[0].children['store']['value'];
+			console.log(storeId)
+			$.ajax({             
+				url: url,
+				data: {
+					'store_id': storeId
+				},
+				success: function (data) {
+					console.log('---------------------------------')
+					console.log('---------------------------------')
+					console.log(data)
+					console.log('---------------------------------')
+					console.log('---------------------------------')
+					$("#item").html(data);
+				}
+			});
+		}
+	});
+</script>
+{% endblock%}

@@ -1,0 +1,41 @@
+{% extends "auth_base.html" %}
+{% load static i18n %}
+{% load crispy_forms_tags %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block content %}
+
+<!-- Start Content-->
+<div class="container-fluid">
+  <!-- start page title -->
+  <div class="row">
+    <div class="col-12">
+      <div class="page-title-box">
+        <div class="page-title-right">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item"><a href="javascript: void(0);">list</a></li>
+            <li class="breadcrumb-item active">List</li>
+          </ol>
+        </div>
+        <h4 class="page-title">Listado de Cuentas de Social Application</h4>
+      </div>
+    </div>
+  </div>
+  <!-- end page title -->
+  <!-- start content -->
+  
+  <form role="form" method="post" action="#" id="js-accounts-form" enctype="multipart/form-data">
+	{% csrf_token %} 
+	{% for object in objects_list %}
+		<input type="checkbox" id="account{{object.no}}" name="account_list" value="{{object.id}}||{{object.name}}">
+		<label for="account{{object.no}}"> {{object.name}} </label><br>
+	{% endfor %}
+	<input type="submit" value="Guardar" id="js-accounts-form" >
+  </form>
+
+<!-- container -->
+{% endblock %}
+{% block extra_javascript %}
+{% endblock %}

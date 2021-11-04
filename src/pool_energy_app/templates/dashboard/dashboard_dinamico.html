@@ -1,0 +1,249 @@
+{% extends "pool_base.html" %}
+{% load static i18n %}
+{% load crispy_forms_tags %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block content %}
+<!-- Start Content-->
+<div class="container-fluid" style="padding-left: 2em;">
+
+<!--a  href="javascript:window.location.reload()" class="btn btn-blue btn-sm ms-2">
+    <i class="mdi mdi-autorenew"></i>
+</a-->
+<!--a href="javascript: void(0);" class="btn btn-blue btn-sm ms-1">
+    <i class="mdi mdi-filter-variant"></i>
+</a-->
+                      
+    <!-- start page title -->
+    <div class="row" style="padding-top: 3em;">
+        <div class="col-9">
+            <h2 style="margin: 0%; padding-bottom: 0.2em;">{{dashboard.name}}</h2>
+            <p>{{dashboard.description}}</p>
+        </div>
+        <div class="col-2">
+            <!--div class="row">
+                <label class="control-label" for="datepicker-start" style="text-align:initial;margin: 0.2em; margin-left: -0.5em;">Fecha Inicio</label>
+                <input class="form-control" id="example-date" type="date" name="date">
+            </div-->
+            <div class="input-group input-group-sm" style="padding-top: 0.5em;">
+                <input type="text" class="form-control border-0 shadow" id="dash-daterange">
+                <span class="input-group-text bg-blue border-blue text-white">
+                    <i class="mdi mdi-calendar-range"></i>
+                </span>
+            </div>
+        </div>
+        <div class="col-1" style="text-align: end;">
+            <div>
+                <ul class="list-unstyled topnav-menu float-end mb-0">
+                    <li class="dropdown notification-list topbar-dropdown">
+                        <a class="nav-link  waves-effect waves-light" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false" style="color: #6c757d;">
+                            <i class="fas fa-bars fa-2x"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end dropdown-lg">
+                            <!-- item-->
+                            <div class="dropdown-item noti-title">
+                                <h5 class="m-0">
+                                    <span class="float-end">
+                                    </span>Dashboard Settings
+                                </h5>
+                            </div>
+            
+                            <div class="noti-scroll" data-simplebar>
+                                <!-- item-->
+                                <a href="#" class="dropdown-item notify-item  btn-abrir-popup" id="btn-abrir-popup-newrow">
+                                    <div class="row">
+                                        <div class="col-8"> 
+                                            <p class="notify-details" style="margin-left: 0%;">Fila
+                                                <small class="text-muted">Añadir una nueva fila</small>
+                                            </p>
+                                        </div>
+                                        <div class="col-4" style="text-align: end; padding-right: 3em;">
+                                            <i class="bi bi-plus-lg fa-2x"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                                 <!-- item-->
+                                <a href="#" class="dropdown-item notify-item">
+                                    <div class="row">
+                                        <div class="col-8"> 
+                                            <p class="notify-details" style="margin-left: 0%;">Controles
+                                                <small class="text-muted">Ver controles del dashboard</small>
+                                            </p>
+                                        </div>
+                                        <div class="col-4">
+                                            <label class="switch"><input type="checkbox"><span class="slider round hide-off"></span></label>
+                                        </div>
+
+                                    </div>
+                                </a>
+                                <!-- item-->
+                                <a class="dropdown-item notify-item" href="/dashboard{{dashboard.get_delete_url}}" title="Eliminar Dashboard" class="delete" onclick="return confirm('Esta accion borrara todas las graficas asociadas al dashboard')">
+                                    <div class="row">
+                                        <div class="col-8"> 
+                                            <p class="notify-details" style="margin-left: 0%;">Dashboard
+                                                <small class="text-muted">Eliminar el dashboard</small>
+                                            </p>
+                                        </div>
+                                        <div class="col-4" style="text-align: end; padding-right: 3em;">
+                                            <i class="bi bi-trash fa-2x"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div> 
+        </div>
+    </div>
+   
+
+    
+    <!-- end page title --> 
+    
+    <!--Body-->
+    <div class="row">
+        <div class="col-12">
+            <div id="content">
+            
+               
+            </div>         
+        </div>
+    </div> 
+    <!--End Body-->       
+</div>
+<br>
+
+{% include 'partials/popups/newrow.html' %}
+<!-- container -->
+{% endblock %}
+{% block extra_javascript %}
+<!--script>
+    $(function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            var max = urlParams.get('max')
+            var min = urlParams.get('min')
+            $('#dash-daterange').val('2021-07-01');
+            console.log(max);
+            console.log(min);
+
+        });
+</script-->
+
+<script>
+    $(document).ready( function ()
+    {
+        $(function() {
+            $("#dash-daterange").on('change', function() {
+                var date = $(this).val();
+                var max=0;
+                var min=0;
+                var searchParams = new URLSearchParams(window.location.search);
+                if(date){
+                    if (date.length<11){
+                        //date=date.replace("-","").replace("-","");
+                        //max=date;
+                        //searchParams.set("max", max);
+                        //window.location.search = searchParams.toString();
+                    }else{
+                        var date1=date.substring(0,10).replace("-","").replace("-","");
+                        var date2=date.substring(14,24).replace("-","").replace("-","");
+                        max=date1;
+                        min=date2;
+                        if(date2>date1){
+                            max=date2;
+                            min=date1;
+                        }
+                        searchParams.set("max", max);
+                        searchParams.set("min", min);
+                        window.location.search = searchParams.toString();   
+                    }
+
+                }
+            }).change();
+        });
+        /*$(function() {
+            $("#example-date").on('change', function() {
+                var date = $(this).val();
+                if(date){
+                    date=date.replace("-","")
+                    date=date.replace("-","")
+                    var searchParams = new URLSearchParams(window.location.search);
+                    searchParams.set("date", date);
+                    window.location.search = searchParams.toString();
+                }
+            }).change();
+        });*/
+
+        /*document.querySelector('#example-date').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                var date = $(this).val();
+                if(date){
+                    date=date.replace("-","")
+                    date=date.replace("-","")
+                    var searchParams = new URLSearchParams(window.location.search);
+                    searchParams.set("date", date);
+                    window.location.search = searchParams.toString();
+                }
+            }
+        });*/    
+    });
+</script>
+
+<script>
+    $(document).on('click', '.hide-on', function () {
+        $('.hideme').hide();
+        $(this).removeClass('hide-on');
+        $(this).addClass('hide-off');
+    })
+
+    $(document).on('click', '.hide-off', function () {
+    $('.hideme').show();
+    $(this).removeClass('hide-off');
+    $(this).addClass('hide-on');
+    })
+</script>
+
+
+<!-- Enviar Template-->
+<script>
+    var template = ("{{template_dashboard|escapejs}}");
+    document.getElementById("content").innerHTML=template
+</script>
+
+
+<!-- Enviar Charts-->
+<script>
+    var options = ("{{options|escapejs}}");
+    var names = ("{{names|escapejs}}");
+    const objOptions = JSON.parse(options);
+    const objNames = JSON.parse(names);
+    for (var i = 0; i < objNames.length; i++) {
+        var chartDom = document.getElementById(objNames[i]);
+        var myChart = echarts.init(chartDom);
+        const obj = JSON.parse(objOptions[i]);
+        myChart.setOption(obj);
+    }
+</script>
+
+
+<!-- Enviar Datatable-->
+<script>
+    var tables = ("{{tables|escapejs}}");
+    const objTables = JSON.parse(tables);
+    var sizes = ("{{sizes|escapejs}}");
+    const objSizes = JSON.parse(sizes);
+    $(document).ready( function () {
+    for (var i = 0; i < objTables.length; i++) {
+        /*$('#'+objTables[i]).DataTable({scrollY:        '20vh'});*/
+        var a=$('#'+objTables[i]).DataTable({scrollY:''+objSizes[i]+'em',scrollCollapse:!0,lengthChange:!1,buttons:[{extend:"copy",className:"btn-light"},{extend:"print",className:"btn-light"},{extend:"pdf",className:"btn-light"}],language:{paginate:{previous:"<i class='mdi mdi-chevron-left'>",next:"<i class='mdi mdi-chevron-right'>"}},drawCallback:function(){$(".dataTables_paginate > .pagination").addClass("pagination-rounded")}});
+        a.buttons().container().appendTo('#'+objTables[i]+"_wrapper .col-md-6:eq(0)")
+    }
+} );
+    
+</script>
+
+
+{% endblock%}

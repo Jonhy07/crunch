@@ -1,0 +1,93 @@
+{% extends "pool_base.html" %}
+{% load static i18n %}
+{% load crispy_forms_tags %}
+
+{% block extra_css %}
+<style>
+    .hide{
+display: none;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Start Content-->
+<div class="container-fluid">
+
+    <!-- start page title -->
+    <div class="row" style="padding-top: 0.6em;">
+        <div class="col-10">
+            <div class="page-title-box">
+                <h4 class="page-title"><b>LISTA DE DASHBOARDS</b></h4>
+            </div>
+        </div>
+        <div class="col-2" style="text-align: end; padding-top: 1.5em">
+            
+            <a class="btn-abrir-popup btn btn-rounded  waves-light btn-outline-secondary btn-rounded waves-effect" id="btn-abrir-popup-newdashboard1" href="#">
+                Nuevo Dashboard<span class="btn-label-right"><i class="fe-plus"></i></span>
+            </a>
+
+        </div>
+    </div>
+    <!-- end page title --> 
+    <br>
+    <!--Body-->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-widgets">
+                        <a href="javascript: void(0);" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
+                        <a data-bs-toggle="collapse" href="#cardCollpase1" role="button" aria-expanded="false" aria-controls="cardCollpase1"><i class="mdi mdi-minus"></i></a>
+                        <a href="javascript: void(0);" data-toggle="remove"><i class="mdi mdi-close"></i></a>
+                    </div>
+                    <h4 class="header-title mb-0">Usuarios</h4>
+
+                    <div id="cardCollpase1" class="collapse pt-3 show">
+                        <table id="list_users" class="table dt-responsive nowrap w-100">
+                            <thead>
+                                <tr>            
+                                    <th>Id</th>
+                                    <th>Nombre</th>
+                                    <th>Rol</th>
+                                    <th>Propietario</th>
+                                    <th>Descripcion</th>
+                                    <th style="text-align: center; width: 15%;">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for dashboard in dashboards %}
+                                <tr>
+                                    <td>{{ dashboard.id }}</td>
+                                    <td>{{ dashboard.name }}</td>
+                                    <td>{{ dashboard.rol }}</td>
+                                    <td>{{ dashboard.user }}</td>
+                                    <td>{{ dashboard.description }}</td>
+                                    <td style="text-align: center; width: 15%;">
+                                        <a href="{% url 'dashboard'%}?id_dashboard={{ dashboard.id }}"  class="btn btn-s btn-light"><i class="mdi mdi-pencil"></i></a>
+
+                                        <a href="/config/dashboard{{dashboard.get_delete_url}}"  class="btn btn-s btn-light" onclick="return confirm('Esta accion borrara todas las graficas asociadas al dashboard')"><i class="mdi mdi-delete"></i></a>
+
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div> 
+                </div> 
+            </div>
+        </div>
+    </div> 
+</div>
+<!-- container -->
+{% endblock %}
+{% block extra_javascript %}
+<script>
+    var a=$('#list_users').DataTable({scrollY:'50em',scrollCollapse:!0,lengthChange:!1,language:{paginate:{previous:"<i class='mdi mdi-chevron-left'>",next:"<i class='mdi mdi-chevron-right'>"}},drawCallback:function(){$(".dataTables_paginate > .pagination").addClass("pagination-rounded")}});
+    a.buttons().container().appendTo('#list_users_wrapper .col-md-6:eq(0)')
+
+    
+    
+</script>
+
+{% endblock%}
