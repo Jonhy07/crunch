@@ -61,12 +61,11 @@ class UsersPermissions():
                     print(lastConnector.count())
                     if (lastConnector.count()>0):
                         nMarketplace = MarketplaceConnector.objects.filter(connector_id=lastConnector[0]).count()
-                    else:
-                        nMarketplace
+                        if nMarketplace == 0:
+                            return redirect("/forms/marketplace/{}/".format(lastConnector))
                     print(nMarketplace)
                     print('*********************************************')
-                    if nMarketplace == 0:
-                        return redirect("/forms/marketplace/{}/".format(lastConnector))
+
 
 
             if not(request.user.is_superuser):
