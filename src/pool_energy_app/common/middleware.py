@@ -32,15 +32,10 @@ class UsersPermissions():
             nId=request.user.id
             lConnectors = Connector.objects.filter(user__pk=nId).values_list('id',flat=True)
             nConnectors = Connector.objects.filter(user__pk=nId).count()
-            print('*************************')
-            print(lConnectors)
-            print(list(lConnectors))
             if nConnectors > 0:
                 nMarketplace = MarketplaceConnector.objects.filter(connector__in=list(lConnectors)).count()
             else:
                 nMarketplace=0
-            print(nMarketplace)
-            print('*************************')
             if str(request.path).startswith('/forms/newClient/'):
                 return None
             if str(request.path).startswith('/forms/token/'):
@@ -56,12 +51,15 @@ class UsersPermissions():
             if nTiendas == 0:#  (str(request.path).startswith('/accounts/logout/')):
                 return redirect("/forms/newClient/")
             else:
+                print('************** con tiendas ******************')
                 lastStore = UserStore.objects.filter(user=nId).order_by('-id').values_list('store',flat=True)[0]
                 if nConnectors == 0:
                    return redirect("/forms/token/{}/buttons/".format(lastStore))
                 else:
                     # lastConnector = Connector.objects.filter(user=nId).order_by('-id').values_list('id',flat=True)[0] -- ver que solo funcione con amazon
-                    lastConnector = Connector.objects.filter(user=nId).order_by('-id').values_list('id',flat=True)[0]
+                    lastConnector = Connector.objects.filter(user=nId,social_application_id__in=[1,2]).order_by('-id').values_list('id',flat=True)[0]
+                    print(lastConnector)
+                    print('*********************************************')
                     nMarketplace = MarketplaceConnector.objects.filter(connector_id=lastConnector).count()
                     if nMarketplace == 0:
                         return redirect("/forms/marketplace/{}/".format(lastConnector))
