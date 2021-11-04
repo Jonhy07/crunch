@@ -36,7 +36,10 @@ class UsersPermissions():
             nConnectors = Connector.objects.filter(user__pk=nId).count()
             print(nConnectors)
             print('*************************')
-            nMarketplace = MarketplaceConnector.objects.filter(connector__pk=lConnectors).count()
+            if nConnectors > 0:
+                nMarketplace = MarketplaceConnector.objects.filter(connector__pk=lConnectors).count()
+            else:
+                nMarketplace=0
             if str(request.path).startswith('/forms/newClient/'):
                 return None
             if str(request.path).startswith('/forms/token/'):
