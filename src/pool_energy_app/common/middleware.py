@@ -58,9 +58,11 @@ class UsersPermissions():
                 else:
                     # lastConnector = Connector.objects.filter(user=nId).order_by('-id').values_list('id',flat=True)[0] -- ver que solo funcione con amazon
                     lastConnector = Connector.objects.filter(user=nId,social_application_id__in=[1]).order_by('-id').values_list('id',flat=True)
-                    print(lastConnector)
-                    print(lastConnector[0])
-                    nMarketplace = MarketplaceConnector.objects.filter(connector_id=lastConnector[0]).count()
+                    print(lastConnector.count())
+                    if (lastConnector.count()):
+                        nMarketplace = MarketplaceConnector.objects.filter(connector_id=lastConnector[0]).count()
+                    else:
+                        nMarketplace
                     print(nMarketplace)
                     print('*********************************************')
                     if nMarketplace == 0:
