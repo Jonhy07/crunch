@@ -30,7 +30,7 @@ class UsersPermissions():
         #Comprueba si tiene rol o es nuevo
         if str(request.user) != 'AnonymousUser':
             nId=request.user.id
-            lConnectors = Connector.objects.filter(user__pk=nId)
+            lConnectors = Connector.objects.filter(user__pk=nId).values_list('id',flat=True)
             nConnectors = Connector.objects.filter(user__pk=nId).count()
             print('*************************')
             print(lConnectors)
