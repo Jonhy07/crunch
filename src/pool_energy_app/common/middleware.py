@@ -67,7 +67,7 @@ class UsersPermissions():
                             return redirect("/forms/marketplace/{}/".format(list(lastConnector)[0]))
                         else:
                             print('redirigiendo')
-                            return redirect("/")
+                            return None
 
             if not(request.user.is_superuser):
                 #No tiene rol le asigna uno
