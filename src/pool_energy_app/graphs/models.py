@@ -70,11 +70,14 @@ class Graph (models.Model):
         return"/row/graph/{}/delete".format(self.pk)
     def name(self):
         return ('id_'+str(self.id))
-    def send_json(self, min=None, max=None):
+    def send_json(self, min=None, max=None,Tienda=None):
         filters=Graph_Filter.objects.filter(graph=self)
         send=''
         send=self.send
+        tienda= '"' + Tienda + '"'
         send['filters']=[]
+        diccionario={'field':'DxStoreName','equal':'=','value':tienda}
+        send['filters'].append(diccionario)
         for filter in filters:
             if filter.filter.type_filter.id==1:
                 if min :
@@ -84,8 +87,7 @@ class Graph (models.Model):
                 send['filters'].append({'field':filter.value.name_db, 'equal':filter.type_comparation.signo, 'value':filter.comparate_value})
         return send
 
-
-    def to_html(self, min=None, max=None):
+    def to_html(self, min=None, max=None,Tienda=None):
         html="<div class=\"col-"+str (self.column*self.row.column.value)+"\" style=\"height: "+str(self.row.high.value)+"em;\">"
         if (self.type_graph.id<1):
             html+='<div class="dropdown float-end toolsrow hideme">'
@@ -121,12 +123,12 @@ class Graph (models.Model):
                 #html+='<div id="id_'+str(self.id)+'" style="width: content-box; height: '+str(self.row.high.value*0.92)+'em; margin-top: '+str(self.row.high.value*0.03)+'em;"></div>'
                 if (self.type_graph.id==5):
                     html+='<div id="id_'+str(self.id)+'_tab" style="width: content-box; height: '+str(self.row.high.value)+'em; margin-top: '+str(self.row.high.value*0.03)+'em;">'
-                    html+=self.gettab(min, max)
+                    html+=self.gettab(min, max,Tienda)
                 else:
                     #Meter aqui la card
                     html+='<div id="id_'+str(self.id)+'" style="width: content-box; height: '+str(self.row.high.value)+'em; margin-top: '+str(self.row.high.value*0.03)+'em;">'
                     if (self.type_graph.id==6):
-                        html+=self.getcard(min, max)
+                        html+=self.getcard(min, max,Tienda)
                 
                 
             html+='</div>'
@@ -137,10 +139,10 @@ class Graph (models.Model):
         return "%s" % (html)
 
 
-    def getGraph(self, min=None, max=None):
+    def getGraph(self, min=None, max=None,Tienda=None):
         variable=""
         if(self.type_graph.id==4):
-            variable=""+str(self.getpie(min, max))
+            variable=""+str(self.getpie(min, max,))
         elif(self.type_graph.id==2):
             variable=""+str(self.getbar(min, max))
         elif(self.type_graph.id==1):
@@ -149,7 +151,7 @@ class Graph (models.Model):
             variable=""+str(self.getbar(min, max))
         return variable
 
-    def getpie(self, min=None, max=None):
+    def getpie(self, min=None, max=None,Tienda=None):
         yrow=YRow.objects.filter(graph=self).first()
         API_V1_STR = os.environ.get('API_V1_STR')
         url=API_V1_STR+"pie"
@@ -157,7 +159,7 @@ class Graph (models.Model):
         #_json=json.loads(_text)
     
         #_json=self.send
-        _json=self.send_json(min, max)
+        _json=self.send_json(min, max,Tienda)
         token=""
         _headers={'Content-Type':'application/json', 'Autorization':token}
         response=requests.post(url, data=json.dumps(_json), headers=_headers)
@@ -178,12 +180,11 @@ class Graph (models.Model):
 
 
 
-    def getbar(self, min=None, max=None):
+    def getbar(self, min=None, max=None,Tienda=None):
         yrow=YRow.objects.filter(graph=self).first()
         API_V1_STR = os.environ.get('API_V1_STR')
         url=API_V1_STR+"line_bar"
-        _json=self.send_json(min, max)
-    
+        _json=self.send_json(min, max,Tienda)
         token=""
         _headers={'Content-Type':'application/json', 'Autorization':token}
         response=requests.post(url, data=json.dumps(_json), headers=_headers)
@@ -228,11 +229,11 @@ class Graph (models.Model):
 
 
 
-    def getcard(self, min=None, max=None):
+    def getcard(self, min=None, max=None,Tienda=None):
         API_V1_STR = os.environ.get('API_V1_STR')
         url=API_V1_STR+"card"
         #_json=self.send
-        _json=self.send_json(min, max)
+        _json=self.send_json(min, max,Tienda)
         token=""
         _headers={'Content-Type':'application/json', 'Autorization':token}
         response=requests.post(url, data=json.dumps(_json), headers=_headers)
@@ -241,11 +242,11 @@ class Graph (models.Model):
             return '<div class="row"><div class="col-4"><div class="avatar-lg rounded-circle bg-'+self.type_icon.color+' border-'+self.type_icon.color+' border shadow" style="height: 3.5rem; width: 3.5rem;"><i class="'+self.type_icon.icon+' font-26 avatar-title text-white"></i></div></div><div class="col-8"><div class="text-end"><h3 class="text-dark mt-1"><span data-plugin="counterup">'+(str(float("{:.2f}".format(_json['data']))))+'</span></h3><p class="text-muted mb-1 text-truncate">'+self.title+'</p></div></div></div>'
         return '<div class="row"><div class="col-4"></div><div class="col-8"><div class="text-end"><h3 class="text-dark mt-1"><span data-plugin="counterup">'+(str(float("{:.2f}".format(_json['data']))))+'</span></h3><p class="text-muted mb-1 text-truncate">'+self.title+'</p></div></div></div>'
 
-    def gettab(self, min=None, max=None):
+    def gettab(self, min=None, max=None,Tienda=None):
         API_V1_STR = os.environ.get('API_V1_STR')
         url=API_V1_STR+"tab"
         #_json=self.send
-        _json=self.send_json(min, max)
+        _json=self.send_json(min, max,Tienda)
         token=""
         _headers={'Content-Type':'application/json', 'Autorization':token}
         response=requests.post(url, data=json.dumps(_json), headers=_headers)

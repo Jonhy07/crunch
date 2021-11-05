@@ -13,12 +13,12 @@ class Dashboard(models.Model):
         return "/{}/change".format(self.pk)
     def get_delete_url(self):
         return"/{}/delete".format(self.pk)
-    def to_html(self, min=None, max=None):
+    def to_html(self, min=None, max=None,Tienda=None):
         html=''
         row=Row.objects.filter(dashboard=self).order_by('id')
         for object in row:
             html+="<br><div class=\"row\">"
-            html+=object.to_html(min, max)
+            html+=object.to_html(min, max,Tienda)
             html+="</div>"
         return "%s" % (html)
     def names(self):
@@ -28,11 +28,11 @@ class Dashboard(models.Model):
             name.extend(object.names())
         return name
 
-    def options(self, min=None, max=None):
+    def options(self, min=None, max=None,Tienda=None):
         row=Row.objects.filter(dashboard=self).order_by('id')
         option=[]
         for object in row:
-            option.extend(object.options(min, max))
+            option.extend(object.options(min, max,Tienda))
         return option
 
     def tables(self):
@@ -115,17 +115,17 @@ class Row(models.Model):
                     tab.append((object.row.high.value-16.5))
         return tab
 
-    def options(self, min=None, max=None):
+    def options(self, min=None, max=None,Tienda=None):
         option=[]
         import pool_energy_app.graphs.models
         graphs=pool_energy_app.graphs.models.Graph.objects.filter(row=self.id).order_by('id')
         for object in graphs:
             if(object.type_graph.id>0 and object.type_graph.id<5):
                 if(object.finish):
-                    option.append(object.getGraph(min, max))
+                    option.append(object.getGraph(min, max,Tienda))
         return option
 
-    def to_html(self, min=None, max=None):
+    def to_html(self, min=None, max=None,Tienda=None):
         html=''
 
         #Pintar Graficas
@@ -134,7 +134,7 @@ class Row(models.Model):
         html+="<div class=\"col\">"
         html+="<div class=\"row\">"
         for object in graphs:
-            html+=object.to_html(min, max)
+            html+=object.to_html(min, max,Tienda)
         #Pintar Vacios
         if (self.available>0):
             for i in range(self.available):

@@ -7,6 +7,7 @@ from pool_energy_app.charts.forms import DashboardForm, RowForm
 from django.shortcuts import render, redirect, get_object_or_404
 
 from pool_energy_app.users.models import Rol
+from pool_energy_app.forms.models import UserStore,Store
 from .models import Dashboard, Row, User_Dashboard
 import json
 
@@ -158,14 +159,16 @@ def deleteRow(request, id):
 
 #Cargar la info principal para el dashboard dinamico
 def print_dashboard(id_dashboard, request, min, max, edit, delete):
+    stores = UserStore.objects.filter(user=request.user.id).values_list('store',flat=True)
+    nTiendas = Store.objects.filter(pk__in=[stores]).values_list('name',flat=True)
     dashboard=Dashboard.objects.filter(id=id_dashboard).first()
     json_name = json.dumps(dashboard.names())
     #Aqui 
-    json_option = json.dumps(dashboard.options(min, max))
+    json_option = json.dumps(dashboard.options(min, max,nTiendas[0]))
     #Aqui
     json_table = json.dumps(dashboard.tables())
     json_size = json.dumps(dashboard.sizes())
-    template_dashboard=dashboard.to_html(min, max)
+    template_dashboard=dashboard.to_html(min, max,nTiendas[0])
     
     form = RowForm(request.POST or None, request.FILES or None)
     context = {

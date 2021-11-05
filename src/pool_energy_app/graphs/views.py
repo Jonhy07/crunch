@@ -8,7 +8,7 @@ from pool_energy_app.filter.models import Filter, Type_comparation
 from pool_energy_app.graphs.forms import GraphForm, PieForm, BarXForm, YRow2Form, YRowForm, TabTypeForm
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Graph, Graph_Filter, Type_agrupation, Type_icon, YRow
-from pool_energy_app.charts.models import Row
+from pool_energy_app.charts.models import Dashboard, Row, User_Dashboard
 from pool_energy_app.graphs.models import Type_calculate
 from pool_energy_app.endpoint.models import Detail
 
@@ -24,6 +24,68 @@ def convertir(queryset, string):
     return text
 
 
+#-------------------------------VALIDAR SEGURIDAD DE UNA  GRAFICA
+#Seguridad del dashboard:
+def validar_Dashboard(request, id_dashboard ):
+    dashboard=Dashboard.objects.filter(id=id_dashboard)
+    if(dashboard):
+       dashboard=dashboard.first()
+    else:
+        return {'bandera' : True }
+    if(request.user.rol.rol=='Admin'):
+        return {'bandera' : False, 'edit':1, 'delete':1, 'dashboard':dashboard}
+    else:
+        asignacion=User_Dashboard.objects.filter(user=request.user, dashboard_id=id_dashboard)
+        if asignacion:
+            asignacion=asignacion.first()
+            return {'bandera' : False, 'edit':(asignacion.edit*request.user.rol.create), 'delete':(asignacion.delete*request.user.rol.create), 'dashboard':dashboard }
+        else:
+            if (dashboard.rol):
+                if(request.user.rol.id<dashboard.rol.id):
+                    return {'bandera' : True, 'dashboard':dashboard }
+                else:
+                    return {'bandera' : False, 'edit':0, 'delete':0, 'dashboard':dashboard }
+            else:
+                return {'bandera' : True, 'dashboard':dashboard }
+
+
+#Validacion de la Grafica para modificarla
+def validar_Grafica(request, id):
+    graph_update=Graph.objects.filter(id=id)
+    if not (graph_update):
+        messages.error(request, "Aun no se crea la grafica.")
+        return {'bandera' : True }
+    else:
+        diccionario=validar_Dashboard(request, graph_update[0].row.dashboard.id )
+        #dashboard_graph=request.user.Dashboards.filter(id=graph_update[0].row.dashboard.id)    
+        if (diccionario['bandera']):
+            messages.error(request, "No tiene acceso a esta grafica." )
+            return {'bandera' : True }
+        else:
+            graph=graph_update[0]
+            if(graph.finish):
+                messages.error(request, "No es posible modificar esta grafica." )
+                return {'bandera' : True }
+            else:
+                return {'bandera' : False, 'graph':graph}
+
+
+#Validacion de la Grafica para modificarla
+def validar_Grafica_Filtros(request, id):
+    graph_update=Graph.objects.filter(id=id)
+    if not (graph_update):
+        messages.error(request, "Aun no se crea la grafica.")
+        return {'bandera' : True }
+    else:
+        #dashboard_graph=request.user.Dashboards.filter(id=graph_update[0].row.dashboard.id)
+        diccionario=validar_Dashboard(request, graph_update[0].row.dashboard.id ) 
+        if (diccionario['bandera']):
+            messages.error(request, "No tiene acceso a esta grafica." )
+            return {'bandera' : True }
+        else:
+            graph=graph_update[0]
+            return {'bandera' : False, 'graph':graph}
+
 
 #-------------------------------NUEVA GRAFICA
 #Vista para una nueva grafica
@@ -33,8 +95,9 @@ def newgraph(request, id):
         messages.error(request, "No tiene acceso a esta fila.")
         return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
     else:
-        dashboard_add_graph=request.user.Dashboards.filter(id=row_add_graph[0].dashboard.id)    
-        if not (dashboard_add_graph):
+        diccionario=validar_Dashboard(request, row_add_graph[0].dashboard.id )
+        #dashboard_add_graph=request.user.Dashboards.filter(id=row_add_graph[0].dashboard.id) 
+        if (diccionario['bandera']):
             messages.error(request, "No tiene acceso a la fila del lienzo." )
             return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
         else:
@@ -59,7 +122,9 @@ def addgraph(request):
             return redirect ('/')
         else:
             row=rows[0]
-            if not (request.user.Dashboards.filter(id=row.dashboard.id)):
+            diccionario=validar_Dashboard(request, row.dashboard.id )
+            #if not (request.user.Dashboards.filter(id=row.dashboard.id)):
+            if (diccionario['bandera']):
                 messages.error(request, "No tiene acceso a la fila del lienzo.")
                 return redirect('/')
             else:
@@ -98,45 +163,6 @@ def addgraph(request):
                         messages.error(request, str(e))
                         return redirect('/dashboard/?id_dashboard='+str(row.dashboard.id))
 
-
-#-------------------------------VALIDAR SEGURIDAD DE UNA  GRAFICA
-#Validacion de la Grafica para modificarla
-def validar_Grafica(request, id):
-    graph_update=Graph.objects.filter(id=id)
-    if not (graph_update):
-        messages.error(request, "Aun no se crea la grafica.")
-        return {'bandera' : True }
-    else:
-        dashboard_graph=request.user.Dashboards.filter(id=graph_update[0].row.dashboard.id)    
-        if not (dashboard_graph):
-            messages.error(request, "No tiene acceso a esta grafica." )
-            return {'bandera' : True }
-        else:
-            graph=graph_update[0]
-            if(graph.finish):
-                messages.error(request, "No es posible modificar esta grafica." )
-                return {'bandera' : True }
-            else:
-                return {'bandera' : False, 'graph':graph}
-
-
-#Validacion de la Grafica para modificarla
-def validar_Grafica_Filtros(request, id):
-    graph_update=Graph.objects.filter(id=id)
-    if not (graph_update):
-        messages.error(request, "Aun no se crea la grafica.")
-        return {'bandera' : True }
-    else:
-        dashboard_graph=request.user.Dashboards.filter(id=graph_update[0].row.dashboard.id)    
-        if not (dashboard_graph):
-            messages.error(request, "No tiene acceso a esta grafica." )
-            return {'bandera' : True }
-        else:
-            graph=graph_update[0]
-            return {'bandera' : False, 'graph':graph}
-
-
-
 #-------------------------------PIE
 #Vista para seleccionar el campo de agrupacion del pie
 def pie(request, id):
@@ -167,8 +193,8 @@ def pie(request, id):
 def update_pie(request):
     id_graph=int(request.POST["id_graph"])
     graphs=Graph.objects.filter(id=id_graph)
-    value=Detail.objects.filter(id=request.POST["yrow"]).first()
-    type_calculate=Type_calculate.objects.filter(id=request.POST["type_calculate"]).first()
+    #value=Detail.objects.filter(id=request.POST["yrow"]).first()
+    #type_calculate=Type_calculate.objects.filter(id=request.POST["type_calculate"]).first()
 
     form = PieForm(request.POST or None, request.FILES or None, endpoint=graphs[0].endpoint)
     if form.is_valid():
@@ -179,13 +205,15 @@ def update_pie(request):
         else:
             graph=diccionario['graph']
             instance=form.save(commit=False)
-            yrow=YRow.objects.create(name="pie", graph=graph, value=value, type_calculate=type_calculate)
+            #yrow=YRow.objects.create(name="pie", graph=graph, value=value, type_calculate=type_calculate)
+            yrow=YRow.objects.create(name="pie", graph=graph, value_id=request.POST["yrow"], type_calculate_id=request.POST["type_calculate"])
             graph.xrow=instance.xrow
             graph.send=PieToJson(graph, yrow)
             graph.finish=True
             graph.save()
             yrow.save()
-            bandera = bool(request.POST.get ('filtros', "falso"))
+            bandera = bool(request.POST.get('filtros', '') == 'on')
+            
             if (bandera) :
                 messages.success(request, "Grafico creado exitosamente. Detalle sus filtros.")
                 return redirect('/dashboard/row/graph/add/{}/filter/pie'.format(graph.pk))
@@ -285,8 +313,8 @@ def legend(request, id):
 #Guardar la barra legend
 def create_bar_legend(request):
     id_graph=int(request.POST["id_graph"])
-    value=Detail.objects.filter(id=request.POST["yrow"]).first()
-    type_calculate=Type_calculate.objects.filter(id=request.POST["type_calculate"]).first()
+    #value=Detail.objects.filter(id=request.POST["yrow"]).first()
+    #type_calculate=Type_calculate.objects.filter(id=request.POST["type_calculate"]).first()
 
     diccionario=validar_Grafica(request, id_graph)
     bandera=diccionario['bandera']
@@ -294,12 +322,14 @@ def create_bar_legend(request):
         return redirect('/')
     else:
         graph=diccionario['graph']
-        yrow=YRow.objects.create(name=request.POST["legend"], graph=graph, value=value, type_calculate=type_calculate)
+        #yrow=YRow.objects.create(name=request.POST["legend"], graph=graph, value=value, type_calculate=type_calculate)
+        yrow=YRow.objects.create(name=request.POST["legend"], graph=graph, value_id=request.POST["yrow"], type_calculate_id=request.POST["type_calculate"])
         graph.send=BarLegendToJson(graph, yrow)
         graph.finish=True
         graph.save()
         yrow.save()
-        bandera = bool(request.POST.get ('filtros', "falso"))
+        bandera = bool(request.POST.get('filtros', '') == 'on')
+        
         if (bandera) :
             messages.success(request, "Grafico creado exitosamente. Detalle sus filtros.")
             return redirect('/dashboard/row/graph/add/{}/filter/bar'.format(graph.pk))
@@ -379,7 +409,8 @@ def create_bar_name(request):
         graph.send=BarNameToJson(graph)
         graph.finish=True
         graph.save()
-        bandera = bool(request.POST.get ('filtros', "falso"))
+        bandera = bool(request.POST.get('filtros', '') == 'on')
+        
         if (bandera) :
             messages.success(request, "Grafico creado exitosamente. Detalle sus filtros.")
             return redirect('/dashboard/row/graph/add/{}/filter/bar'.format(graph.pk))
@@ -426,9 +457,9 @@ def card(request, id):
 #Recibiendo el formulario de  card para el update
 def update_card(request):
     id_graph=int(request.POST["id_graph"])
-    #graphs=Graph.objects.filter(id=id_graph)
-    value=Detail.objects.filter(id=request.POST["yrow"]).first()
-    type_calculate=Type_calculate.objects.filter(id=request.POST["type_calculate"]).first()
+        #graphs=Graph.objects.filter(id=id_graph)
+    #value=Detail.objects.filter(id=request.POST["yrow"]).first()
+    #type_calculate=Type_calculate.objects.filter(id=request.POST["type_calculate"]).first()
     type_icon=Type_icon.objects.filter(id=request.POST["type_icon"]).first()
     type_agrupation=Type_agrupation.objects.filter(id=request.POST["type_agrupation"]).first()
 
@@ -440,14 +471,15 @@ def update_card(request):
         return redirect('/')
     else:
         graph=diccionario['graph']
-        yrow=YRow.objects.create(name="card", graph=graph, value=value, type_calculate=type_calculate)
+        #yrow=YRow.objects.create(name="card", graph=graph, value=value, type_calculate=type_calculate)
+        yrow=YRow.objects.create(name="card", graph=graph, value_id=request.POST["yrow"], type_calculate_id=request.POST["type_calculate"])
         graph.type_icon=type_icon
         graph.type_agrupation=type_agrupation
         graph.send=CardToJson(graph, yrow)
         graph.finish=True
         graph.save()
         yrow.save()
-        bandera = bool(request.POST.get ('filtros', "falso"))
+        bandera = bool(request.POST.get('filtros', '') == 'on')
         if (bandera) :
             messages.success(request, "Grafico creado exitosamente. Detalle sus filtros.")
             return redirect('/dashboard/row/graph/add/{}/filter/card'.format(graph.pk))
@@ -550,7 +582,8 @@ def create_tab_name(request):
         graph.send=TabColumnToJson(graph)
         graph.finish=True
         graph.save()
-        bandera = bool(request.POST.get ('filtros', "falso"))
+        bandera = bool(request.POST.get('filtros', '') == 'on')
+        #bandera = bool( ('filtros', "falso"))
         if (bandera) :
             messages.success(request, "Grafico creado exitosamente. Detalle sus filtros.")
             return redirect('/dashboard/row/graph/add/{}/filter/bar'.format(graph.pk))
@@ -597,13 +630,15 @@ def add_col_legend(request):
     else:
         graph=diccionario['graph']
 
-        value=Detail.objects.filter(id=request.POST["yrow"]).first()
+        #value=Detail.objects.filter(id=request.POST["yrow"]).first()
         yrow=None
         if request.POST["type_calculate"]!="0":
-            type_calculate=Type_calculate.objects.filter(id=request.POST["type_calculate"]).first()
-            yrow=YRow.objects.create(name=request.POST["name"], graph=graph, value=value, type_calculate=type_calculate)
+            #type_calculate=Type_calculate.objects.filter(id=request.POST["type_calculate"]).first()
+            #yrow=YRow.objects.create(name=request.POST["name"], graph=graph, value=value, type_calculate=type_calculate)
+            yrow=YRow.objects.create(name=request.POST["name"], graph=graph, value_id=request.POST["yrow"], type_calculate_id=request.POST["type_calculate"])
         else:
-            yrow=YRow.objects.create(name=request.POST["name"], graph=graph, value=value)
+            #yrow=YRow.objects.create(name=request.POST["name"], graph=graph, value=value)
+            yrow=YRow.objects.create(name=request.POST["name"], graph=graph, value_id=request.POST["yrow"])
         yrow.save()
         messages.success(request, "Columna Agregada Exitosamente.")
         return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
@@ -621,7 +656,10 @@ def deletegraph(request, id):
         graph=graphs[0]
         rows=Row.objects.filter(id=graph.row.id)
         row=rows[0]
-        if not (request.user.Dashboards.filter(id=row.dashboard.id)):
+
+        diccionario=validar_Dashboard(request, row.dashboard.id )
+        #if not (request.user.Dashboards.filter(id=row.dashboard.id)):
+        if (diccionario['bandera']):
             messages.error(request, "No tiene acceso a la fila del lienzo.")
             return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
         else:
@@ -796,7 +834,6 @@ def filterlegendcard(request, id):
         yrow=YRow.objects.filter(graph=graph).first()
         filter=Filter.objects.all()
         filters=Graph_Filter.objects.filter(graph=graph)
-
         context = {
             'Text':'Add',
             'type':(str(graph.type_graph)).lower(),
@@ -821,7 +858,7 @@ def create_filter(request):
     else:
         graph=diccionario['graph']
         filter=Filter.objects.filter(id=id_filter).first()
-        detail=Detail.objects.filter(id=id_value).first()
+        #detail=Detail.objects.filter(id=id_value).first()
         comparate_value=None
         type_comparation=None
         #Aqui se va a modificar si hay otros filtros
@@ -833,7 +870,8 @@ def create_filter(request):
             type_comparation=Type_comparation.objects.filter(id=1).first()
 
                 
-        graph_filter=Graph_Filter.objects.create(comparate_value=comparate_value, value=detail, graph=graph, filter=filter, type_comparation=type_comparation)
+        #graph_filter=Graph_Filter.objects.create(comparate_value=comparate_value, value=detail, graph=graph, filter=filter, type_comparation=type_comparation)
+        graph_filter=Graph_Filter.objects.create(comparate_value=comparate_value, value_id=id_value, graph=graph, filter_id=id_filter, type_comparation=type_comparation)
         graph_filter.save()
         messages.success(request, "Filtro Agregado Exitosamente.")
         return HttpResponseRedirect(request.META.get("HTTP_REFERER"))

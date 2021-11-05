@@ -143,7 +143,6 @@ def accounts_token(request, id):
 	return render(request, "account/connector.html",  {'objects_list': objects_list, 'store_id': id})
 
 def resp_token(request):
-	print('\r\n\r\n', request.GET,'\r\n\r\n')
 	final_url = ''
 	clave = ''
 	partner_id = ''
@@ -181,7 +180,6 @@ def resp_token(request):
 			else:
 				response = requests.post(access_uri,params=payload)	
 	
-			print('\r\n\r\n', response, '\r\n\r\n', response.json(), '\r\n\r\n')
 			
 			#Guardar la respuesta en Connector
 			if response.status_code == 200:
@@ -239,7 +237,6 @@ def resp_token(request):
 				msg = 'ERROR al obtener access_token. Codigo ' + str(response.status_code)
 				print("ERROR al obtener access_token. Codigo ", response.status_code);
 	else:
-		print("\r\n---->", request.GET.get('error'), "\r\n");
 		msg = 'ERROR ' + str(request.GET.get('error'))
 	
 	forms = Store.objects.all()

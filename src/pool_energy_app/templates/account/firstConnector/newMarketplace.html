@@ -1,4 +1,4 @@
-{% extends "account/base.html" %}
+{% extends "account/base_log.html" %}
 
 {% load i18n static %}
 {% load account socialaccount %}
@@ -9,33 +9,29 @@
 {% block content %}
 <!-- Start Content-->
 <div class="container">
-		<h1 class="text-center py-4">Marketplace ID’s</h1>
-
-		<div class="row">
-<div class="col"></div>
-<div class="col-5">
-
-					<form action="#" method="POST">
-
-						<div class="row  justify-content-md-center py-4">
-							{% csrf_token %}
-							<input type="hidden" name="connector_id" value="{{ connector_id }}" />
-							{% for object in objects_list %}
-		 						<div class="col">	
-							   		<img class="img-fluid mx-auto" border="0" src="/static/images/{{object.logo}}" width="77" height="77">
-									   <div class="clearfix"></div>
-									   <input type="checkbox" id="item{{object.id}}" name="mktplc_list" value="{{object.id}}">
-									<label for="item{{object.id}}"> {{object.country}} </label><br>
-								</div>	
-							 {% endfor %}
-						  
-
-						</div>
-						<button type="submit" class="btn">Guardar</button>
-					</form>
+	<h1 class="text-center py-4">Marketplace ID’s</h1>
+	<div class="row">
+		<div class="col">
+		</div>
+		<div class="col-5">
+			<form action="#" method="POST">
+				<div class="row  justify-content-md-center py-4">
+					{% csrf_token %}
+					<input type="hidden" name="connector_id" value="{{ connector_id }}" />
+					{% for object in objects_list %}
+						<div class="col">	
+							<img class="img-fluid mx-auto" border="0" src="/static/images/{{object.logo}}" width="77" height="77">
+								<div class="clearfix"></div>
+								<input type="checkbox" id="item{{object.id}}" name="mktplc_list" value="{{object.id}}">
+							<label for="item{{object.id}}"> {{object.country}} </label><br>
+						</div>	
+						{% endfor %}
 				</div>
-
-					<div class="col"></div>
-				</div>
+				<button type="submit" class="btn">Guardar</button>
+			</form>
+		</div>
+		<div class="col">
+		</div>
+	</div>
 </div>
 {% endblock %}

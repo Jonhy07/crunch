@@ -96,6 +96,37 @@
 				<img src="https://crunchdna.com/wp-content/uploads/2021/09/logo.svg" alt="" height="50">
 			</a>
 
+
+
+			<div class="col-md-3 text-end">
+				<ul class="list-unstyled topnav-menu float-end mb-0">
+					<li class="dropdown notification-list topbar-dropdown">
+						<a class="nav-link dropdown-toggle nav-user me-0 waves-effect waves-light" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+							<span class="pro-user-name ms-1">
+								{{user}}
+							</span>
+						</a>
+						<div class="dropdown-menu dropdown-menu-end profile-dropdown ">
+							<!-- item-->
+							<a href="{% url 'account_change_password' %}" class="dropdown-item notify-item">
+								<i class="fe-lock"></i>
+								<span>Password Change</span>
+							</a>
+							<div class="dropdown-divider"></div>
+							<!-- item-->
+							<a href="{% url 'account_logout' %}" class="dropdown-item notify-item">
+								<i class="fe-log-out"></i>
+								<span>Logout</span>
+							</a>
+						</div>
+					</li>
+				</ul>
+				<!-- LOGO -->
+			</div>
+
+
+
+			
 		</header>
 	<!--{% if messages %}
 		<div>
