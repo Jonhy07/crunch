@@ -21,6 +21,7 @@ class UsersPermissions():
         #Comprueba si no es un usuario anonimo para redirects
         if str(request.user) != 'AnonymousUser' :
             if str(request.path).startswith('/accounts/login'):
+                print('redirigiendo')
                 return redirect('/')
         else:
             if str(request.path).startswith('/accounts'):
@@ -65,6 +66,7 @@ class UsersPermissions():
                         if nMarketplace == 0:
                             return redirect("/forms/marketplace/{}/".format(list(lastConnector)[0]))
                         else:
+                            print('redirigiendo')
                             return redirect("/")
 
             if not(request.user.is_superuser):
