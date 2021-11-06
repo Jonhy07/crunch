@@ -1,3 +1,10 @@
+ALTER TABLE users_user ADD COLUMN rol_id INT;
+
+UPDATE forms_network SET logo='amazon.png' WHERE id=1;
+UPDATE forms_network SET logo='amazon-adve.png' WHERE id=2;
+UPDATE forms_network SET logo='shopify.png' WHERE id=3;
+UPDATE forms_network SET logo='mercado-libre.png' WHERE id=4;
+
 --Rol Default
 INSERT INTO public.users_rol(id, rol, duration, "create")
 	VALUES	(-1, 'Expirado', 0, 0),
@@ -16,7 +23,7 @@ INSERT INTO public.account_emailaddress(
 	id, email, verified, "primary", user_id)
 	VALUES (1, 'joubmaja.69@gmail.com', true, true, -1);
 
-UPDATE public.django_site SET  domain='The-Crunch.com', name='The-Crunch' WHERE id=1;
+UPDATE public.django_site SET  domain='app.crunchdna.com', name='The-Crunch' WHERE id=1;
 
 --Insert tamaños
 INSERT INTO public.charts_column(
@@ -68,7 +75,7 @@ INSERT INTO public.graphs_type_graph(
 INSERT INTO public.graphs_type_agrupation(
 	id, name, card)
 	VALUES  (1, 'Leyenda', 'Filas Distintas'),
-			(2, 'Columna', 
+			(2, 'Columna', 'Todas las Filas' );
 
 --Insert tipo de Calculo
 INSERT INTO public.graphs_type_calculate(
@@ -76,6 +83,7 @@ INSERT INTO public.graphs_type_calculate(
 	VALUES  (1, 'Conteo', 'count'),
 			(2, 'Suma', 'sum' ),
 			(3, 'Promedio', 'avg' );
+
 --Tipo de Filtro
 INSERT INTO public.filter_type_filter(
 	id, name)
@@ -94,13 +102,6 @@ INSERT INTO public.filter_type_comparation(
 			(5, 'Igual que', '='),
 			(6, 'Diferente de', '!=');
 
---Filtros
-INSERT INTO public.filter_filter(
-	id, name, detail, type_detail_id, type_filter_id)
-	VALUES 	(1, 'Mes Actual', '(cast(FORMAT_DATE("%Y%m", CURRENT_DATE()) AS Integer)*100)', 4, 2),
-			(2, 'Año Actual', '(cast(FORMAT_DATE("%Y", CURRENT_DATE()) AS Integer)*10000)', 4, 2),
-			(3, 'Fecha Dinamica', NULL, 4, 1);
-
 --Insert tipo detalle
 INSERT INTO public.endpoint_type_detail(
 	id, type)
@@ -108,10 +109,18 @@ INSERT INTO public.endpoint_type_detail(
 			(2, 'Double' ),
 			(3, 'String' ),
 			(4, 'Date'   );
+
+--Filtros
+INSERT INTO public.filter_filter(
+	id, name, detail, type_detail_id, type_filter_id)
+	VALUES 	(1, 'Mes Actual', '(cast(FORMAT_DATE("%Y%m", CURRENT_DATE()) AS Integer)*100)', 4, 2),
+			(2, 'Año Actual', '(cast(FORMAT_DATE("%Y", CURRENT_DATE()) AS Integer)*10000)', 4, 2),
+			(3, 'Fecha Dinamica', NULL, 4, 1);
+
 --Endpoints
 INSERT INTO public.endpoint_endpoint(
 	id, name_db, name_bc)
-	VALUES (1, 'AuxDimVentasResumen', 'Ventas'),
+	VALUES	(1, 'AuxDimVentasResumen', 'Ventas'),
 			(2, 'AuxDimInventario', 'Inventario'),
 	 		(3, 'AuxDimInventarioAds', 'Publicidad');
 
@@ -151,77 +160,80 @@ INSERT INTO public.endpoint_detail(
 			(31,'DnFechaCarga',			'Fecha',				3, 4);
 
 INSERT INTO public.charts_dashboard (id,"name",description,user_id,rol_id)
-	VALUES (1,'Radiografía','',2,0);
+	VALUES (1,'Radiografía','',12,0);
 
 INSERT INTO public.endpoint_access_rol_endpoint (id,description,endpoint_id,rol_id)
 	VALUES	(1,'Conexion Ventas',1,0),
-			(2,'Conexion Publicidad',2,0),
+			(2,'Conexion Publicidad',3,0),
 			(3,'Conexion Inventario',2,0);
 
 INSERT INTO public.charts_user_dashboard (id,edit,"delete",dashboard_id,user_id)
-	VALUES (1,1,1,1,13);
+	VALUES (1,0,0,1,12);
 
 INSERT INTO public.charts_row (id,available,column_id,dashboard_id,high_id)
-	VALUES	(5,1,4,1,5),
-			(6,3,4,1,1),
-			(9,0,4,1,1),
-			(10,2,4,1,5),
-			(11,0,4,1,1);
+	VALUES	(1,1,4,1,5),
+			(2,3,4,1,1),
+			(3,0,4,1,1),
+			(4,2,4,1,5),
+			(5,0,4,1,1);
 
-INSERT INTO public.graphs_graph (id,title,"column",finish,send,endpoint_id,row_id,type_agrupation_id,type_graph_id,xrow_id,type_icon_id,type_time_agrupation_id) 
-	VALUES	(9,'Total Revenue',1,true,'{"type": "2", "columns": [{"field": "DfSubTotal", "calculate": "sum"}], "dataset": "AuxDimVentasResumen"}',1,5,2,6,NULL,1,NULL),
-			(10,'Quantity',1,true,'{"type": "2", "columns": [{"field": "DnQuantityShipped", "calculate": "sum"}], "dataset": "AuxDimVentasResumen"}',1,5,2,6,NULL,1,NULL),
-			(12,'Discount',1,true,'{"type": "2", "columns": [{"field": "DfPromotionDiscount", "calculate": "sum"}], "dataset": "AuxDimVentasResumen"}',1,5,2,6,NULL,1,NULL),
-			(13,'Tax',1,true,'{"type": "2", "columns": [{"field": "DfTax", "calculate": "sum"}], "dataset": "AuxDimVentasResumen"}',1,5,2,6,NULL,1,NULL),
-			(14,'Shipping',1,true,'{"type": "2", "columns": [{"field": "DfShipping", "calculate": "sum"}], "dataset": "AuxDimVentasResumen"}',1,5,2,6,NULL,1,NULL),
-			(19,'Impresiones',1,true,'{"type": "2", "columns": [{"field": "DnImpressions", "calculate": "sum"}], "dataset": "AuxDimInventarioAds"}',3,10,2,6,NULL,1,NULL),
-			(16,'Ordenes',3,true,'{"type": "2", "columns": [{"field": "DxOrderId"}, {"field": "DxFulfillmentChannel"}, {"field": "DxMarketplaceName"}, {"field": "DxOrderStatus"}, {"field": "DnQuantityShipped"}, {"field": "DfPromotionDiscount"}, {"field": "DfSubTotal"}, {"field": "DnFechaVenta"}], "dataset": "AuxDimVentasResumen"}',1,6,2,5,NULL,NULL,NULL),
-			(20,'Clicks',1,true,'{"type": "2", "columns": [{"field": "DnClicks", "calculate": "sum"}], "dataset": "AuxDimInventarioAds"}',3,10,2,6,NULL,1,NULL),
-			(18,'Inventario',6,true,'{"type": "2", "columns": [{"field": "DxAsin"}, {"field": "DxSellerSku"}, {"field": "DxProductName"}, {"field": "DxMarketplace"}, {"field": "DfPriceAmount"}, {"field": "DnTotalQuantity"}], "dataset": "AuxDimInventario"}',2,9,2,5,NULL,NULL,NULL),
-			(21,'Costo',1,true,'{"type": "2", "columns": [{"field": "DfCost", "calculate": "sum"}], "dataset": "AuxDimInventarioAds"}',3,10,2,6,NULL,1,NULL),
-			(23,'Ventas por Publicidad',1,true,'{"type": "2", "columns": [{"field": "DfAttributedSales", "calculate": "sum"}], "dataset": "AuxDimInventarioAds"}',3,10,2,6,NULL,1,NULL),
-			(24,'PPC',6,true,'{"type": "2", "columns": [{"field": "DxMarketplace"}, {"field": "DxAsin"}, {"field": "DxProductName"}, {"field": "DnImpressions"}, {"field": "DnClicks"}, {"field": "DfCost"}, {"field": "DfAttributedSales"}, {"field": "DnFechaCarga"}], "dataset": "AuxDimInventarioAds"}',3,11,2,5,NULL,NULL,NULL);
+INSERT INTO public.graphs_graph (id,title,"column",finish,send,endpoint_id,row_id,type_agrupation_id,type_graph_id,xrow_id,type_icon_id,type_time_agrupation_id)
+	VALUES	(1,'Total Revenue',1,true,'{"type": "2", "columns": [{"field": "DfSubTotal", "calculate": "sum"}], "dataset": "AuxDimVentasResumen"}',1,1,2,6,NULL,1,NULL),
+			(2,'Quantity',1,true,'{"type": "2", "columns": [{"field": "DnQuantityShipped", "calculate": "sum"}], "dataset": "AuxDimVentasResumen"}',1,1,2,6,NULL,1,NULL),
+			(3,'Discount',1,true,'{"type": "2", "columns": [{"field": "DfPromotionDiscount", "calculate": "sum"}], "dataset": "AuxDimVentasResumen"}',1,1,2,6,NULL,1,NULL),
+			(4,'Tax',1,true,'{"type": "2", "columns": [{"field": "DfTax", "calculate": "sum"}], "dataset": "AuxDimVentasResumen"}',1,1,2,6,NULL,1,NULL),
+			(5,'Shipping',1,true,'{"type": "2", "columns": [{"field": "DfShipping", "calculate": "sum"}], "dataset": "AuxDimVentasResumen"}',1,1,2,6,NULL,1,NULL),
+			(6,'Ordenes',3,true,'{"type": "2", "columns": [{"field": "DxIdDataFrame"}, {"field": "DxMarketplaceName"}, {"field": "DxOrderId"}, {"field": "DxFulfillmentChannel"}, {"field": "DxOrderStatus"}, {"field": "DnQuantityShipped"}, {"field": "DfPromotionDiscount"}, {"field": "DfShipping"}, {"field": "DfSubTotal"}, {"field": "DnFechaVenta"}], "dataset": "AuxDimVentasResumen"}',1,2,2,5,NULL,NULL,NULL),
+			(7,'Inventario',6,true,'{"type": "2", "columns": [{"field": "DxIdDataFrame"}, {"field": "DxMarketplace"}, {"field": "DxAsin"}, {"field": "DxSellerSku"}, {"field": "DxProductName"}, {"field": "DfPriceAmount"}, {"field": "DnTotalQuantity"}], "dataset": "AuxDimInventario"}',2,3,2,5,NULL,NULL,NULL),
+			(8,'Impresiones',1,true,'{"type": "2", "columns": [{"field": "DnImpressions", "calculate": "sum"}], "dataset": "AuxDimInventarioAds"}',3,4,2,6,NULL,1,NULL),
+			(9,'Clicks',1,true,'{"type": "2", "columns": [{"field": "DnClicks", "calculate": "sum"}], "dataset": "AuxDimInventarioAds"}',3,4,2,6,NULL,1,NULL),
+			(10,'Costo',1,true,'{"type": "2", "columns": [{"field": "DfCost", "calculate": "sum"}], "dataset": "AuxDimInventarioAds"}',3,4,2,6,NULL,1,NULL),
+			(11,'Ventas Atribuidas',1,true,'{"type": "2", "columns": [{"field": "DfAttributedSales", "calculate": "sum"}], "dataset": "AuxDimInventarioAds"}',3,4,2,6,NULL,1,NULL),
+			(12,'PPC',6,true,'{"type": "2", "columns": [{"field": "DxMarketplace"}, {"field": "DxAsin"}, {"field": "DxSellerSku"}, {"field": "DxProductName"}, {"field": "DnImpressions"}, {"field": "DnClicks"}, {"field": "DfCost"}, {"field": "DfAttributedSales"}], "dataset": "AuxDimInventarioAds"}',3,5,2,5,NULL,NULL,NULL);
 
 INSERT INTO public.graphs_graph_filter (id,comparate_value,filter_id,graph_id,value_id,type_comparation_id)
-	VALUES	(5,NULL,3,9,12,1),
-			(6,NULL,3,10,12,1),
-			(8,NULL,3,12,12,1),
-			(9,NULL,3,13,12,1),
-			(10,NULL,3,14,12,1),
-			(11,NULL,3,19,31,1),
-			(12,NULL,3,20,31,1),
-			(13,NULL,3,21,31,1),
-			(14,NULL,3,23,31,1);
+	VALUES	(1,NULL,3,1,12,1),
+			(2,NULL,3,2,12,1),
+			(3,NULL,3,3,12,1),
+			(4,NULL,3,4,12,1),
+			(5,NULL,3,5,12,1),
+			(6,'(cast(FORMAT_DATE("%Y%m", CURRENT_DATE()) AS Integer)*100)',1,8,31,3),
+			(7,'(cast(FORMAT_DATE("%Y%m", CURRENT_DATE()) AS Integer)*100)',1,9,31,3),
+			(8,'(cast(FORMAT_DATE("%Y%m", CURRENT_DATE()) AS Integer)*100)',1,10,31,3),
+			(9,'(cast(FORMAT_DATE("%Y%m", CURRENT_DATE()) AS Integer)*100)',1,11,31,3);
 
 INSERT INTO public.graphs_yrow (id,"name",graph_id,type_calculate_id,value_id)
-	VALUES	(9,'card',9,2,7),
-			(10,'card',10,2,8),
-			(12,'card',12,2,9),
-			(13,'card',13,2,10),
-			(14,'card',14,2,11),
-			(16,'# Orden',16,NULL,3),
-			(17,'Channel',16,NULL,4),
-			(18,'Marketplace',16,NULL,6),
-			(19,'Status',16,NULL,5),
-			(20,'Quantity',16,NULL,8),
-			(21,'Discount',16,NULL,9),
-			(22,'Revenue',16,NULL,7),
-			(23,'Date',16,NULL,12),
-			(28,'ASIN',18,NULL,16),
-			(29,'SellerSku',18,NULL,17),
-			(30,'Name',18,NULL,18),
-			(31,'Marketplace',18,NULL,15),
-			(32,'Price',18,NULL,20),
-			(33,'Stock',18,NULL,19),
-			(34,'card',19,2,27),
-			(35,'card',20,2,28),
-			(36,'card',21,2,29),
-			(37,'card',23,2,30),
-			(38,'Marketplace',24,NULL,23),
-			(39,'ASIN',24,NULL,24),
-			(40,'Name',24,NULL,26),
-			(41,'Impresiones',24,NULL,27),
-			(42,'Clicks',24,NULL,28),
-			(43,'Costo',24,NULL,29),
-			(44,'Ventas Atribuidas',24,NULL,30),
-			(45,'Fecha',24,NULL,31);
+	VALUES	(1,'card',1,2,7),
+			(2,'card',2,2,8),
+			(3,'card',3,2,9),
+			(4,'card',4,2,10),
+			(5,'card',5,2,11),
+			(6,'Plataforma',6,NULL,2),
+			(7,'Marketplace',6,NULL,6),
+			(8,'# Orden',6,NULL,3),
+			(9,'Canal',6,NULL,4),
+			(10,'Estado',6,NULL,5),
+			(11,'Cantidad',6,NULL,8),
+			(12,'Descuento',6,NULL,9),
+			(13,'Envio',6,NULL,11),
+			(14,'Total',6,NULL,7),
+			(15,'Fecha',6,NULL,12),
+			(16,'Plataforma',7,NULL,14),
+			(17,'Marketplace',7,NULL,15),
+			(18,'ASIN',7,NULL,16),
+			(19,'SellerSku',7,NULL,17),
+			(20,'Nombre',7,NULL,18),
+			(21,'Precio',7,NULL,20),
+			(22,'Cantidad',7,NULL,19),
+			(23,'card',8,2,27),
+			(24,'card',9,2,28),
+			(25,'card',10,2,29),
+			(26,'card',11,2,30),
+			(27,'Marketplace',12,NULL,23),
+			(28,'ASIN',12,NULL,24),
+			(29,'SellerSku',12,NULL,25),
+			(30,'Nombre',12,NULL,26),
+			(31,'Impresiones',12,NULL,27),
+			(32,'Clicks',12,NULL,28),
+			(33,'Costo',12,NULL,29),
+			(34,'Ventas Atribuidas',12,NULL,30);
