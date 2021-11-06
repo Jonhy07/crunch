@@ -46,14 +46,12 @@ INSERT INTO public.graphs_type_icon(
 			(6, 'Conteo', 'mdi mdi-alpha-c', 'info '),
 			(7, 'Sumatoria', 'mdi mdi-plus', 'info ');
 
-
 --Insert tipo de tiempo de agrupacion
 INSERT INTO public.graphs_type_time_agrupation(
 	id, name)
 	VALUES 	(1, 'Por Mes'),
 			(2, 'Por Año'),
 			(3, 'Total'	 );
-
 			
 --Insert tipo de usuarios
 INSERT INTO public.graphs_type_graph(
@@ -70,8 +68,7 @@ INSERT INTO public.graphs_type_graph(
 INSERT INTO public.graphs_type_agrupation(
 	id, name, card)
 	VALUES  (1, 'Leyenda', 'Filas Distintas'),
-			(2, 'Columna', 'Todas las Filas' );
-
+			(2, 'Columna', 
 
 --Insert tipo de Calculo
 INSERT INTO public.graphs_type_calculate(
@@ -152,3 +149,79 @@ INSERT INTO public.endpoint_detail(
 			(29,'DfCost',				'Costo',				3, 2),
 			(30,'DfAttributedSales',	'Ventas por Publicidad',3, 2),
 			(31,'DnFechaCarga',			'Fecha',				3, 4);
+
+INSERT INTO public.charts_dashboard (id,"name",description,user_id,rol_id)
+	VALUES (1,'Radiografía','',2,0);
+
+INSERT INTO public.endpoint_access_rol_endpoint (id,description,endpoint_id,rol_id)
+	VALUES	(1,'Conexion Ventas',1,0),
+			(2,'Conexion Publicidad',2,0),
+			(3,'Conexion Inventario',2,0);
+
+INSERT INTO public.charts_user_dashboard (id,edit,"delete",dashboard_id,user_id)
+	VALUES (1,1,1,1,13);
+
+INSERT INTO public.charts_row (id,available,column_id,dashboard_id,high_id)
+	VALUES	(5,1,4,1,5),
+			(6,3,4,1,1),
+			(9,0,4,1,1),
+			(10,2,4,1,5),
+			(11,0,4,1,1);
+
+INSERT INTO public.graphs_graph (id,title,"column",finish,send,endpoint_id,row_id,type_agrupation_id,type_graph_id,xrow_id,type_icon_id,type_time_agrupation_id) 
+	VALUES	(9,'Total Revenue',1,true,'{"type": "2", "columns": [{"field": "DfSubTotal", "calculate": "sum"}], "dataset": "AuxDimVentasResumen"}',1,5,2,6,NULL,1,NULL),
+			(10,'Quantity',1,true,'{"type": "2", "columns": [{"field": "DnQuantityShipped", "calculate": "sum"}], "dataset": "AuxDimVentasResumen"}',1,5,2,6,NULL,1,NULL),
+			(12,'Discount',1,true,'{"type": "2", "columns": [{"field": "DfPromotionDiscount", "calculate": "sum"}], "dataset": "AuxDimVentasResumen"}',1,5,2,6,NULL,1,NULL),
+			(13,'Tax',1,true,'{"type": "2", "columns": [{"field": "DfTax", "calculate": "sum"}], "dataset": "AuxDimVentasResumen"}',1,5,2,6,NULL,1,NULL),
+			(14,'Shipping',1,true,'{"type": "2", "columns": [{"field": "DfShipping", "calculate": "sum"}], "dataset": "AuxDimVentasResumen"}',1,5,2,6,NULL,1,NULL),
+			(19,'Impresiones',1,true,'{"type": "2", "columns": [{"field": "DnImpressions", "calculate": "sum"}], "dataset": "AuxDimInventarioAds"}',3,10,2,6,NULL,1,NULL),
+			(16,'Ordenes',3,true,'{"type": "2", "columns": [{"field": "DxOrderId"}, {"field": "DxFulfillmentChannel"}, {"field": "DxMarketplaceName"}, {"field": "DxOrderStatus"}, {"field": "DnQuantityShipped"}, {"field": "DfPromotionDiscount"}, {"field": "DfSubTotal"}, {"field": "DnFechaVenta"}], "dataset": "AuxDimVentasResumen"}',1,6,2,5,NULL,NULL,NULL),
+			(20,'Clicks',1,true,'{"type": "2", "columns": [{"field": "DnClicks", "calculate": "sum"}], "dataset": "AuxDimInventarioAds"}',3,10,2,6,NULL,1,NULL),
+			(18,'Inventario',6,true,'{"type": "2", "columns": [{"field": "DxAsin"}, {"field": "DxSellerSku"}, {"field": "DxProductName"}, {"field": "DxMarketplace"}, {"field": "DfPriceAmount"}, {"field": "DnTotalQuantity"}], "dataset": "AuxDimInventario"}',2,9,2,5,NULL,NULL,NULL),
+			(21,'Costo',1,true,'{"type": "2", "columns": [{"field": "DfCost", "calculate": "sum"}], "dataset": "AuxDimInventarioAds"}',3,10,2,6,NULL,1,NULL),
+			(23,'Ventas por Publicidad',1,true,'{"type": "2", "columns": [{"field": "DfAttributedSales", "calculate": "sum"}], "dataset": "AuxDimInventarioAds"}',3,10,2,6,NULL,1,NULL),
+			(24,'PPC',6,true,'{"type": "2", "columns": [{"field": "DxMarketplace"}, {"field": "DxAsin"}, {"field": "DxProductName"}, {"field": "DnImpressions"}, {"field": "DnClicks"}, {"field": "DfCost"}, {"field": "DfAttributedSales"}, {"field": "DnFechaCarga"}], "dataset": "AuxDimInventarioAds"}',3,11,2,5,NULL,NULL,NULL);
+
+INSERT INTO public.graphs_graph_filter (id,comparate_value,filter_id,graph_id,value_id,type_comparation_id)
+	VALUES	(5,NULL,3,9,12,1),
+			(6,NULL,3,10,12,1),
+			(8,NULL,3,12,12,1),
+			(9,NULL,3,13,12,1),
+			(10,NULL,3,14,12,1),
+			(11,NULL,3,19,31,1),
+			(12,NULL,3,20,31,1),
+			(13,NULL,3,21,31,1),
+			(14,NULL,3,23,31,1);
+
+INSERT INTO public.graphs_yrow (id,"name",graph_id,type_calculate_id,value_id)
+	VALUES	(9,'card',9,2,7),
+			(10,'card',10,2,8),
+			(12,'card',12,2,9),
+			(13,'card',13,2,10),
+			(14,'card',14,2,11),
+			(16,'# Orden',16,NULL,3),
+			(17,'Channel',16,NULL,4),
+			(18,'Marketplace',16,NULL,6),
+			(19,'Status',16,NULL,5),
+			(20,'Quantity',16,NULL,8),
+			(21,'Discount',16,NULL,9),
+			(22,'Revenue',16,NULL,7),
+			(23,'Date',16,NULL,12),
+			(28,'ASIN',18,NULL,16),
+			(29,'SellerSku',18,NULL,17),
+			(30,'Name',18,NULL,18),
+			(31,'Marketplace',18,NULL,15),
+			(32,'Price',18,NULL,20),
+			(33,'Stock',18,NULL,19),
+			(34,'card',19,2,27),
+			(35,'card',20,2,28),
+			(36,'card',21,2,29),
+			(37,'card',23,2,30),
+			(38,'Marketplace',24,NULL,23),
+			(39,'ASIN',24,NULL,24),
+			(40,'Name',24,NULL,26),
+			(41,'Impresiones',24,NULL,27),
+			(42,'Clicks',24,NULL,28),
+			(43,'Costo',24,NULL,29),
+			(44,'Ventas Atribuidas',24,NULL,30),
+			(45,'Fecha',24,NULL,31);
