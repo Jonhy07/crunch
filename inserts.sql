@@ -66,7 +66,6 @@ INSERT INTO public.graphs_type_graph(
 			(5, 'Tabla', 'fas fa-table'),
 			(6, 'Card', 'fas fa-dice-one');
 
-
 --Insert tipo Agrupacion
 INSERT INTO public.graphs_type_agrupation(
 	id, name, card)
@@ -80,16 +79,6 @@ INSERT INTO public.graphs_type_calculate(
 	VALUES  (1, 'Conteo', 'count'),
 			(2, 'Suma', 'sum' ),
 			(3, 'Promedio', 'avg' );
-
---Insert tipo detalle
-INSERT INTO public.endpoint_type_detail(
-	id, type)
-	VALUES  (1, 'Integer'),
-			(2, 'Double' ),
-			(3, 'String' ),
-			(4, 'Date'   );
-
-
 --Tipo de Filtro
 INSERT INTO public.filter_type_filter(
 	id, name)
@@ -111,40 +100,55 @@ INSERT INTO public.filter_type_comparation(
 --Filtros
 INSERT INTO public.filter_filter(
 	id, name, detail, type_detail_id, type_filter_id)
-	VALUES 	(1, 'Mes Actual', 'cast(date_trunc(''month'', current_date) as date)', 4, 2),
-			(2, 'Año Actual', 'cast(date_trunc(''year'', current_date) as date)', 4, 2),
+	VALUES 	(1, 'Mes Actual', '(cast(FORMAT_DATE("%Y%m", CURRENT_DATE()) AS Integer)*100)', 4, 2),
+			(2, 'Año Actual', '(cast(FORMAT_DATE("%Y", CURRENT_DATE()) AS Integer)*10000)', 4, 2),
 			(3, 'Fecha Dinamica', NULL, 4, 1);
 
-
---Datos de Prueba
-
+--Insert tipo detalle
+INSERT INTO public.endpoint_type_detail(
+	id, type)
+	VALUES  (1, 'Integer'),
+			(2, 'Double' ),
+			(3, 'String' ),
+			(4, 'Date'   );
 --Endpoints
 INSERT INTO public.endpoint_endpoint(
 	id, name_db, name_bc)
-	VALUES (1, 'daily', 'App DMI');
+	VALUES (1, 'AuxDimVentasResumen', 'Ventas'),
+			(2, 'AuxDimInventario', 'Inventario'),
+	 		(3, 'AuxDimInventarioAds', 'Publicidad');
 
 --Endpoint Detail
 INSERT INTO public.endpoint_detail(
 	id, name_db, name_bc, endpoint_id, type_detail_id)
-	VALUES  (1, 'red.keyword', 'Red', 1, 3),
-			(2, 'metrics.clicks',  'Clicks',   1, 1),
-			(3, 'metrics.impressions',  'Visitas',   1, 1),
-			(4, 'date_start', 'Fecha',  1, 4);
-
-
---Datos de prueba quenty
---Endpoints
-INSERT INTO public.endpoint_endpoint(
-	id, name_db, name_bc)
-	VALUES (2, 'pickups', 'App Qunety');
-
---Endpoint Detail
-INSERT INTO public.endpoint_detail(
-	id, name_db, name_bc, endpoint_id, type_detail_id)
-	VALUES  (5, 'id', 'Identificador', 								2, 1),
-			(6, 'request_contractor_person_name',  'Presona',   	2, 3),
-			(7, 'place_company_name',  'Compañia',   				2, 3),
-			(8, 'place_package_location', 'Locacion del paquete',	2, 3),
-			(9, 'pickup_physical_weight', 'Peso del paquete',  		2, 2),
-			(10, 'created_at', 'Fecha Creación',  					2, 4);
-
+	VALUES  (1,'DxStoreName',			'Client',				1, 3),
+			(2,'DxIdDataFrame',			'Plataform',			1, 3),
+			(3,'DxOrderId',				'Order ID',				1, 3),
+			(4,'DxFulfillmentChannel',	'Fulfillment Channel',	1, 3),
+			(5,'DxOrderStatus',			'Order Status',			1, 3),
+			(6,'DxMarketplaceName',		'Marketplace',			1, 3),
+			(7,'DfSubTotal',			'Revenue',				1, 2),
+			(8,'DnQuantityShipped',		'Quantity',				1, 1),
+			(9,'DfPromotionDiscount',	'Discount',				1, 2),
+			(10,'DfTax',				'Tax',					1, 2),
+			(11,'DfShipping',			'Shipping',				1, 2),
+			(12,'DnFechaVenta',			'Date',					1, 4),
+			(13,'DxStoreName',			'Client',				2, 3),
+			(14,'DxIdDataFrame',		'Plataform',			2, 3),
+			(15,'DxMarketplace',		'Marketplace',			2, 3),
+			(16,'DxAsin',				'ASIN',					2, 3),
+			(17,'DxSellerSku',			'SellerSku',			2, 3),
+			(18,'DxProductName',		'Name',					2, 3),
+			(19,'DnTotalQuantity',		'Stock',				2, 1),
+			(20,'DfPriceAmount',		'Price',				2, 2),
+			(21,'DnFechaCarga',			'Date',					2, 4),
+			(22,'DxStoreName',			'Client',				3, 3),
+			(23,'DxMarketplace',		'Marketplace',			3, 3),
+			(24,'DxAsin',				'ASIN',					3, 3),
+			(25,'DxSellerSku',			'SellerSku',			3, 3),
+			(26,'DxProductName',		'Name',					3, 3),
+			(27,'DnImpressions',		'Impresiones',			3, 1),
+			(28,'DnClicks',				'Clicks',				3, 1),
+			(29,'DfCost',				'Costo',				3, 2),
+			(30,'DfAttributedSales',	'Ventas por Publicidad',3, 2),
+			(31,'DnFechaCarga',			'Fecha',				3, 4);

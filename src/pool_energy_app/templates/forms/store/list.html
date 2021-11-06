@@ -52,9 +52,11 @@ display: none;
 									<td>{{object.blueprint}}</td>
 									<td>{{object.status}}</td>
 									<td>
-										<a href="/oauth{{ object.get_buttons_url}}" data-toggle="tooltip" data-placement="top" title="Conexión OAuth" class="btn btn-xs btn-info"><i class="mdi mdi-amazon mdi-18px"></i></a>
+										<a href="/forms{{ object.get_buttons_url}}" data-toggle="tooltip" data-placement="top" title="Conexión OAuth" class="btn btn-xs btn-info"><i class="mdi mdi-amazon mdi-18px"></i></a>
+										{% if  user.rol.get_rol == 'Admin' %}
 										<a href="/forms{{ object.get_download_url }}" data-toggle="tooltip" data-placement="top" title="Descargar" class="btn btn-xs btn-primary"><i class="mdi mdi-arrow-down-thick mdi-18px"></i></a>
 										<a href="/forms{{ object.get_update_url }}" data-toggle="tooltip" data-placement="top" title="Editar" class="btn btn-xs btn-warning"><i class="mdi mdi-pencil mdi-18px"></i></a>
+										{% endif %}
 									</td>
 								</tr>
 								{% endfor %}

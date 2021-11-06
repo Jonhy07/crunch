@@ -12,31 +12,27 @@
 	<div class="container">
 		<div class="row justify-content-center">
 			<div class="col-md-8 col-lg-6 col-xl-4">
+
+				<div class="col text-center mb-4"> 
+					<a href="/" class="mx-auto center">
+						<img src="https://crunchdna.com/wp-content/uploads/2021/09/logo.svg" alt="" height="70">
+					</a>
+				</div>
+
+
 				<div class="card">
 					<div class="card-body p-4">
 						<div class="text-center w-75 m-auto">
-							<div class="auth-logo">
-								<a href="" class="logo logo-dark text-center">
-									<span class="logo-lg">
-										<img src="{% static 'images/Logo_The_Crunch.png' %}" alt="" height="50">
-									</span>
-								</a>
-								<a href="" class="logo logo-light text-center">
-									<span class="logo-lg">
-										<img src="{% static 'images/Logo_The_Crunch.png' %}" alt="" height="50">
-									</span>
-								</a>
-							</div>
-							<br><br>
-							<h3 class="text-white text-center mt-0 font-weight-bold">{% trans "Sign Out" %}</h3>
-							<p class="text-white mb-4">{% trans 'Are you sure you want to sign out?' %}</p>
+							
+							<h3 class="text-white text-center mt-0 font-weight-bold">{% trans "Cerrar Sesión" %}</h3>
+							<p class="text-white mb-4">{% trans '¿Estás seguro de que quieres cerrar sesión?' %}</p>
 						</div>
 						<form method="post" action="{% url 'account_logout' %}" class="text-center">
 							{% csrf_token %}
 							{% if redirect_field_value %}
 							<input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
 							{% endif %}
-							<button class="btn btn-danger" type="submit">{% trans 'Sign Out' %}</button>
+							<button class="btn btn-danger" type="submit">{% trans 'Cerrar Sesión' %}</button>
 						</form>
 					</div>
 				</div>

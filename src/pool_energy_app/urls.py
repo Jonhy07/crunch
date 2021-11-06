@@ -47,7 +47,7 @@ from pool_energy_app.config.views import users, usereditindex, update_user, list
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
-    path('', graphics, name='home'),
+    path('', list_store, name='home'),
 
 	#############################################
 	################### FORMS ###################

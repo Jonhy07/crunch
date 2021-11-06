@@ -6,10 +6,11 @@
 
 		@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
-		* {
+		*{
 			font-family: Poppins;
 			color: #FFD4CD;
 		}
+
 		body.authentication-wall
 		{
 			background-image: url("https://crunchdna.com/wp-content/uploads/2021/11/noise-35.png"), url("https://crunchdna.com/wp-content/uploads/2021/09/bg-nograin.jpg");
@@ -17,6 +18,7 @@
 			background-size: auto, cover;
 			background-color:  #100C7B;
 		}
+
 		.card {
 			background-color: transparent;
 			background-image: linear-gradient(160deg,#FFFFFF45 0%,#FFFFFF00 160%);
@@ -35,7 +37,6 @@
 			border-radius: 4px;
 			color: #ffd4cd;
 		}
-
 
 		.form-control:focus {
 			color: #ffd4cd;
@@ -70,7 +71,6 @@
 			font-size: 26.7245px;
 			line-height: 32px;
 			color: #FF6060;
-
 		}
 
 		.modal-content {
@@ -80,37 +80,29 @@
 			background-color:  #100C7B;
 			border-radius: 8px;
 		}
-		
+
+		.alert-danger {
+			color: #f6cdc9!important;
+			background-color: #716393;
+			border-color: #8a80a5;
+		}
 
 	</style>
 {% endblock %}
-{% block body_extra %}
-	class="authentication-wall"
-{% endblock %}
-	{% block page_content %}
+	{% block body_extra %}
+		class="authentication-wall"
+		{% endblock %}
+			{% block page_content %}
 
-		{% block body %}
-		<header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-
-			<a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
-				<img src="https://crunchdna.com/wp-content/uploads/2021/09/logo.svg" alt="" height="50">
-			</a>
-
-		</header>
-	<!--{% if messages %}
-		<div>
-				<strong>Messages:</strong>
-			<ul>
-				{% for message in messages %}
-			<li>{{message}}</li>
-				{% endfor %}
-			</ul>
-		</div>
-	{% endif %}-->
-
-		{% block content %}
-	{% endblock %}
-	{% endblock %}
+				{% block body %}
+				<header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+					<a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
+						<img src="https://crunchdna.com/wp-content/uploads/2021/09/logo.svg" alt="" height="50">
+					</a>
+				</header>
+				{% block content %}
+			{% endblock %}
+		{% endblock %}
 	{% block extra_body %}
 {% endblock %}
 	<footer class="footer footer-alt text-white-50">
