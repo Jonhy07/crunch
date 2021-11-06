@@ -1,10 +1,3 @@
-ALTER TABLE users_user ADD COLUMN rol_id INT;
-
-UPDATE forms_network SET logo='amazon.png' WHERE id=1;
-UPDATE forms_network SET logo='amazon-adve.png' WHERE id=2;
-UPDATE forms_network SET logo='shopify.png' WHERE id=3;
-UPDATE forms_network SET logo='mercado-libre.png' WHERE id=4;
-
 --Rol Default
 INSERT INTO public.users_rol(id, rol, duration, "create")
 	VALUES	(-1, 'Expirado', 0, 0),

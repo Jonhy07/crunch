@@ -36,7 +36,7 @@ SECRET_KEY = env.str('SECRET_KEY')
 DEBUG = env.bool('DEBUG', default=False)
 
 # ALLOWED_HOSTS = tuple (env.list('ALLOWED_HOSTS', default=[]))
-ALLOWED_HOSTS = ['127.0.0.1','localhost','159.203.66.106','amazon.biganalytics.com.gt','www.amazon.biganalytics.com.gt']
+ALLOWED_HOSTS = ['127.0.0.1','localhost','159.203.66.106','app.crunchdna.com','www.app.crunchdna.com']
 
 
 # Application definition
