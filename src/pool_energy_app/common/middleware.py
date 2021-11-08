@@ -51,23 +51,26 @@ class UsersPermissions():
             if str(request.path).startswith('/forms/marketplace/'):
                 return None
 
-            stores = UserStore.objects.filter(user=nId).values_list('store',flat=True)
-            nTiendas = Store.objects.filter(pk__in=[stores]).count()
-            if nTiendas == 0:
-                return redirect("/forms/newClient/")
-            else:
-                lastStore = UserStore.objects.filter(user=nId).order_by('-id').values_list('store',flat=True)[0]
-                if nConnectors == 0:
-                   return redirect("/forms/token/{}/buttons/".format(lastStore))
+            if (request.user.rol_id != 4):
+                stores = UserStore.objects.filter(user=nId).values_list('store',flat=True)
+                nTiendas = Store.objects.filter(pk__in=[stores]).count()
+                if nTiendas == 0:
+                    return redirect("/forms/newClient/")
                 else:
-                    lastConnector = Connector.objects.filter(user=nId,social_application_id__in=[1]).order_by('-id').values_list('id',flat=True)
-                    if (lastConnector.count()>0):
-                        nMarketplace = MarketplaceConnector.objects.filter(connector_id=list(lastConnector)[0]).count()
-                        if nMarketplace == 0:
-                            return redirect("/forms/marketplace/{}/".format(list(lastConnector)[0]))
-                        else:
-                            print('redirigiendo')
-                            return None
+                    lastStore = UserStore.objects.filter(user=nId).order_by('-id').values_list('store',flat=True)[0]
+                    if nConnectors == 0:
+                        return redirect("/forms/token/{}/buttons/".format(lastStore))
+                    else:
+                        lastConnector = Connector.objects.filter(user=nId,social_application_id__in=[1]).order_by('-id').values_list('id',flat=True)
+                        if (lastConnector.count()>0):
+                            nMarketplace = MarketplaceConnector.objects.filter(connector_id=list(lastConnector)[0]).count()
+                            if nMarketplace == 0:
+                                return redirect("/forms/marketplace/{}/".format(list(lastConnector)[0]))
+                            else:
+                                print('redirigiendo')
+                                return None
+            else:
+                return None
 
             if not(request.user.is_superuser):
                 #No tiene rol le asigna uno
