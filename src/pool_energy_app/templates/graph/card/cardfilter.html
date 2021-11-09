@@ -160,7 +160,7 @@
 
                 $.ajax({
                     type: 'GET',
-                    url:`https://app.crunchdna.com/dashboard/row/graph/filter/campo/${id_graph}/${id_filtro}`,
+                    url:`http://159.203.66.106/dashboard/row/graph/filter/campo/${id_graph}/${id_filtro}`,
                     success: function(response){
                         $('#id_value').empty();
                         $('#id_value').append(response.data);
