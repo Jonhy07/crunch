@@ -28,6 +28,14 @@ class NetworkModelForm(forms.ModelForm):
 		model = Network 
 		fields = ['name', 'logo', 'color', 'group_name']
 
+class ClientSendMail(forms.ModelForm):
+	class Meta:
+		model = Client
+		fields = ['email']
+		widgets = {
+			'email': forms.TextInput(attrs={'class': 'form-group col-md-6','type':'email'}),
+		}
+
 class SocialApplicationModelForm(forms.ModelForm):
 	network = ModelChoiceField(queryset=Network.objects.all(),  empty_label='Please select a Network')
 	class Meta:

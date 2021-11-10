@@ -10,6 +10,12 @@ from django.core import paginator
 from pool_energy_app.forms import filters
 from django.http import HttpResponse
 from django.template import RequestContext
+from django.template.loader import get_template
+
+from django.core.mail import EmailMultiAlternatives
+from django.conf import settings
+
+
 from django.shortcuts import render, redirect, get_object_or_404
 
 from django.db.models import FilteredRelation, Q
@@ -19,6 +25,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponseRedirect
 
 from .models import Item, Marketplace
+from .models import User
 from .models import Store
 from .models import Action
 from .models import Client
@@ -36,6 +43,7 @@ from .form import StoreModelForm
 from .form import ActionModelForm
 from .form import ClientModelForm
 from .form import ClientNew
+from .form import ClientSendMail
 from .form import NetworkModelForm
 from .form import ConnectorModelForm
 from .form import UserStoreModelForm
@@ -85,6 +93,26 @@ def delete_network(request, id):
 	return redirect('/forms/network/list')
 
 #---------------------------------------------------------------------SocialApplication---------------------------------------------------------------------#
+def send_mail(mail,request):
+	usuario = get_object_or_404(User, id=request.user.id)
+	context = {'mail':mail,'username':'jefe','current_site':{'name':'nombre'},'user':usuario}
+	template=get_template('account/email/invitation.html')
+	content = template.render(context)
+	email = EmailMultiAlternatives('','',settings.EMAIL_HOST_USER,[mail])
+	email.attach_alternative(content,'text/html')
+	print('enviando....')
+	email.send()
+
+def send_invitation(request):
+	form = ClientSendMail(request.POST or None, request.FILES or None)
+	if form.is_valid():
+		send_mail(form.cleaned_data['email'],request)
+		return HttpResponseRedirect("/forms/list_store")
+	context = {
+		'form' : form
+		,'Text':'Invitar'
+	}
+	return render(request, "forms/application/add.html", context)
 
 def list_social_application(request):
 	forms = SocialApplication.objects.all()

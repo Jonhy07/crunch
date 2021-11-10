@@ -24,7 +24,7 @@ from pool_energy_app.forms.views import create_network, list_network, update_net
 from pool_energy_app.forms.views import create_connector, list_connector, update_connector, delete_connector
 from pool_energy_app.forms.views import create_social_application, list_social_application, update_social_application, delete_social_application
 
-from pool_energy_app.forms.views import list_client, create_client, update_client, delete_client,newClient
+from pool_energy_app.forms.views import list_client, create_client, update_client, delete_client,newClient,send_invitation
 from pool_energy_app.forms.views import list_store, create_store, update_store, delete_store,download_items
 from pool_energy_app.forms.views import list_item, create_item, update_item, delete_item
 from pool_energy_app.forms.views import list_liniostore, create_liniostore, update_liniostore, delete_liniostore
@@ -64,6 +64,7 @@ urlpatterns = [
 	url(r'forms/socialapplication/(?P<id>\d+)/change/', update_social_application, name='update_social_application'),
 	url(r'forms/socialapplication/(?P<id>\d+)/delete/', delete_social_application, name='delete_social_application'),
 
+	url(r'forms/invitation/', send_invitation, name='send_invitation'),
 	########################
 	########################
 
