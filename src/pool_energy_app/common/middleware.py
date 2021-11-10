@@ -72,6 +72,37 @@ class UsersPermissions():
             else:
                 return None
 
+            # perm_tuple = request.user.get_group_permissions()
+            # if len(perm_tuple) == 0:
+            #     return redirect('/403')
+            # sep_path=request.path.split('/')
+            # if sep_path[3] == 'list':
+            #     path = sep_path[1]+'.view_'+sep_path[2]
+            # elif sep_path[3].isnumeric():
+            #     msg = 'number'
+            #     path = sep_path[1]+'.'+sep_path[4]+'_'+sep_path[2]						
+            # else:
+            #     path = sep_path[1]+'.'+sep_path[3]+'_'+sep_path[2]
+
+            # if str(path) in perm_tuple:
+            #     return None
+            # elif str(path) =='oauth.buttons_token' and (request.user.groups.filter(name='StoreOwner').exists() or request.user.groups.filter(name='Administrator').exists()):
+            #     return None
+            # elif (str(path) =='oauth.resp_token') and (request.user.groups.filter(name='StoreOwner').exists() or request.user.groups.filter(name='Administrator').exists()):
+            #     return None
+            # elif (str(path) =='oauth.view_marketplace' or str(path)== 'oauth.view_token') and (request.user.groups.filter(name='StoreOwner').exists() or request.user.groups.filter(name='Administrator').exists()):
+            #     return None
+            # elif (str(path)=='forms.cargarStore_homologation' or str(path)=='forms.cargar2_homologation'):
+            #     return None
+            # elif (str(path)=='forms.cargarStore_itemaction'):
+            #     return None
+            # elif (str(path)=='forms.download_store'):
+            #     return None
+            # else:
+            #     print(str(path))
+            #     print('no tiene permisos para ver esto... ')
+            #     return redirect('/403/')
+
             if not(request.user.is_superuser):
                 #No tiene rol le asigna uno
                 if (request.user.rol.id==0):
@@ -93,6 +124,7 @@ class UsersPermissions():
                         #impide el acceso a expired a los que no han expirado
                         if str(request.path).startswith('/expired'):
                             return redirect('/')
-                        if str(request.path).startswith('/config'):
+                        elif str(request.path).startswith('/config'):
                             return redirect('/')
-        #Comprueba si es admin
+                        elif str(request.path) == '/403/':
+                            return None
