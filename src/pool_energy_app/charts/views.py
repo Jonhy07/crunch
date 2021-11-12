@@ -159,22 +159,20 @@ def deleteRow(request, id):
 
 #Cargar la info principal para el dashboard dinamico
 def print_dashboard(id_dashboard, request, min, max, edit, delete,tienda):
-    if tienda=='':
-        stores = UserStore.objects.filter(user=request.user.id).values_list('store',flat=True)
-        nTiendas = Store.objects.filter(pk__in=[stores]).values_list('name',flat=True)
-        print('..........')
-    else:
-        print(tienda)
-        nTiendas = Store.objects.filter(pk__in=tienda).values_list('name',flat=True)
+    print(len(tienda))
+    tiendas=tienda
+    if len(tienda)>1:
+        tienda = tienda[0]
+    print('............')
     dashboard=Dashboard.objects.filter(id=id_dashboard).first()
     json_name = json.dumps(dashboard.names())
     #Aqui
-    json_option = json.dumps(dashboard.options(min, max,nTiendas[0]))
+    json_option = json.dumps(dashboard.options(min, max,tienda))
     #Aqui
     json_table = json.dumps([])
     json_size = json.dumps(dashboard.sizes())
-    template_dashboard=dashboard.to_html(min, max,nTiendas[0])
-    script_tables=dashboard.to_html2(min, max,nTiendas[0])
+    template_dashboard=dashboard.to_html(min, max,tienda)
+    script_tables=dashboard.to_html2(min, max,tienda)
 
     form = RowForm(request.POST or None, request.FILES or None)
     context = {
@@ -189,6 +187,7 @@ def print_dashboard(id_dashboard, request, min, max, edit, delete,tienda):
         'sizes' :json_size,
         'edit' :edit,
         'delete' :delete,
+        'stores':tiendas
     }
     return context
 
@@ -197,13 +196,22 @@ def print_dashboard(id_dashboard, request, min, max, edit, delete,tienda):
 #Se genera la vista para el dashboard dinamico
 def dashboard(request):
     id_dashboard=int(request.GET["id_dashboard"])
+    nTiendas =request.GET.get("tienda","")
+    if nTiendas == "":
+        stores = UserStore.objects.filter(user=request.user.id).values_list('store',flat=True)
+        nTiendas = list(Store.objects.filter(pk__in=[stores]).values_list('name',flat=True))
+    print('****************')
+    print('****************')
+    print(nTiendas)
+    print('****************')
+    print('****************')
     min=None
     max=None
     edit=0
     delete=0
     date1 = int(request.GET.get ('min', "0"))
     date2 = int(request.GET.get ('max', "0"))
-    tienda = request.GET.get('tienda','')
+    tienda = nTiendas#request.GET.get('tienda','')
     if date1>0:
         min=str(date1)
         min=min[0:4]+'-'+min[4:6]+'-'+min[6:8]

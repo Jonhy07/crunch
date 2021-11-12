@@ -18,9 +18,17 @@
                       
     <!-- start page title -->
     <div class="row" style="padding-top: 3em;">
-        <div class="col-9">
+        <div class="col-7">
             <h2 style="margin: 0%; padding-bottom: 0.2em;">{{dashboard.name}}</h2>
             <p>{{dashboard.description}}</p>
+        </div>
+        <div class="col-2">
+            <select class="form-select" id="store_select" aria-label="Default select example">
+                <option selected>Tiendas</option>
+                {% for s in stores %}
+                <option value="{{s}}">{{s}}</option>
+                {% endfor %}
+            </select>
         </div>
         <div class="col-2">
             <!--div class="row">
@@ -98,17 +106,11 @@
             </div> 
         </div>
     </div>
-   
-
-    
-    <!-- end page title --> 
-    
+    <!-- end page title -->
     <!--Body-->
     <div class="row">
         <div class="col-12">
             <div id="content">
-            
-               
             </div>         
         </div>
     </div> 
@@ -160,22 +162,33 @@
                         searchParams.set("min", min);
                         window.location.search = searchParams.toString();   
                     }
-
                 }
             }).change();
         });
-        /*$(function() {
-            $("#example-date").on('change', function() {
-                var date = $(this).val();
-                if(date){
-                    date=date.replace("-","")
-                    date=date.replace("-","")
-                    var searchParams = new URLSearchParams(window.location.search);
-                    searchParams.set("date", date);
-                    window.location.search = searchParams.toString();
+        $(function() {
+            $("#store_select").on('change', function() {
+                var tiendaSelect = document.getElementById("store_select");
+                var tienda = tiendaSelect.value;
+                var max=0;
+                var min=0;
+                var store='';
+                var searchParams = new URLSearchParams(window.location.search);
+                if(tienda){
+                    console.log('primer if')
+                    if (tienda.length > 8)
+                    {
+                        console.log('segundo if')
+                        console.log('.................')
+                        console.log(tienda)
+                        console.log('.................')
+                        searchParams.set("max", max);
+                        searchParams.set("min", min);
+                        searchParams.set("tienda", tienda);
+                        window.location.search = searchParams.toString();   
+                    }
                 }
             }).change();
-        });*/
+        });
 
         /*document.querySelector('#example-date').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
@@ -231,8 +244,4 @@
 <!-- Enviar Tablas-->
 
 {{script_tables | safe}}
-    
-
-
-
 {% endblock%}

@@ -21,7 +21,6 @@ def users(request):
 
 def usereditindex(request):
     id_user = int(request.GET.get ('user', "0"))
-    
     if id_user==0:
         return redirect('/')
     usuario=User.objects.filter(id=id_user).first()
@@ -45,9 +44,7 @@ def update_user(request):
     messages.success(request, "usuario Modificado Correctamente.")
     return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
-
 def list_dashboards(request):
-    
     dashboards=Dashboard.objects.all()
     roles=Rol.objects.filter(id__gt=0).filter(id__lt=4)
     context = {
