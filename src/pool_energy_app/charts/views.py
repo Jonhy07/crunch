@@ -158,9 +158,14 @@ def deleteRow(request, id):
 
 
 #Cargar la info principal para el dashboard dinamico
-def print_dashboard(id_dashboard, request, min, max, edit, delete):
-    stores = UserStore.objects.filter(user=request.user.id).values_list('store',flat=True)
-    nTiendas = Store.objects.filter(pk__in=[stores]).values_list('name',flat=True)
+def print_dashboard(id_dashboard, request, min, max, edit, delete,tienda):
+    if tienda=='':
+        stores = UserStore.objects.filter(user=request.user.id).values_list('store',flat=True)
+        nTiendas = Store.objects.filter(pk__in=[stores]).values_list('name',flat=True)
+        print('..........')
+    else:
+        print(tienda)
+        nTiendas = Store.objects.filter(pk__in=tienda).values_list('name',flat=True)
     dashboard=Dashboard.objects.filter(id=id_dashboard).first()
     json_name = json.dumps(dashboard.names())
     #Aqui
@@ -196,6 +201,7 @@ def dashboard(request):
     delete=0
     date1 = int(request.GET.get ('min', "0"))
     date2 = int(request.GET.get ('max', "0"))
+    tienda = request.GET.get('tienda','')
     if date1>0:
         min=str(date1)
         min=min[0:4]+'-'+min[4:6]+'-'+min[6:8]
@@ -220,6 +226,5 @@ def dashboard(request):
                 messages.error(request, "No tiene acceso a este lienzo." )
                 return redirect ('/')
 
-
-    context=print_dashboard(id_dashboard, request, min, max, edit, delete)
+    context=print_dashboard(id_dashboard, request, min, max, edit, delete,tienda)
     return render(request, "dashboard/dashboard_dinamico.html", context)
