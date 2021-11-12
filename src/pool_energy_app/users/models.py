@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from datetime import datetime
+from django.contrib.auth.models import Group,Permission
+from django.contrib.contenttypes.models import ContentType
 
 class Rol(models.Model):
     id=models.AutoField(primary_key=True)
@@ -27,7 +29,17 @@ class User (AbstractUser):
         import pool_energy_app.charts.models
         dashboards=pool_energy_app.charts.models.Dashboard.objects.filter(rol__lte=self.rol)
         return dashboards
-
+    def get_permissions(self):
+        grupo = Group.objects.filter(id=self.rol_id).values_list('id',flat=True)
+        perm_tuple_all = Permission.objects.filter(group__id=grupo[0]).values_list('codename',flat=True)
+        perm_tuple_type_id = list(Permission.objects.filter(group__id=grupo[0]).values_list('content_type_id',flat=True))
+        perm_tuple=[]
+        j=0
+        for i in perm_tuple_type_id:
+            perm_tuple_type = list(ContentType.objects.filter(id=i).values_list('app_label',flat=True))
+            perm_tuple.append(perm_tuple_type[0]+ '.'+perm_tuple_all[j])
+            j+=1
+        return list(perm_tuple)
     def get_dashboars_count(self):
         import pool_energy_app.charts.models
         dashboards=pool_energy_app.charts.models.Dashboard.objects.filter(rol__lte=self.rol).exclude(Assigned_dashboard__user=self)

@@ -210,11 +210,6 @@ def dashboard(request):
     if getTienda != "":
         indice = nTiendas.index(getTienda)
         flag=True
-    print('****************')
-    print('****************')
-    print(nTiendas)
-    print('****************')
-    print('****************')
     min=None
     max=None
     edit=0

@@ -100,7 +100,6 @@ def send_mail(mail,request):
 	content = template.render(context)
 	email = EmailMultiAlternatives('','',settings.EMAIL_HOST_USER,[mail])
 	email.attach_alternative(content,'text/html')
-	print('enviando....')
 	email.send()
 
 def send_invitation(request):

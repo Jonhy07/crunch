@@ -24,8 +24,7 @@ def usereditindex(request):
     if id_user==0:
         return redirect('/')
     usuario=User.objects.filter(id=id_user).first()
-
-    roles=Rol.objects.filter(id__gt=0)
+    roles=Rol.objects.filter(id__gt=-1)
     context = {
         'usuario' :usuario,
         'roles': roles,
