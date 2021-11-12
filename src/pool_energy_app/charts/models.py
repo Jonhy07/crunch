@@ -21,6 +21,13 @@ class Dashboard(models.Model):
             html+=object.to_html(min, max,Tienda)
             html+="</div>"
         return "%s" % (html)
+
+    def to_html2(self, min=None, max=None,Tienda=None):
+        html=''
+        row=Row.objects.filter(dashboard=self).order_by('id')
+        for object in row:
+            html+=object.to_html2(min, max,Tienda)
+        return "%s" % (html)
     def names(self):
         row=Row.objects.filter(dashboard=self).order_by('id')
         name=[]
@@ -160,6 +167,16 @@ class Row(models.Model):
             html+="<i class=\"bi bi-trash\" style=\"padding-right: 10%;\"></i>"
             html+="Fila</a>"
             html+="</div>"
+        return "%s" % (html)
+
+
+    def to_html2(self, min=None, max=None,Tienda=None):
+        html=''
+        #Pintar Graficas
+        import pool_energy_app.graphs.models
+        graphs=pool_energy_app.graphs.models.Graph.objects.filter(row=self.id).order_by('id')
+        for object in graphs:
+            html+=object.to_html2(min, max,Tienda, object.row.high.value-16.5)
         return "%s" % (html)
 
 class User_Dashboard(models.Model):

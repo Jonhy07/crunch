@@ -169,6 +169,7 @@ def print_dashboard(id_dashboard, request, min, max, edit, delete):
     json_table = json.dumps(dashboard.tables())
     json_size = json.dumps(dashboard.sizes())
     template_dashboard=dashboard.to_html(min, max,nTiendas[0])
+    script_tables=dashboard.to_html2(min, max,nTiendas[0])
     
     form = RowForm(request.POST or None, request.FILES or None)
     context = {
@@ -179,6 +180,7 @@ def print_dashboard(id_dashboard, request, min, max, edit, delete):
         'options' :json_option,
         'names':json_name,
         'tables' :json_table,
+        'script_tables' :script_tables,
         'sizes' :json_size,
         'edit' :edit,
         'delete' :delete,
