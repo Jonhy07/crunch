@@ -138,6 +138,14 @@ class Graph (models.Model):
         html+='</div>'
         return "%s" % (html)
 
+    def to_html2(self, min=None, max=None,Tienda=None, size=None):
+        html=''
+        if (self.type_graph.id==5):
+            html+=self.gettab2(min, max,Tienda, size)
+        if (self.type_graph.id==6):
+            html+=self.getcard2(min, max,Tienda)
+        return "%s" % (html)
+
 
     def getGraph(self, min=None, max=None,Tienda=None):
         variable=""
@@ -230,50 +238,79 @@ class Graph (models.Model):
 
 
     def getcard(self, min=None, max=None,Tienda=None):
+        if(self.type_icon):
+            return '<div class="row"><div class="col-4"><div class="avatar-lg rounded-circle bg-'+self.type_icon.color+' border-'+self.type_icon.color+' border shadow" style="height: 3.5rem; width: 3.5rem;"><i class="'+self.type_icon.icon+' font-26 avatar-title text-white"></i></div></div><div class="col-8"><div class="text-end"><h3 class="text-dark mt-1"><span id="'+self.name()+'c" data-plugin="counterup"></span></h3><p class="text-muted mb-1 text-truncate">'+self.title+'</p></div></div></div>'
+        return '<div class="row"><div class="col-4"></div><div class="col-8"><div class="text-end"><h3 class="text-dark mt-1"><span id="'+self.name()+'c" data-plugin="counterup"></span></h3><p class="text-muted mb-1 text-truncate">'+self.title+'</p></div></div></div>'
+
+    def getcard2(self, min=None, max=None,Tienda=None):
+        html=''
         API_V1_STR = os.environ.get('API_V1_STR')
         url=API_V1_STR+"card"
-        #_json=self.send
         _json=self.send_json(min, max,Tienda)
-        token=""
-        _headers={'Content-Type':'application/json', 'Autorization':token}
-        response=requests.post(url, data=json.dumps(_json), headers=_headers)
-        _json=json.loads(response.content)
-        if(self.type_icon):
-            return '<div class="row"><div class="col-4"><div class="avatar-lg rounded-circle bg-'+self.type_icon.color+' border-'+self.type_icon.color+' border shadow" style="height: 3.5rem; width: 3.5rem;"><i class="'+self.type_icon.icon+' font-26 avatar-title text-white"></i></div></div><div class="col-8"><div class="text-end"><h3 class="text-dark mt-1"><span data-plugin="counterup">'+(str(float("{:.2f}".format(_json['data']))))+'</span></h3><p class="text-muted mb-1 text-truncate">'+self.title+'</p></div></div></div>'
-        return '<div class="row"><div class="col-4"></div><div class="col-8"><div class="text-end"><h3 class="text-dark mt-1"><span data-plugin="counterup">'+(str(float("{:.2f}".format(_json['data']))))+'</span></h3><p class="text-muted mb-1 text-truncate">'+self.title+'</p></div></div></div>'
+        html+="<script>"
+        html+="$.ajax({"
+        html+="type: 'POST',"
+        html+="'url': '"+url+"',"
+        html+="contentType: 'application/json; charset=utf-8',"
+        html+="'data':JSON.stringify(" +json.dumps(_json)+"),"
+        html+="success: function (data) { $('#"+self.name()+"c').text(data['data'].toFixed(2));}"
+        html+="})"
+        html+="</script>"
+        return html
 
     def gettab(self, min=None, max=None,Tienda=None):
-        API_V1_STR = os.environ.get('API_V1_STR')
-        url=API_V1_STR+"tab"
-        #_json=self.send
         _json=self.send_json(min, max,Tienda)
-        token=""
-        _headers={'Content-Type':'application/json', 'Autorization':token}
-        response=requests.post(url, data=json.dumps(_json), headers=_headers)
-        _json=json.loads(response.content)
+        #token=""
+        #_headers={'Content-Type':'application/json', 'Autorization':token}
+        #response=requests.post(url, data=json.dumps(_json), headers=_headers)
+        #_json=json.loads(response.content)
         head=YRow.objects.filter(graph=self).order_by('id')
-        data=_json['data']
+        #data=_json['data']
         html='<h4 class="header-title" style="padding-bottom: 0.6em;">'+self.title+'</h4>'
         html+='<table id="'+self.name()+'" class="table dt-responsive nowrap w-100">'
         #html='<table id="datatable-buttons" class="table table-striped dt-responsive nowrap w-100">'
-
-        
-        
         html+='<thead>'
         html+='<tr>'
         for enc in head:
             html+='<th>'+enc.name+'</th>'
         html+='</tr>'
         html+='</thead>'
-        html+='<tbody>'
-        for row in data:
-            html+='<tr>'
-            for element in row:
-                html+='<td>'+str(element)+'</td>'
-            html+='</tr>'
-        html+='</tbody>'
-        html+='</table>'
-        
+        html+='</table>'        
+        return  html
+
+    def gettab2(self, min=None, max=None,Tienda=None, size=None):
+        html=''
+        API_V1_STR = os.environ.get('API_V1_STR')
+        url=API_V1_STR+"tab_front"
+        _json=self.send_json(min, max,Tienda)
+        html+="<script>"
+        html+="var table_"+self.name()+" = $('#"+self.name()+"').DataTable({"   
+        html+="scrollY:'"+str(size)+"em',scrollCollapse:!0,lengthChange:!1,buttons:[{extend:'copy',className:'btn-light'},{extend:'print',className:'btn-light'},{extend:'pdf',className:'btn-light'}],"
+        html+="language:{paginate:{previous:'<i class=\"mdi mdi-chevron-left\">',next:'<i class=\"mdi mdi-chevron-right\">'}},drawCallback:function(){$('.dataTables_paginate > .pagination').addClass('pagination-rounded')},"
+        html+="'processing': true,"
+        html+="'serverSide': true,"
+        html+="'filter':false,"
+        html+="'orderMulti':false,"
+        html+="'ajax': {"
+        html+="type: 'POST',"
+        html+="url:'"+url+"',"
+        html+="contentType:'application/json',"
+        html+="'data': function (d) {"
+        html+="return JSON.stringify( "
+        html+="{"
+        html+="dataset:'"+_json['dataset']+"',"
+        html+="type:'"+_json['type']+"',"
+        html+="columns:"+json.dumps(_json['columns'])+","
+        html+="filters:"+json.dumps(_json['filters'])+","
+        html+="length:d.length,"
+        html+="start:d.start"
+        html+="}"
+        html+=");"
+        html+="}"
+        html+="}"
+        html+="});"
+        html+="table_"+self.name()+".buttons().container().appendTo('#"+self.name()+"_wrapper .col-md-6:eq(0)')"
+        html+="</script>"    
         return  html
 
 
