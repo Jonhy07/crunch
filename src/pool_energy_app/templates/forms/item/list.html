@@ -87,13 +87,11 @@ display: none;
 									<td>{{object.costo}}</td>
 									<td>{{object.status}}</td>
 									<td>
-										<a href="/forms{{ object.get_update_url }}" data-toggle="tooltip" data-placement="top" title="Editar" class="btn btn-xs btn-warning"><i class="mdi mdi-pencil mdi-18px"></i></a>
-										<a href="/forms{{ object.get_delete_url }}" data-toggle="tooltip" data-placement="top" title="Eliminar" class="btn btn-xs btn-danger"><i class="mdi mdi-trash-can mdi-18px"></i></a>
 										{% if 'forms.change_item' in request.user.get_group_permissions %}
-										<small><a href="/forms{{ object.get_update_url }}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fe-edit text-warning"></i></a></small>
+										<a href="/forms{{ object.get_update_url }}" data-toggle="tooltip" data-placement="top" title="Editar" class="btn btn-xs btn-warning"><i class="mdi mdi-pencil mdi-18px"></i></a>
 										{% endif %}
 										{% if 'forms.delete_item' in request.user.get_group_permissions %}
-										<small><a href="/forms{{ object.get_delete_url }}" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="fe-trash-2"></i></a></small>
+										<a href="/forms{{ object.get_delete_url }}" data-toggle="tooltip" data-placement="top" title="Eliminar" class="btn btn-xs btn-danger"><i class="mdi mdi-trash-can mdi-18px"></i></a>
 										{% endif %}
 									</td>
 									<td>{{object.nombre}}</td>

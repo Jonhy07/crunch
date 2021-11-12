@@ -64,7 +64,8 @@ urlpatterns = [
 	url(r'forms/socialapplication/(?P<id>\d+)/change/', update_social_application, name='update_social_application'),
 	url(r'forms/socialapplication/(?P<id>\d+)/delete/', delete_social_application, name='delete_social_application'),
 
-	url(r'forms/invitation/', send_invitation, name='send_invitation'),
+	url(r'forms/invitation', send_invitation, name='send_invitation'),
+
 	########################
 	########################
 
@@ -99,7 +100,7 @@ urlpatterns = [
 	url(r'forms/store/(?P<id>\d+)/download/', download_items, name='download'),
 
 #-----------------------------------------------------------------------Item------------------------------------------------------------------------#
-	path('forms/list_item/', list_item, name='list_item'),
+	path('forms/list_item', list_item, name='list_item'),
 	path('forms/create_item', create_item, name='create_item'),
 	url(r'forms/item/(?P<id>\d+)/change/', update_item, name='update_item'),
 	url(r'forms/item/(?P<id>\d+)/delete/', delete_item, name='delete_item'),

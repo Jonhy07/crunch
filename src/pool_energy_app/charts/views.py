@@ -27,7 +27,7 @@ def graphics(request):
     name.append('id_0')
     name.append('id_1')
     name.append('id_2')
-    
+
     table='{"head":["nombre", "Apellido", "edad"],"data":[["juan", "perez",5],["pedro", "martinez", 6]]}'
     stud_obj = json.loads(table)
     head=stud_obj['head']
@@ -49,7 +49,7 @@ def graphics(request):
     html+='</tbody>'
     html+='</table>'
     html+='</div>'
-    
+
 
     json_option = json.dumps(option)
     json_name = json.dumps(name)
@@ -146,7 +146,7 @@ def deleteRow(request, id):
         messages.error(request, "No tiene acceso a esta fila.")
         return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
     else:
-        dashboard_delete=request.user.Dashboards.filter(id=row_delete[0].dashboard.id)    
+        dashboard_delete=request.user.Dashboards.filter(id=row_delete[0].dashboard.id)
         if not (dashboard_delete):
             messages.error(request, "No tiene acceso a la fila del lienzo." )
             return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
@@ -163,13 +163,13 @@ def print_dashboard(id_dashboard, request, min, max, edit, delete):
     nTiendas = Store.objects.filter(pk__in=[stores]).values_list('name',flat=True)
     dashboard=Dashboard.objects.filter(id=id_dashboard).first()
     json_name = json.dumps(dashboard.names())
-    #Aqui 
+    #Aqui
     json_option = json.dumps(dashboard.options(min, max,nTiendas[0]))
     #Aqui
-    json_table = json.dumps(dashboard.tables())
+    json_table = json.dumps([])
     json_size = json.dumps(dashboard.sizes())
     template_dashboard=dashboard.to_html(min, max,nTiendas[0])
-    
+
     form = RowForm(request.POST or None, request.FILES or None)
     context = {
         'dashboard' :dashboard,
@@ -201,7 +201,7 @@ def dashboard(request):
         min=min[0:4]+'-'+min[4:6]+'-'+min[6:8]
         max=str(date2)
         max=max[0:4]+'-'+max[4:6]+'-'+max[6:8]
-    
+
     if(request.user.rol=='Admin'):
         edit=1
         delete=1
@@ -223,5 +223,3 @@ def dashboard(request):
 
     context=print_dashboard(id_dashboard, request, min, max, edit, delete)
     return render(request, "dashboard/dashboard_dinamico.html", context)
-
-

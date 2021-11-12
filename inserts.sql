@@ -2,6 +2,8 @@ UPDATE forms_marketplace SET logo='mexico.png' WHERE id=1;
 UPDATE forms_marketplace SET logo='usa.png' WHERE id=2;
 UPDATE forms_marketplace SET logo='canada.png' WHERE id=3;
 
+ALTER TABLE users_user ALTER COLUMN name DROP NOT NULL;
+
 --Rol Default
 INSERT INTO public.users_rol(id, rol, duration, "create")
 	VALUES	(-1, 'Expirado', 0, 0),
