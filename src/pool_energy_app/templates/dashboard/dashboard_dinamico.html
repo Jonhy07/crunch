@@ -22,14 +22,16 @@
             <h2 style="margin: 0%; padding-bottom: 0.2em;">{{dashboard.name}}</h2>
             <p>{{dashboard.description}}</p>
         </div>
-        <div class="col-2">
-            <select class="form-select" id="store_select" aria-label="Default select example">
-                <option selected>Tiendas</option>
-                {% for s in stores %}
-                <option value="{{s}}">{{s}}</option>
-                {% endfor %}
-            </select>
-        </div>
+		{% if flag %}
+	        <div class="col-2">
+	            <select class="form-select" id="store_select" aria-label="Default select example">
+					<option selected>Tiendas</option>
+	                {% for s in stores %}
+	                <option value="{{s}}">{{s}}</option>
+	                {% endfor %}
+	            </select>
+	        </div>
+		{% endif %}
         <div class="col-2">
             <!--div class="row">
                 <label class="control-label" for="datepicker-start" style="text-align:initial;margin: 0.2em; margin-left: -0.5em;">Fecha Inicio</label>

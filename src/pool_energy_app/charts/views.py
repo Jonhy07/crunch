@@ -158,12 +158,11 @@ def deleteRow(request, id):
 
 
 #Cargar la info principal para el dashboard dinamico
-def print_dashboard(id_dashboard, request, min, max, edit, delete,tienda):
+def print_dashboard(id_dashboard, request, min, max, edit, delete,tienda,flag,indice):
     print(len(tienda))
     tiendas=tienda
     if len(tienda)>1:
-        tienda = tienda[0]
-    print('............')
+        tienda = tienda[indice]
     dashboard=Dashboard.objects.filter(id=id_dashboard).first()
     json_name = json.dumps(dashboard.names())
     #Aqui
@@ -187,7 +186,8 @@ def print_dashboard(id_dashboard, request, min, max, edit, delete,tienda):
         'sizes' :json_size,
         'edit' :edit,
         'delete' :delete,
-        'stores':tiendas
+        'stores':tiendas,
+        'flag':flag
     }
     return context
 
@@ -196,10 +196,20 @@ def print_dashboard(id_dashboard, request, min, max, edit, delete,tienda):
 #Se genera la vista para el dashboard dinamico
 def dashboard(request):
     id_dashboard=int(request.GET["id_dashboard"])
-    nTiendas =request.GET.get("tienda","")
-    if nTiendas == "":
-        stores = UserStore.objects.filter(user=request.user.id).values_list('store',flat=True)
-        nTiendas = list(Store.objects.filter(pk__in=[stores]).values_list('name',flat=True))
+    stores = UserStore.objects.filter(user=request.user.id).values_list('store',flat=True)
+    nTiendas = list(Store.objects.filter(pk__in=[stores]).values_list('name',flat=True))
+    getTienda =request.GET.get("tienda","")
+    flag=False
+    indice=0
+    if(len(nTiendas)==1):
+        nTiendas=nTiendas[0]
+        flag=False
+    elif (len(nTiendas)>1):
+        flag=True
+    
+    if getTienda != "":
+        indice = nTiendas.index(getTienda)
+        flag=True
     print('****************')
     print('****************')
     print(nTiendas)
@@ -236,5 +246,5 @@ def dashboard(request):
                 messages.error(request, "No tiene acceso a este lienzo." )
                 return redirect ('/')
 
-    context=print_dashboard(id_dashboard, request, min, max, edit, delete,tienda)
+    context=print_dashboard(id_dashboard, request, min, max, edit, delete,tienda,flag,indice)
     return render(request, "dashboard/dashboard_dinamico.html", context)
