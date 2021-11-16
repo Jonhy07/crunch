@@ -77,9 +77,6 @@ urlpatterns = [
 
 	########################
 	########################
-
-	url(r'oauth/token/(?P<id>\d+)/buttons/', buttons_token, name='buttons_token'),
-
 #---------------------------------------------------------------------connector---------------------------------------------------------------------#
 	#url(r'^connector.add/', create_connector, name='create'),#--
 	#url(r'^connector.list/', list_connector, name='list'),#--
@@ -144,7 +141,7 @@ urlpatterns = [
 	#############################################
 
 	url(r'oauth/token/(?P<id>\d+)/buttons/', buttons_token, name='buttons_token'),
-	url(r'token/resp/', resp_token, name='resp_token'),#--
+	url(r'oauth/token/resp/', resp_token, name='resp_token'),#--
 	url(r'token/list/', list_token, name='list_token'),#--
 	url(r'marketplace/view/(?P<id>\d+)/', marketplace_list, name='marketplace_list'),#--
 

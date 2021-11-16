@@ -129,6 +129,7 @@ class UsersPermissions():
                 return None
             elif str(request.path).startswith('/dashboard'):
                 return None
+            # elif str(request.path) =='oauth.buttons_token' and (request.user.groups.filter(name='StoreOwner').exists() or request.user.groups.filter(name='Administrator').exists()):
             elif (str(request.path)=='forms.cargarStore_homologation' or str(request.path)=='forms.cargar2_homologation'):
                 return None
             elif (str(request.path)=='forms.cargarStore_itemaction'):
