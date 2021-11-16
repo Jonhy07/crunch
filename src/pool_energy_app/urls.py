@@ -142,8 +142,8 @@ urlpatterns = [
 
 	url(r'oauth/token/(?P<id>\d+)/buttons/', buttons_token, name='buttons_token'),
 	url(r'oauth/token/resp/', resp_token, name='resp_token'),#--
-	url(r'token/list/', list_token, name='list_token'),#--
-	url(r'marketplace/view/(?P<id>\d+)/', marketplace_list, name='marketplace_list'),#--
+	url(r'oauth/token/list/', list_token, name='list_token'),#--
+	url(r'oauth/marketplace/view/(?P<id>\d+)/', marketplace_list, name='marketplace_list'),#--
 
 	#############################################
 	#############################################

@@ -51,14 +51,14 @@ def get_socialapplications(id):
 	return sa_dict;
 
 def list_token(request):
-	objects_list = [];
-	connectors = Connector.objects.filter(user_id=request.user.id);
+	objects_list = []
+	connectors = Connector.objects.filter(user_id=request.user.id)
 	for conn in connectors:
-		sa_dict = get_socialapplications();	##obtener lista de social applications
+		sa_dict = get_socialapplications()##obtener lista de social applications
 		if conn.social_application_id in sa_dict:
-			sa = sa_dict[conn.social_application_id];
+			sa = sa_dict[conn.social_application_id]
 
-			state = {"user": request.user.id, "social_application": conn.social_application_id, "name" : 0};
+			state = {"user": request.user.id, "social_application": conn.social_application_id, "name" : 0}
 			url_params = {
 				"client_id": sa['client_id'],
 				"redirect_uri": sa['redirect_uri'],
@@ -67,26 +67,26 @@ def list_token(request):
 				"access_type":"offline",
 				"prompt":"consent",
 				"state": json.dumps(state, separators=(',', ':'))
-			};
+			}
 
-			url = '{}?{}'.format(sa['url'], urllib.parse.urlencode(url_params));
+			url = '{}?{}'.format(sa['url'], urllib.parse.urlencode(url_params))
 			
 			dict_results = {
 				'name': conn.name,
 				'url': url,
 				'logo': sa['logo'],
 				'color': sa['color']
-			};
+			}
 
 			objects_list.append(dict_results);
-	return render(request, "oauth/token/list.html",  context_data(request, {'objects_list': objects_list}));
+	return render(request, "oauth/token/list.html",  context_data(request, {'objects_list': objects_list}))
 	
 def buttons_token(request, id):
 	objects_list = []
-	sa_dict = get_socialapplications(id);	##obtener diccionario de social applications
+	sa_dict = get_socialapplications(id)	##obtener diccionario de social applications
 	for key in sa_dict:
-		new_dict = sa_dict[key];
-		new_dict.update({"user": request.user.id});
+		new_dict = sa_dict[key]
+		new_dict.update({"user": request.user.id})
 		objects_list.append(new_dict)
 	return render(request, "oauth/token/buttons.html",  {'objects_list': objects_list, 'store_id': id})
 
