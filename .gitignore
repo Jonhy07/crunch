@@ -1,7 +1,7 @@
-/src/pool_energy_app/common/
 /venv/
 /.idea/
 .env
+.env2
 Secuencias
 /src/node_modules/
 # Byte-compiled / optimized / DLL files

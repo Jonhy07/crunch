@@ -74,6 +74,8 @@ class Graph (models.Model):
         filters=Graph_Filter.objects.filter(graph=self)
         send=''
         send=self.send
+        #print(Tienda)
+        #Tienda='CD66 -  Vid Mexicana'
         tienda= '"' + Tienda + '"'
         send['filters']=[]
         diccionario={'field':'DxStoreName','equal':'=','value':tienda}

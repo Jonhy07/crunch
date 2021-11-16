@@ -6,4 +6,4 @@ class ItemFilter(django_filters.FilterSet):
 	class Meta:
 		model=Item
 		fields= '__all__'
-		exclude=['sku','status','plataforma','nombre','costo','marketplace']
+		exclude=['sku','ktp','status','plataforma','nombre','costo','marketplace']

@@ -4,10 +4,10 @@ ALLOWED_HOSTS=127.0.0.1,localhost
 TIME_ZONE=America/Guatemala
 
 DB_ENGINE='django.db.backends.postgresql_psycopg2'
-DB_NAME=thecrunch
+DB_NAME=thecrunchapp
 DB_USER=postgres
 DB_PASS='ImP0$1b73'
-DB_HOST=127.0.0.1
+DB_HOST=159.203.66.106
 DB_PORT=5432
 ALLOWED_HOSTS='127.0.0.1,localhost,159.203.66.106,amazon.biganalytics.com.gt,www.amazon.biganalytics.co>'
 

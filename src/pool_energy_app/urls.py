@@ -78,7 +78,7 @@ urlpatterns = [
 	########################
 	########################
 
-	#url(r'oauth/token/(?P<id>\d+)/buttons/', buttons_token, name='buttons_token'),
+	url(r'oauth/token/(?P<id>\d+)/buttons/', buttons_token, name='buttons_token'),
 
 #---------------------------------------------------------------------connector---------------------------------------------------------------------#
 	#url(r'^connector.add/', create_connector, name='create'),#--

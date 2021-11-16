@@ -33,20 +33,12 @@ class UsersPermissions():
 
         if str(request.user) != 'AnonymousUser':
            #  lConnectors = .objects.filter(user__pk=nId).values_list('id',flat=True)
-            grupo = Group.objects.filter(id=request.user.rol_id).values_list('id',flat=True)
-            perm_tuple_all = Permission.objects.filter(group__id=grupo[0]).values_list('codename',flat=True)
-            perm_tuple_type_id = list(Permission.objects.filter(group__id=grupo[0]).values_list('content_type_id',flat=True))
-            print('******************************')
-            print('******************************')
-            print(request.user.rol.get_rol)
-            print('----')
-            perm_tuple=[]
-            j=0
-            for i in perm_tuple_type_id:
-                perm_tuple_type = list(ContentType.objects.filter(id=i).values_list('app_label',flat=True))
-                perm_tuple.append(perm_tuple_type[0]+ '.'+perm_tuple_all[j])
-                j+=1
-            print(perm_tuple)
+            perm_tuple=request.user.get_permissions()
+            print('.................')
+            print('.................')
+            print('.................')
+            print('.................')
+            #print(perm_tuple)
             sep_path=request.path.split('/')
             if str(request.path).startswith('/accounts'):
                 return None
@@ -112,6 +104,7 @@ class UsersPermissions():
                         elif str(request.path) == '/403/':
                             return None
             else:
+                print('el ultimo elif')
                 return None
 
             #prueba = Group.objects.all().values_list('id', flat=True)
