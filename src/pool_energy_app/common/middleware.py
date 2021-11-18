@@ -86,23 +86,9 @@ class UsersPermissions():
                     request.user.expirate = datetime.now() + d
                     request.user.rol=rol
                     request.user.save()
-                #Si tiene rol Verifica la expiracion
+                    #Si tiene rol Verifica la expiracion
                 else:
-                    #verifica la fecha
-                    if(request.user.expirate<datetime.now()):
-                        if str(request.path).startswith('/expired'):
-                            return None
-                        if str(request.path).startswith('/accounts/logout/'):
-                            return None
-                        return redirect('/expired/')
-                    else:
-                        #impide el acceso a expired a los que no han expirado
-                        if str(request.path).startswith('/expired'):
-                            return redirect('/')
-                        elif str(request.path).startswith('/config'):
-                            return redirect('/')
-                        elif str(request.path) == '/403/':
-                            return None
+                    return None
             else:
                 print('el ultimo elif')
                 return None
