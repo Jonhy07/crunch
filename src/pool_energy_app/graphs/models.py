@@ -152,13 +152,13 @@ class Graph (models.Model):
     def getGraph(self, min=None, max=None,Tienda=None):
         variable=""
         if(self.type_graph.id==4):
-            variable=""+str(self.getpie(min, max,))
+            variable=""+str(self.getpie(min, max,Tienda))
         elif(self.type_graph.id==2):
-            variable=""+str(self.getbar(min, max))
+            variable=""+str(self.getbar(min, max,Tienda))
         elif(self.type_graph.id==1):
-            variable=""+str(self.getbar(min, max))
+            variable=""+str(self.getbar(min, max,Tienda))
         elif(self.type_graph.id==3):
-            variable=""+str(self.getbar(min, max))
+            variable=""+str(self.getbar(min, max,Tienda))
         return variable
 
     def getpie(self, min=None, max=None,Tienda=None):

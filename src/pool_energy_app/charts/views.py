@@ -159,7 +159,6 @@ def deleteRow(request, id):
 
 #Cargar la info principal para el dashboard dinamico
 def print_dashboard(id_dashboard, request, min, max, edit, delete,tienda,flag,indice):
-    print(len(tienda))
     tiendas=tienda
     if len(tienda)>1:
         tienda = tienda[indice]

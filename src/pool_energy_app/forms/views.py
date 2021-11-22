@@ -229,23 +229,15 @@ def delete_client(request, id):
 	return HttpResponseRedirect("/forms/list_client")
 
 def download_items(request, id):
-    print('*******************')
-    print('*******************')
-    print('*******************')
-    print('*******************')
     deStore=Item.objects.filter(store_id=id)
-    print(deStore)
     deStoreName=Store.objects.filter(id=id)
-    print(deStoreName)
     qset = deStore.values('marketplace','ktp','sku','nombre')
-    print(qset)
     qsetName = deStoreName.values('name')
     dfName = pd.DataFrame(list(qsetName))
     nombreStore=str(dfName.iloc[0,0])
     dfProductos = pd.DataFrame(list(qset))
     dfProductos.insert(0, 'Tienda',nombreStore)
     dfProductos.reset_index(drop=True,inplace=True)
-    print('*******************')
     with BytesIO() as b:
         # Use the StringIO object as the filehandle.
         writer = pd.ExcelWriter(b, engine='xlsxwriter')

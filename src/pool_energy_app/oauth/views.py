@@ -15,7 +15,7 @@ import datetime
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
-from pool_energy_app.forms.models import Network, SocialApplication, SocialApplicationPermission, Connector, StoreConnector, Store, Marketplace, MarketplaceConnector
+from pool_energy_app.forms.models import Network, SocialApplication, SocialApplicationPermission, Connector, StoreConnector, Store, Marketplace, MarketplaceConnector,UserStore
 
 from celery.decorators import task
 
@@ -115,8 +115,10 @@ def marketplace_list_new(request, id):
 			msg = 'Se agregaron marketplaces exitosamente'
 		else:
 			msg = 'No seleccionó ningún marketplace. Conector agregado'
-		
-		forms = Store.objects.all()
+
+		current_user = request.user
+		stores = UserStore.objects.filter(user=current_user.id).values_list('store',flat=True)
+		forms = Store.objects.filter(pk__in=[stores])
 		context = {
 			'objects_list' : forms,
 			'msg' : msg
@@ -238,8 +240,10 @@ def resp_token(request):
 				print("ERROR al obtener access_token. Codigo ", response.status_code);
 	else:
 		msg = 'ERROR ' + str(request.GET.get('error'))
-	
-	forms = Store.objects.all()
+
+	current_user = request.user
+	stores = UserStore.objects.filter(user=current_user.id).values_list('store',flat=True)
+	forms = Store.objects.filter(pk__in=[stores])
 	context = {
 		'objects_list' : forms,
 		'msg' : msg
@@ -271,12 +275,13 @@ def marketplace_list(request, id):
 		else:
 			msg = 'No seleccionó ningún marketplace. Conector agregado'
 		
-		forms = Store.objects.all()
+		current_user = request.user
+		stores = UserStore.objects.filter(user=current_user.id).values_list('store',flat=True)
+		forms = Store.objects.filter(pk__in=[stores])
 		context = {
 			'objects_list' : forms,
 			'msg' : msg
 		}
-		
 		return render(request, "store/list.html", context)
 	else:
 		for mkplc in Marketplace.objects.all():
