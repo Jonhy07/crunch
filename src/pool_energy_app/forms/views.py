@@ -96,9 +96,9 @@ def delete_network(request, id):
 def send_mail(mail,request):
 	usuario = get_object_or_404(User, id=request.user.id)
 	context = {'mail':mail,'username':'jefe','current_site':{'name':'nombre'},'user':usuario}
-	template=get_template('account/email/invitation.html')
+	template=get_template('account/email/invitation_message.html')
 	content = template.render(context)
-	email = EmailMultiAlternatives('','',settings.EMAIL_HOST_USER,[mail])
+	email = EmailMultiAlternatives('¡El DNA te está esperando!','',settings.EMAIL_HOST_USER,[mail])
 	email.attach_alternative(content,'text/html')
 	email.send()
 
