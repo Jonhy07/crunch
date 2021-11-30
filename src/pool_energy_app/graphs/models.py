@@ -32,7 +32,6 @@ class Type_graph (models.Model):
     def __str__(self):
         return "%s" % (self.name)
 
-
 class Type_agrupation (models.Model):
     id=models.AutoField(primary_key=True)
     name = models.CharField(max_length=250)
@@ -46,7 +45,6 @@ class Type_calculate (models.Model):
     value = models.CharField(max_length=50)
     def __str__(self):
         return "%s" % (self.name)
-
 
 class Graph (models.Model):
     id=models.AutoField(primary_key=True)
@@ -226,7 +224,7 @@ class Graph (models.Model):
         __final["xAxis"]=[]
         __final["series"]=_json["series"]
         listaF={'data':[]}
-        for i in _json["xAxis"]['data']:
+        for i in _json["xAxis"]['data']: 
             i=str(i)
             if(len(i)<7):
                 fecha=str(i[:4])+'-'+str(i[4:6])
@@ -320,7 +318,6 @@ class Graph (models.Model):
         html+="</script>"    
         return  html
 
-
 class YRow (models.Model):
     id=models.AutoField(primary_key=True)
     name = models.CharField(max_length=250)
@@ -329,8 +326,6 @@ class YRow (models.Model):
     type_calculate=models.ForeignKey(Type_calculate,  on_delete=models.CASCADE, null=True, related_name='Type_calculate')
     def __str__(self):
         return "%s" % (self.name)
-
-
 
 class Graph_Filter(models.Model):
     id=models.AutoField(primary_key=True)

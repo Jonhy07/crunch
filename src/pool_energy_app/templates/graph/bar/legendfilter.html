@@ -38,44 +38,35 @@
                                         <td><h5 style="color: #6c757d;">Dataset Seleccionado</h5></td>
                                         <td><h5 style="color: #6c757d;">{{graph.endpoint}}</h5></td>
                                     </tr>
-
                                     <tr>
                                         <td><h5 style="color: #6c757d;">Tipo de Grafico</h5></td>
                                         <td><h5 style="color: #6c757d;"><i class="{{graph.type_graph.icon}}"></i> {{graph.type_graph}}</h5></td>
                                     </tr>
-
                                     <tr>
                                         <td><h5 style="color: #6c757d;">Columnas Ocupadas</h5></td>
                                         <td><h5 style="color: #6c757d;"> {{graph.column}}</h5></td>
                                     </tr>
-
                                     <tr>
                                         <td><h5 style="color: #6c757d;">Tipo de Agrupación</h5></td>
                                         <td><h5 style="color: #6c757d;"> {{graph.type_agrupation}}</h5></td>
                                     </tr>
-
                                     <tr>
                                         <td><h5 style="color: #6c757d;">Periodicidad de la Agrupación</h5></td>
                                         <td><h5 style="color: #6c757d;"> {{graph.type_time_agrupation}}</h5></td>
                                     </tr>
-
                                     <tr>
                                         <td><h5 style="color: #6c757d;">Columna en el Eje {{eje2}}</h5></td>
                                         <td><h5 style="color: #6c757d;"> {{graph.xrow}}</h5></td>
                                     </tr>
-
                                     <tr>
                                         <td><h5 style="color: #6c757d;">Filtros:</h5></td>
                                     </tr>
-
-
                                 </tbody>
                             </table>
                         </div>
 
                         <div class="table-responsive" style="height: 11em;">
                             <table class="table table-borderless  table-nowrap table-centered m-0">
-
                                 <thead class="table-light">
                                     <tr>
                                         <th>Filtro </th>
@@ -104,8 +95,6 @@
                         <form action="{% url 'create_filter' %}" method="POST", enctype="multipart/form-data">
                             {% csrf_token %}
                             <input type="hidden" name="id_graph" value={{ graph.id }} id="id_graph">
-
-
                             <div id="div_id_filter" class="mb-3"> 
                                 <label for="id_filter" class="form-label requiredField">Filtro<span class="asteriskField">*</span> </label> 
                                 <select name="filter" class="select form-select" required="" id="id_filter"> 
@@ -115,19 +104,16 @@
                                     {% endfor %}
                                 </select> 
                             </div>
-
-                            <div id="div_id_value" class="mb-3"> 
-                                <label for="id_value" class="form-label requiredField">Columna a Filtrar<span class="asteriskField">*</span> </label> 
-                                <select name="value" class="select form-select" required="" id="id_value"> 
-                                    <option value="" selected="">Please select column</option> 
-                                   
+                            <div id="div_id_value" class="mb-3">
+                                <label for="id_value" class="form-label requiredField">Columna a Filtrar<span class="asteriskField">*</span> </label>
+                                <select name="value" class="select form-select" required="" id="id_value">
+                                    <option value="" selected="">Please select column</option>
                                 </select> 
                             </div>
                             <div style="text-align: end;">
                                 <button type="submit" class="btn btn-primary" style="width: 8em;">{{Text}}</button>
                             </div>
                         </form>
-
                         <div style="padding-top: 3em;">
                             <form action="{% url 'filter_finsh' %}" method="POST", enctype="multipart/form-data">
                                 {% csrf_token %}
@@ -137,13 +123,11 @@
                                 </div>
                             </form>
                         </div>
-
                     </div>
                 </div>
             </div>
-        </div>         
-    
-    <!--End Body-->       
+        </div>
+    <!--End Body-->
 </div>
 <!-- container -->
 {% endblock %}
@@ -161,7 +145,7 @@
                 $.ajax({
                     type: 'GET',
                     url:`https://amazon.biganalytics.com.gt/dashboard/row/graph/filter/campo/${id_graph}/${id_filtro}`,
-                    // url:`http://localhost:3000/dashboard/row/graph/filter/campo/${id_graph}/${id_filtro}`,
+                    // url:`http://127.0.0.1:8000/dashboard/row/graph/filter/campo/${id_graph}/${id_filtro}`,
                     success: function(response){
                         $('#id_value').empty();
                         $('#id_value').append(response.data);
