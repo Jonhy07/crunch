@@ -85,6 +85,9 @@ class Graph (models.Model):
                     send['filters'].append({'field':filter.value.name_db, 'equal':'<=', 'value':'\''+max+'\''})
             else:
                 send['filters'].append({'field':filter.value.name_db, 'equal':filter.type_comparation.signo, 'value':filter.comparate_value})
+        print('------------')
+        print(send)
+        print('------------')
         return send
 
     def to_html(self, min=None, max=None,Tienda=None):
