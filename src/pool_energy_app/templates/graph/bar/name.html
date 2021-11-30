@@ -131,24 +131,25 @@
                             </div>
                         </form>
 
-                        <div class="mb-3" style="padding-top: 1em;"> 
-                            <div id="div_id_filtros" class="form-check"> 
-                                <input type="checkbox" name="filtros" class="checkboxinput form-check-input" id="filtros"> 
-                                <label for="id_filtros" class="form-check-label requiredField">
-                                    Habilitar filtros<span class="asteriskField"></span> 
-                                </label> 
-                            </div> 
-                        </div>
+						<form action="{% url 'create_bar_name' %}" method="POST", enctype="multipart/form-data">
+						{% csrf_token %}
+							<div class="mb-3" style="padding-top: 1em;"> 
+								<div id="div_id_filtros" class="form-check"> 
+									<input type="checkbox" name="filtros" class="checkboxinput form-check-input" id="filtros"> 
+									<label for="id_filtros" class="form-check-label requiredField">
+										Habilitar filtros<span class="asteriskField"></span> 
+									</label> 
+								</div> 
+							</div>
                         
-                        <div style="padding-top: 0.5em;">
-                            <form action="{% url 'create_bar_name' %}" method="POST", enctype="multipart/form-data">
-                                {% csrf_token %}
+	                        <div style="padding-top: 0.5em;">
+
                                 <input type="hidden" name="id_graph" value={{ graph.id }}>
                                 <div style="text-align: center;">
                                     <button type="submit" class="btn btn-primary btn-lg" style="width: 16em;">Finalizar</button>
                                 </div>
-                            </form>
-                        </div>
+							</div>
+						</form>
                     </div>
                 </div>
             </div>

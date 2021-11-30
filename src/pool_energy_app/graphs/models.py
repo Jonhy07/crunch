@@ -83,8 +83,8 @@ class Graph (models.Model):
         for filter in filters:
             if filter.filter.type_filter.id==1:
                 if min :
-                    send['filters'].append({'field':filter.value.name_db, 'equal':filter.type_comparation.signo, 'value':'\''+min+'\''}) 
-                    send['filters'].append({'field':filter.value.name_db, 'equal':'<', 'value':'\''+max+'\''})
+                    send['filters'].append({'field':filter.value.name_db, 'equal':'>=', 'value':'\''+min+'\''}) 
+                    send['filters'].append({'field':filter.value.name_db, 'equal':'<=', 'value':'\''+max+'\''})
             else:
                 send['filters'].append({'field':filter.value.name_db, 'equal':filter.type_comparation.signo, 'value':filter.comparate_value})
         return send
@@ -223,9 +223,17 @@ class Graph (models.Model):
                 __temp=('{"title": {"text": "'+self.title+'", "left": "center"}, "tooltip": { "trigger": "item" }, "legend": { "orient": "vertical", "top": "10%", "right": "right" ,"containLabel": "true", "textStyle":{"width": "70","overflow":"truncate"} }, "grid": {"left": "3%","right": "15%","bottom": "18%", "top": "13%","containLabel": "true"},"toolbox": {"feature": {"saveAsImage": { },"dataZoom": {"yAxisIndex": "none"} } }, "yAxis": {"type": "value"} }')
 
         __final=json.loads(str(__temp))
-        __final["xAxis"]=_json["xAxis"]
+        __final["xAxis"]=[]
         __final["series"]=_json["series"]
-
+        listaF={'data':[]}
+        for i in _json["xAxis"]['data']:
+            i=str(i)
+            if(len(i)<7):
+                fecha=str(i[:4])+'-'+str(i[4:6])
+            else:
+                fecha=str(i[:4])+'-'+str(i[4:6])+'-'+str(i[6:])
+            listaF['data'].append(fecha)
+        __final["xAxis"]=listaF
         
         if(self.type_graph.id==3):
             yAxis=__final["xAxis"]
@@ -235,9 +243,6 @@ class Graph (models.Model):
 
         #Jonathan
         return str((str(__final).replace("'", "\"")).replace("None", "0"))
-
-
-
 
     def getcard(self, min=None, max=None,Tienda=None):
         if(self.type_icon):

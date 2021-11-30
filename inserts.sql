@@ -53,11 +53,12 @@ INSERT INTO public.graphs_type_icon(
 			(7, 'Sumatoria', 'mdi mdi-plus', 'info ');
 
 --Insert tipo de tiempo de agrupacion
-INSERT INTO public.graphs_type_time_agrupation(
-	id, name)
-	VALUES 	(1, 'Por Mes'),
+INSERT INTO public.graphs_type_time_agrupation(	id, name)
+	VALUES 	(0, 'Por Día'),
+			(1, 'Por Mes'),
 			(2, 'Por Año'),
-			(3, 'Total'	 );
+			(3, 'Total'  ),
+			(4, 'Por Semana');
 
 --Insert tipo de usuarios
 INSERT INTO public.graphs_type_graph(
