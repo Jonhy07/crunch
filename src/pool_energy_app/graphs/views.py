@@ -5,7 +5,7 @@ import json
 from django.contrib import messages
 from pool_energy_app import graphs
 from pool_energy_app.filter.models import Filter, Type_comparation
-from pool_energy_app.graphs.forms import GraphForm, PieForm, BarXForm, YRow2Form, YRowForm, TabTypeForm
+from pool_energy_app.graphs.forms import BarXForm2, GraphForm, PieForm, BarXForm, YRow2Form, YRowForm, TabTypeForm
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Graph, Graph_Filter, Type_agrupation, Type_icon, YRow
 from pool_energy_app.charts.models import Dashboard, Row, User_Dashboard
@@ -156,6 +156,8 @@ def addgraph(request):
                                 return redirect('/dashboard/row/graph/add/{}/tab'.format(instance.pk))
                             elif instance.type_graph.pk==6:
                                 return redirect('/dashboard/row/graph/add/{}/card'.format(instance.pk))
+                            elif instance.type_graph.pk==7:
+                                return redirect('/dashboard/row/graph/add/{}/barconcat'.format(instance.pk))
                             else:
                                 messages.success(request, "Grafico creado exitosamente.")
                                 return redirect('/dashboard/?id_dashboard='+str(row.dashboard.id))
@@ -249,6 +251,33 @@ def bar(request, id):
         }
         return render(request, "graph/bar/bar.html", context)
 
+
+def barconcat(request, id):
+    diccionario=validar_Grafica(request, id)
+    bandera=diccionario['bandera']
+    if(bandera):
+        return redirect('/')
+    else:
+        graph=diccionario['graph']
+        form = BarXForm2(request.POST or None, request.FILES or None, endpoint=graph.endpoint)
+        eje="X"
+        eje2="Y"
+        if graph.type_graph.id==3:
+            eje="Y"
+            eje2="X"
+
+
+        context = {
+            'type':(str(graph.type_graph)).lower(),
+            'form':form,
+            'Text':'Save',
+            'graph':graph,
+            'eje':eje,
+            'eje2':eje2
+        }
+        return render(request, "graph/bar/barconcat.html", context)
+
+
 #Recibiendo el formulario de la bar para el update
 def update_bar(request):
     id_graph=int(request.POST["id_graph"])
@@ -273,6 +302,28 @@ def update_bar(request):
                 return redirect('/dashboard/row/graph/add/{}/bar/legend'.format(graph.pk))
             else:
                 return redirect('/dashboard/row/graph/add/{}/bar/name'.format(graph.pk))
+
+
+def update_barconcat(request):
+    id_graph=int(request.POST["id_graph"])
+    graphs=Graph.objects.filter(id=id_graph)
+
+    form = BarXForm2(request.POST or None, request.FILES or None, endpoint=graphs[0].endpoint)
+    if form.is_valid():
+        diccionario=validar_Grafica(request, id_graph)
+        bandera=diccionario['bandera']
+        if(bandera):
+            return redirect('/')
+        else:
+            graph=diccionario['graph']
+            instance=form.save(commit=False)
+            graph.xrow=instance.xrow
+            graph.type_agrupation=Type_agrupation.objects.filter(pk=1).first()
+            graph.type_time_agrupation=instance.type_time_agrupation
+            graph.save()
+
+            messages.success(request, "Guardado exitosamente por favor siga detallando la grafica")
+            return redirect('/dashboard/row/graph/add/{}/bar/legend'.format(graph.pk))
 
 
 #Formulario para  la bar legend

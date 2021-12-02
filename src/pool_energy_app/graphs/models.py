@@ -72,8 +72,6 @@ class Graph (models.Model):
         filters=Graph_Filter.objects.filter(graph=self)
         send=''
         send=self.send
-        #print(Tienda)
-        #Tienda='CD66 -  Vid Mexicana'
         tienda= '"' + Tienda + '"'
         send['filters']=[]
         diccionario={'field':'DxStoreName','equal':'=','value':tienda}
@@ -85,9 +83,6 @@ class Graph (models.Model):
                     send['filters'].append({'field':filter.value.name_db, 'equal':'<=', 'value':'\''+max+'\''})
             else:
                 send['filters'].append({'field':filter.value.name_db, 'equal':filter.type_comparation.signo, 'value':filter.comparate_value})
-        print('------------')
-        print(send)
-        print('------------')
         return send
 
     def to_html(self, min=None, max=None,Tienda=None):
@@ -160,6 +155,8 @@ class Graph (models.Model):
             variable=""+str(self.getbar(min, max,Tienda))
         elif(self.type_graph.id==3):
             variable=""+str(self.getbar(min, max,Tienda))
+        elif(self.type_graph.id==7):
+            variable=""+str(self.getbarconcat(min, max,Tienda))
         return variable
 
     def getpie(self, min=None, max=None,Tienda=None):
@@ -244,6 +241,46 @@ class Graph (models.Model):
 
         #Jonathan
         return str((str(__final).replace("'", "\"")).replace("None", "0"))
+
+
+
+    def getbarconcat(self, min=None, max=None,Tienda=None):
+        yrow=YRow.objects.filter(graph=self).first()
+        API_V1_STR = os.environ.get('API_V1_STR')
+        url=API_V1_STR+"line_bar"
+        _json=self.send_json(min, max,Tienda)
+        token=""
+        _headers={'Content-Type':'application/json', 'Autorization':token}
+        response=requests.post(url, data=json.dumps(_json), headers=_headers)
+        _json=json.loads(response.content)
+
+        _json["xAxis"]['type']= 'category'
+        _json["xAxis"]['boundaryGap']= 'true'
+        for element in _json["series"]:
+            element["type"]='bar'
+            element["stack"]='Total'
+
+        #Jonathan
+        #__temp=('{"title": {"text": "'+self.title+'", "subtext": "'+yrow.type_calculate.name+'", "left": "center"}, "tooltip": { "trigger": "item" }, "legend": { "orient": "vertical", "top": "10%", "right": "right" ,"containLabel": "true", "textStyle":{"width": "70","overflow":"truncate"} },"dataZoom": [{"startValue": "'+ _json["xAxis"]["data"][0] +'"}, {"type": "inside"}], "grid": {"left": "3%","right": "15%","bottom": "18%", "top": "13%","containLabel": "true"},"toolbox": {"feature": {"saveAsImage": { },"dataZoom": {"yAxisIndex": "none"} } }, "yAxis": {"type": "value"} }')
+        __temp=('{"title": {"text": "'+self.title+'", "subtext": "'+yrow.type_calculate.name+'", "left": "center"}, "tooltip": { "trigger": "item" }, "legend": { "orient": "vertical", "top": "10%", "right": "right" ,"containLabel": "true", "textStyle":{"width": "70","overflow":"truncate"} }, "grid": {"left": "3%","right": "15%","bottom": "18%", "top": "13%","containLabel": "true"},"toolbox": {"feature": {"saveAsImage": { },"dataZoom": {"xAxisIndex": "none"} } }, "yAxis": {"type": "value"} }')
+
+        __final=json.loads(str(__temp))
+        __final["xAxis"]=[]
+        __final["series"]=_json["series"]
+        listaF={'data':[]}
+        for i in _json["xAxis"]['data']: 
+            i=str(i)
+            if(len(i)<7):
+                fecha=str(i[:4])+'-'+str(i[4:6])
+            else:
+                fecha=str(i[:4])+'-'+str(i[4:6])+'-'+str(i[6:])
+            listaF['data'].append(fecha)
+        __final["xAxis"]=listaF
+        
+        #Jonathan
+        return str((str(__final).replace("'", "\"")).replace("None", "0"))
+
+
 
     def getcard(self, min=None, max=None,Tienda=None):
         if(self.type_icon):

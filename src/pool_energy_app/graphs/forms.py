@@ -51,6 +51,19 @@ class BarXForm(forms.ModelForm):
         fields=['xrow', 'type_agrupation', 'type_time_agrupation',]
 
 
+class BarXForm2(forms.ModelForm):
+    
+    def __init__(self, *args, **kwargs):
+        self.endpoint = kwargs.pop('endpoint')
+        super(BarXForm2, self).__init__(*args, **kwargs)
+        self.fields['xrow'] =ModelChoiceField(queryset=Detail.objects.filter(endpoint=self.endpoint.pk, type_detail=4), empty_label='Please select value to group.', label="Seleccione la columna")
+
+    type_time_agrupation =ModelChoiceField(queryset=Type_time_agrupation.objects.all(), empty_label='Please select the temporality in which the data is grouped .')
+    class Meta:
+        model = Graph
+        fields=['xrow', 'type_time_agrupation',]
+
+
 class YRowForm(forms.ModelForm):
     type_calculate=ModelChoiceField(queryset=Type_calculate.objects.all(), empty_label='Please select the type of calculation you want for the graph.')
     class Meta:

@@ -39,7 +39,7 @@ from pool_energy_app.oauth.views import buttons_token, resp_token, list_token, m
 
 ##########
 
-from pool_energy_app.graphs.views import newgraph, addgraph, deletegraph, pie, update_pie, bar, update_bar, legend, create_bar_legend, namebar, add_yrow, create_bar_name, card, update_card, tab, update_tab, nametab, add_col, create_tab_name, legendtab, add_col_legend, filterlegendbar, filtercampo, create_filter, filter_finsh, filterlegendpie, filterlegendcard
+from pool_energy_app.graphs.views import newgraph, addgraph, deletegraph, pie, update_pie, bar, update_bar, legend, create_bar_legend, namebar, add_yrow, create_bar_name, card, update_card, tab, update_tab, nametab, add_col, create_tab_name, legendtab, add_col_legend, filterlegendbar, filtercampo, create_filter, filter_finsh, filterlegendpie, filterlegendcard,barconcat,update_barconcat
 from pool_energy_app.common.views import expired
 from pool_energy_app.config.views import users, usereditindex, update_user, list_dashboards
 
@@ -183,6 +183,9 @@ urlpatterns = [
     path('dashboard/row/graph/update/bar', update_bar,name='update_graph_bar'),
     path('dashboard/row/graph/add/<int:id>/bar/legend', legend,name='legend_bar'),
     path('dashboard/row/graph/create/bar/legend', create_bar_legend,name='create_bar_legend'),
+
+    path('dashboard/row/graph/add/<int:id>/barconcat', barconcat,name='barconcat'),
+    path('dashboard/row/graph/update/barconcat', update_barconcat,name='update_graph_barconcat'),
 
     #Bar name
     path('dashboard/row/graph/add/<int:id>/bar/name', namebar,name='name_bar'),

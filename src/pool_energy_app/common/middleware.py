@@ -23,7 +23,6 @@ class UsersPermissions():
         #Comprueba si no es un usuario anonimo para redirects
         if str(request.user) != 'AnonymousUser' :
             if str(request.path).startswith('/accounts/login'):
-                print('redirigiendo')
                 return redirect('/')
         else:
             if str(request.path).startswith('/accounts'):
@@ -34,11 +33,6 @@ class UsersPermissions():
         if str(request.user) != 'AnonymousUser':
            #  lConnectors = .objects.filter(user__pk=nId).values_list('id',flat=True)
             perm_tuple=request.user.get_permissions()
-            print('.................')
-            print('.................')
-            print('.................')
-            print('.................')
-            #print(perm_tuple)
             sep_path=request.path.split('/')
             if str(request.path).startswith('/accounts'):
                 return None
@@ -76,7 +70,6 @@ class UsersPermissions():
                             if nMarketplace == 0:
                                 return redirect("/forms/marketplace/{}/".format(list(lastConnector)[0]))
                             else:
-                                print('redirigiendo')
                                 return None
             elif not(request.user.is_superuser):
                 #No tiene rol le asigna uno
@@ -90,11 +83,9 @@ class UsersPermissions():
                 else:
                     return None
             else:
-                print('el ultimo elif')
                 return None
 
             #prueba = Group.objects.all().values_list('id', flat=True)
-            print(sep_path)
             j=0
             for i in sep_path:
                 sep_path[j]= i.replace('social_application','socialapplication')
@@ -108,9 +99,7 @@ class UsersPermissions():
             else:
                 new_route=''
                 return None
-            print(new_route)
-            print('******************************')
-            print('******************************')
+
             if new_route in perm_tuple:
                 return None
             elif str(request.path).startswith('/dashboard'):
@@ -151,7 +140,5 @@ class UsersPermissions():
             # elif (str(path)=='forms.download_store'):
             #     return None
             # else:
-            #     print(str(path))
-            #     print('no tiene permisos para ver esto... ')
             #     return redirect('/403/')
 

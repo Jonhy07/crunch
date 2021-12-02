@@ -156,7 +156,6 @@ def deleteRow(request, id):
             return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
 
-
 #Cargar la info principal para el dashboard dinamico
 def print_dashboard(id_dashboard, request, min, max, edit, delete,tienda,flag,indice):
     tiendas=tienda
@@ -189,7 +188,6 @@ def print_dashboard(id_dashboard, request, min, max, edit, delete,tienda,flag,in
         'flag':flag
     }
     return context
-
 
 
 #Se genera la vista para el dashboard dinamico

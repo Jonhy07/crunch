@@ -96,7 +96,7 @@ class Row(models.Model):
         import pool_energy_app.graphs.models
         graphs=pool_energy_app.graphs.models.Graph.objects.filter(row=self.id).order_by('id')
         for object in graphs:
-            if(object.type_graph.id>0 and object.type_graph.id<5):
+            if ((object.type_graph.id>0 and object.type_graph.id<5) or object.type_graph.id==7):
                 if(object.finish):
                     name.append(object.name())
         return name
@@ -127,7 +127,7 @@ class Row(models.Model):
         import pool_energy_app.graphs.models
         graphs=pool_energy_app.graphs.models.Graph.objects.filter(row=self.id).order_by('id')
         for object in graphs:
-            if(object.type_graph.id>0 and object.type_graph.id<5):
+            if ((object.type_graph.id>0 and object.type_graph.id<5) or object.type_graph.id==7):
                 if(object.finish):
                     option.append(object.getGraph(min, max,Tienda))
         return option
