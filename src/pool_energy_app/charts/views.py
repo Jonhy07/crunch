@@ -193,8 +193,12 @@ def print_dashboard(id_dashboard, request, min, max, edit, delete,tienda,flag,in
 #Se genera la vista para el dashboard dinamico
 def dashboard(request):
     id_dashboard=int(request.GET["id_dashboard"])
-    stores = UserStore.objects.filter(user=request.user.id).values_list('store',flat=True)
-    nTiendas = list(Store.objects.filter(pk__in=[stores]).values_list('name',flat=True))
+    if (request.user.rol_id == 4):
+        nTiendas = list(Store.objects.filter(status='Activado').values_list('name',flat=True))
+    else:
+        stores = UserStore.objects.filter(user=request.user.id).values_list('store',flat=True)
+        nTiendas = list(Store.objects.filter(pk__in=[stores],status='Activado').values_list('name',flat=True))        
+
     getTienda =request.GET.get("tienda","")
     flag=False
     indice=0
