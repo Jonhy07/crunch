@@ -262,7 +262,7 @@ class Graph (models.Model):
 
         #Jonathan
         #__temp=('{"title": {"text": "'+self.title+'", "subtext": "'+yrow.type_calculate.name+'", "left": "center"}, "tooltip": { "trigger": "item" }, "legend": { "orient": "vertical", "top": "10%", "right": "right" ,"containLabel": "true", "textStyle":{"width": "70","overflow":"truncate"} },"dataZoom": [{"startValue": "'+ _json["xAxis"]["data"][0] +'"}, {"type": "inside"}], "grid": {"left": "3%","right": "15%","bottom": "18%", "top": "13%","containLabel": "true"},"toolbox": {"feature": {"saveAsImage": { },"dataZoom": {"yAxisIndex": "none"} } }, "yAxis": {"type": "value"} }')
-        __temp=('{"title": {"text": "'+self.title+'", "subtext": "'+yrow.type_calculate.name+'", "left": "center"}, "tooltip": { "trigger": "item" }, "legend": { "orient": "vertical", "top": "10%", "right": "right" ,"containLabel": "true", "textStyle":{"width": "70","overflow":"truncate"} }, "grid": {"left": "3%","right": "15%","bottom": "18%", "top": "13%","containLabel": "true"},"toolbox": {"feature": {"saveAsImage": { },"dataZoom": {"xAxisIndex": "none"} } }, "yAxis": {"type": "value"} }')
+        __temp=('{"title": {"text": "'+self.title+'", "subtext": "'+yrow.type_calculate.name+'", "left": "center"}, "tooltip": { "trigger": "item" }, "legend": { "type":"scroll","orient": "vertical", "top": "10%", "right": "right" ,"containLabel": "true", "textStyle":{"width": "70","overflow":"truncate"} }, "grid": {"left": "3%","right": "15%","bottom": "18%", "top": "13%","containLabel": "true"},"toolbox": {"feature": {"saveAsImage": { },"dataZoom": {"xAxisIndex": "none"} } }, "yAxis": {"type": "value"} }')
 
         __final=json.loads(str(__temp))
         __final["xAxis"]=[]
@@ -298,7 +298,7 @@ class Graph (models.Model):
         html+="'url': '"+url+"',"
         html+="contentType: 'application/json; charset=utf-8',"
         html+="'data':JSON.stringify(" +json.dumps(_json)+"),"
-        html+="success: function (data) { $('#"+self.name()+"c').text(data['data'].toFixed(2));}"
+        html+="success: function (data) { $('#"+self.name()+"c').text(data['data']);}"
         html+="})"
         html+="</script>"
         return html

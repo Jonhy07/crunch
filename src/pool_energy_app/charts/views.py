@@ -10,7 +10,8 @@ from pool_energy_app.users.models import Rol
 from pool_energy_app.forms.models import UserStore,Store
 from .models import Dashboard, Row, User_Dashboard
 import json
-
+from datetime import date, timedelta
+import calendar
 # Vista principal
 def graphics(request):
     option=[]
@@ -65,7 +66,6 @@ def graphics(request):
     }
     return render(request, "dashboard/graphics.html", context)
 
-
 #Crear un nuevo dashboard
 def newdashboard(request):
     form = DashboardForm(request.POST or None, request.FILES or None)
@@ -114,7 +114,6 @@ def deleteDashboardconfig(request, id):
         messages.success(request, "Se elimino el dashboard exitosamente." )
         return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
-
 #Crea una nueva fila
 def newrow(request):
     id_dashboard=int(request.POST["id_dashboard"])
@@ -138,7 +137,6 @@ def newrow(request):
             messages.error(request, "Hubo un error la fila.")
             return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
-
 #Eliminar una fila
 def deleteRow(request, id):
     row_delete=Row.objects.filter(id=id)
@@ -155,9 +153,14 @@ def deleteRow(request, id):
             messages.success(request, "Se elimino la fila exitosamente." )
             return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
-
 #Cargar la info principal para el dashboard dinamico
 def print_dashboard(id_dashboard, request, min, max, edit, delete,tienda,flag,indice):
+    if not min:
+        start_day_of_prev_month = date.today().replace(day = 1)
+        last_day_of_prev_month=start_day_of_prev_month.replace(day=list(calendar.monthrange(date.today().year, date.today().month))[1])
+        min=str(start_day_of_prev_month)
+        max=str(last_day_of_prev_month)
+
     tiendas=tienda
     if len(tienda)>1:
         tienda = tienda[indice]
