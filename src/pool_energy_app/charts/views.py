@@ -156,11 +156,14 @@ def deleteRow(request, id):
 #Cargar la info principal para el dashboard dinamico
 def print_dashboard(id_dashboard, request, min, max, edit, delete,tienda,flag,indice):
     if not min:
-        start_day_of_prev_month = date.today().replace(day = 1)
-        last_day_of_prev_month=start_day_of_prev_month.replace(day=list(calendar.monthrange(date.today().year, date.today().month))[1])
+        if (id_dashboard==2 or id_dashboard==3):
+            start_day_of_prev_month= date.today() - timedelta(days=30)
+            last_day_of_prev_month= date.today()# - timedelta(days=30)
+        else:
+            start_day_of_prev_month = date.today().replace(day = 1)
+            last_day_of_prev_month=start_day_of_prev_month.replace(day=list(calendar.monthrange(date.today().year, date.today().month))[1])
         min=str(start_day_of_prev_month)
         max=str(last_day_of_prev_month)
-
     tiendas=tienda
     if len(tienda)>1:
         tienda = tienda[indice]
