@@ -3,23 +3,151 @@
 {% load crispy_forms_tags %}
 
 {% block extra_css %}
+<style>
+	@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+	*{
+		font-family: Poppins;
+		color: #FFD4CD;
+	}
+
+	body
+	{
+		background-image: url("https://crunchdna.com/wp-content/uploads/2021/11/noise-35.png"), url("https://crunchdna.com/wp-content/uploads/2021/09/bg-nograin.jpg")!important;
+		background-repeat: repeat, no-repeat!important;
+		background-size: auto, cover!important;
+		background-color:  #100C7B!important;
+	}
+
+	.card {
+		background-color: transparent;
+		background-image: linear-gradient(160deg,#FFFFFF45 0%,#FFFFFF00 160%);
+		border-radius: 10px;
+		box-shadow: 0 0 8px 0 rgb(0 0 0 / 25%);
+	}
+
+	.border-bottom {
+		border-bottom: 1px solid #66579161!important;
+	}
+
+	.form-control {
+		color: #ffd4cd!important;
+		background-color: #3b306d!important;
+		border-color: #60588a!important;
+		outline: 0!important;
+	}
+
+	.form-control:focus {
+		color: #ffd4cd;
+		background-color: #3b306d;
+		border-color: #60588a;
+		outline: 0;
+	}
+
+	.btn {
+		background: linear-gradient(286.07deg, #FF5A8C -27.13%, #FF7F58 80.7%);
+		border-radius: 100px;
+		color: #FFE3DE;
+		border: none;
+		text-transform: uppercase;
+		font-weight: 700;
+		letter-spacing: 1.5px;
+	}
+
+	h1 {
+		font-family: Poppins;
+		font-style: normal;
+		font-weight: bold;
+		font-size: 26.7245px;
+		line-height: 32px;
+		color: #FF6060;
+	}
+
+	h5 {
+		font-family: Poppins;
+		font-style: normal;
+		font-weight: bold;
+		font-size: 26.7245px;
+		line-height: 32px;
+		color: #FF6060;
+	}
+
+	.modal-content {
+		background-image: url("https://crunchdna.com/wp-content/uploads/2021/11/noise-35.png"), url("https://crunchdna.com/wp-content/uploads/2021/09/bg-nograin.jpg");
+		background-repeat: repeat, no-repeat;
+		background-size: auto, cover;
+		background-color:  #100C7B;
+		border-radius: 8px;
+	}
+
+	.alert-danger {
+		color: #f6cdc9!important;
+		background-color: #716393;
+		border-color: #8a80a5;
+	}
+	table {
+		border-color:#ffffff30!important;
+	}
+	.table thead th{
+		border-bottom: 1px solid #ffffff30!important;
+	}
+	.page-item.disabled .page-link {
+		color: #FFD4CD!important;
+		pointer-events: none;
+		background-color: transparent!important;
+		border-color: transparent!important;
+	}
+	.page-item.active .page-link {
+		  background-color: #ff6960!important;
+		border-color: #ff6960!important;
+	}
+	.pagination a {
+		line-height: 1.08!important;
+	}
+	.text-muted {
+		color: #FFD4CD!important;
+		text-transform: uppercase;
+		font-weight: 500;
+	}
+	.avatar-lg.rounded-circle.bg-success.border-success.border.shadow {
+    	background: linear-gradient(94.23deg, #ffffff73 -15.75%, rgb(255 255 255 / 0%) 262.75%);
+    	filter: drop-shadow(0px 6px 20px rgba(0, 0, 0, 0.25));
+	}
+	.form-select{
+		background-color: rgba(255, 255, 255, 0.091);
+		border: 1px solid rgba(255, 255, 255, 0.187);
+		box-sizing: border-box;
+		border-radius: 2px;
+		color: #ffd4cd;
+		background-image: url('/static/images/arrow-d.svg');
+		background-repeat: no-repeat;
+		background-position: right 0.9	rem center;
+		background-size: 16px 14px;
+	}
+
+	.input-group-sm,.input-group	{
+		background-color: rgba(255, 255, 255, 0.091)!important;
+		border: 1px solid rgba(255, 255, 255, 0.187)!important;
+		box-sizing: border-box!important;
+		border-radius: 4px!important;
+		color: #ffd4cd!important;
+		background-repeat: no-repeat!important;
+		background-position: right 0.9	rem center;
+		background-size: 14px 10px;
+	}
+	option {
+		color: #FF6060;
+	}
+</style>
 {% endblock %}
 
 {% block content %}
 <!-- Start Content-->
 <div class="container-fluid" style="padding-left: 2em;">
 
-<!--a  href="javascript:window.location.reload()" class="btn btn-blue btn-sm ms-2">
-    <i class="mdi mdi-autorenew"></i>
-</a-->
-<!--a href="javascript: void(0);" class="btn btn-blue btn-sm ms-1">
-    <i class="mdi mdi-filter-variant"></i>
-</a-->
-                      
-    <!-- start page title -->
     <div class="row" style="padding-top: 3em;">
         <div class="col-7">
-            <h2 style="margin: 0%; padding-bottom: 0.2em;">{{dashboard.name}}</h2>
+            <h1 class="page-title"><b>{{dashboard.name}}</b></h1>
             <p>{{dashboard.description}}</p>
         </div>
 		{% if flag %}
@@ -30,14 +158,10 @@
 	                <option value="{{s}}">{{s}}</option>
 	                {% endfor %}
 	            </select>
-	        </div>
+			</div>
 		{% endif %}
         <div class="col-2">
-            <!--div class="row">
-                <label class="control-label" for="datepicker-start" style="text-align:initial;margin: 0.2em; margin-left: -0.5em;">Fecha Inicio</label>
-                <input class="form-control" id="example-date" type="date" name="date">
-            </div-->
-            <div class="input-group input-group-sm" style="padding-top: 0.5em;">
+            <div class="input-group input-group">
                 <input type="text" class="form-control border-0 shadow" id="dash-daterange">
                 <span class="input-group-text bg-blue border-blue text-white">
                     <i class="mdi mdi-calendar-range"></i>

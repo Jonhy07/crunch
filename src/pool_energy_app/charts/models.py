@@ -17,7 +17,7 @@ class Dashboard(models.Model):
         html=''
         row=Row.objects.filter(dashboard=self).order_by('id')
         for object in row:
-            html+="<br><div class=\"row\">"
+            html+="<br><div class=\"row\" style=\"margin-bottom:2em;\">"
             html+=object.to_html(min, max,Tienda)
             html+="</div>"
         return "%s" % (html)
@@ -162,7 +162,7 @@ class Row(models.Model):
             html+="</div>"
             html+="</div>"
 
-            html+="<div class=\"col-1 toolsrow hideme\" style=\"height: "+str(self.high.value)+"em;\">"
+            html+="<div class=\"col-1 toolsrow hideme\" style=\"height: "+str(self.high.value )+"em;\">"
             html+="<a  class=\"dropdown-item notify-item delete\" title=\"Eliminar Fila\" href=\"/dashboard"+self.get_delete_url()+"\"  onclick=\"return confirm('Esta accion borrara todas las graficas asociadas a la fila')\">"
             html+="<i class=\"bi bi-trash\" style=\"padding-right: 10%;\"></i>"
             html+="Fila</a>"

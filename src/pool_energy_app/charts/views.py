@@ -167,6 +167,7 @@ def print_dashboard(id_dashboard, request, min, max, edit, delete,tienda,flag,in
     tiendas=tienda
     if len(tienda)>1:
         tienda = tienda[indice]
+
     dashboard=Dashboard.objects.filter(id=id_dashboard).first()
     json_name = json.dumps(dashboard.names())
     #Aqui

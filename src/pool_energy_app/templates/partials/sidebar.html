@@ -1,27 +1,22 @@
 {% load static i18n %}
-<!-- ========== Left Sidebar Start ========== -->
-<div class="left-side-menu">
+<!-- <div class="left-side-menu">
     <div class="h-100" data-simplebar>
-        <!-- User box -->
         <div class="user-box text-center">
             <div class="dropdown">
                 <a href="javascript: void(0);" class="text-dark dropdown-toggle h5 mt-2 mb-1 d-block"
                     data-bs-toggle="dropdown">{{user}}</a>
                 <div class="dropdown-menu user-pro-dropdown">
-                    <!-- item-->
                     {% if  user.rol.get_rol == 'Admin' %}
                         <a href="{% url 'admin:index' %}" class="dropdown-item notify-item">
                             <i class="fe-settings me-1"></i>
                             <span>Admin Panel</span>
                         </a>
                     {% endif %}
-                    <!-- item-->
                     <a href="{% url 'account_change_password' %}" class="dropdown-item notify-item">
                         <i class="fe-lock me-1"></i>
                         <span>Password Change</span>
                     </a>
 
-                    <!-- item-->
                     <a href="{% url 'account_logout' %}" class="dropdown-item notify-item">
                         <i class="fe-log-out me-1"></i>
                         <span>Logout</span>
@@ -32,7 +27,6 @@
             <p class="text-muted">{{request.user.rol}}</p>
         </div>
 
-        <!--- Sidemenu -->
         <div id="sidebar-menu">
             <ul id="side-menu">
                 <li class="menu-title">Cliente</li>
@@ -62,8 +56,6 @@
                             </ul>
                         </div>
                     {% endif %}
-                    <!-- ------------------------------------------------------------------------ -->
-                    <!-- ------------------------------------------------------------------------ -->
                     {% if 'forms.view_store' in user.get_permissions %}
                         <a href="#sidebarStores" data-bs-toggle="collapse">
                             <i data-feather="shopping-cart"></i>
@@ -89,8 +81,6 @@
                             </ul>
                         </div>
                     {% endif %}
-                    <!-- ------------------------------------------------------------------------ -->
-                    <!-- ------------------------------------------------------------------------ -->
                     {% if 'forms.view_item' in user.get_permissions %}
                         <a href="#sidebarItems" data-bs-toggle="collapse">
                             <i data-feather="gift"></i>
@@ -260,8 +250,6 @@
                             <span> Admin Panel </span>
                         </a>
                     </li>
-                    <!-- ------------------------------------------------------------------------ -->
-                    <!-- ------------------------------------------------------------------------ -->
                     <li>
                         <a href="#sidebarApplications" data-bs-toggle="collapse">
                             <i data-feather="codepen"></i>
@@ -304,8 +292,6 @@
                             </ul>
                         </div>
                     </li>
-                    <!-- ------------------------------------------------------------------------ -->
-                    <!-- ------------------------------------------------------------------------ -->
                     <li>
                         <a href="#sidebarUsers" data-bs-toggle="collapse">
                             <i data-feather="unlock"></i>
@@ -332,9 +318,6 @@
                 {% endif %}
             </ul>
         </div>
-        <!-- End Sidebar -->
         <div class="clearfix"></div>
     </div>
-    <!-- Sidebar -left -->
-</div>
-<!-- Left Sidebar End -->
+</div> -->

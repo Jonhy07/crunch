@@ -356,7 +356,6 @@ def legend(request, id):
             'legend': legend,
             'eje':eje,
             'eje2':eje2
-
         }
         return render(request, "graph/bar/legend.html", context)
 

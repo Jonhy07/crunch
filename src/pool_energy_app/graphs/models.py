@@ -99,7 +99,7 @@ class Graph (models.Model):
             html+='</div>'
             html+='</div>'
         else:
-            html+='<div class="widget-rounded-circle card" style="height: '+str(self.row.high.value)+'em;">'
+            html+='<div class="widget-rounded-circle card" style="height: '+str(self.row.high.value + 2)+'em;">'
             html+='<div class="card-body">'
 
             html+='<div class="dropdown float-end toolsrow hideme">'
@@ -144,7 +144,6 @@ class Graph (models.Model):
             html+=self.getcard2(min, max,Tienda)
         return "%s" % (html)
 
-
     def getGraph(self, min=None, max=None,Tienda=None):
         variable=""
         if(self.type_graph.id==4):
@@ -175,18 +174,16 @@ class Graph (models.Model):
         _json["series"][0]['type']= 'pie'
         _json["series"][0]['radius']= '50%'
         itemStyle={}
-        itemStyle['shadowBlur']='10'
-        itemStyle['shadowOffsetX']='0'
-        itemStyle['shadowColor']='rgba(0, 0, 0, 0.5)'
+        #itemStyle['shadowBlur']='10'
+        #itemStyle['shadowOffsetX']='0'
+        #itemStyle['shadowColor']='rgba(0, 0, 0, 0.5)'
         emphasis={}
         emphasis['itemStyle']=itemStyle
         _json["series"][0]['emphasis']= emphasis
-        __temp=('{"title": {"text": "'+self.title+'", "subtext": "'+yrow.type_calculate.name+'", "left": "center" }, "tooltip": { "trigger": "item" }, "legend": { "orient": "vertical", "left": "left", "textStyle":{"width": "70","overflow":"truncate"} }, "toolbox": {"feature": {"saveAsImage": { } } } }')
+        __temp=('{"title": {"text": "'+self.title+'", "textStyle":{"color":"rgba(255, 212, 205,1)"}, "left": "center" }, "tooltip": { "trigger": "item" }, "legend": { "orient": "vertical", "left": "left", "textStyle":{"width": "70","overflow":"truncate"} }, "toolbox": {"feature": {"saveAsImage": { } } } }')
         __final=json.loads(str(__temp))
         __final["series"]=_json["series"]
         return (str(__final).replace("'", "\""))
-
-
 
     def getbar(self, min=None, max=None,Tienda=None):
         yrow=YRow.objects.filter(graph=self).first()
@@ -203,6 +200,8 @@ class Graph (models.Model):
         if(self.type_graph.id==1):
             for element in _json["series"]:
                 element["type"]='line'
+                element["color"]=["#FF6060"]
+#            print(_json["series"])
         else:#(self.type_graph.id==2):
             for element in _json["series"]:
                 element["type"]='bar'
@@ -211,16 +210,18 @@ class Graph (models.Model):
         #__temp=('{"title": {"text": "'+self.title+'", "subtext": "'+yrow.type_calculate.name+'", "left": "center"}, "tooltip": { "trigger": "item" }, "legend": { "orient": "vertical", "top": "10%", "right": "right" ,"containLabel": "true", "textStyle":{"width": "70","overflow":"truncate"} },"dataZoom": [{"startValue": "'+ _json["xAxis"]["data"][0] +'"}, {"type": "inside"}], "grid": {"left": "3%","right": "15%","bottom": "18%", "top": "13%","containLabel": "true"},"toolbox": {"feature": {"saveAsImage": { },"dataZoom": {"yAxisIndex": "none"} } }, "yAxis": {"type": "value"} }')
         if (self.type_agrupation==1):
             if(self.type_graph.id==3):
-                __temp=('{"title": {"text": "'+self.title+'", "subtext": "'+yrow.type_calculate.name+'", "left": "center"}, "tooltip": { "trigger": "item" }, "legend": { "orient": "vertical", "top": "10%", "right": "right" ,"containLabel": "true", "textStyle":{"width": "70","overflow":"truncate"} }, "grid": {"left": "3%","right": "15%","bottom": "18%", "top": "13%","containLabel": "true"},"toolbox": {"feature": {"saveAsImage": { },"dataZoom": {"xAxisIndex": "none"} } }, "yAxis": {"type": "value"} }')
+                __temp=('{"title": {"text": "'+self.title+'", "subtext": "'+yrow.type_calculate.name+'", "left": "center","textStyle":"{"color" :"rgba(255, 0, 0, 1)"}"}, "tooltip": { "trigger": "item" }, "legend": { "orient": "vertical", "top": "10%", "right": "right" ,"containLabel": "true", "textStyle":{"width": "70","overflow":"truncate"} }, "grid": {"left": "3%","right": "15%","bottom": "18%", "top": "13%","containLabel": "true"},"toolbox": {"feature": {"saveAsImage": { },"dataZoom": {"xAxisIndex": "none"} } }, "yAxis": {"type": "value"},"xAxis": [{"nameTextStyle": { "color": "rgba(242, 8, 8, 1)"} }]} }')
             else:
                 __temp=('{"title": {"text": "'+self.title+'", "subtext": "'+yrow.type_calculate.name+'", "left": "center"}, "tooltip": { "trigger": "item" }, "legend": { "orient": "vertical", "top": "10%", "right": "right" ,"containLabel": "true", "textStyle":{"width": "70","overflow":"truncate"} }, "grid": {"left": "3%","right": "15%","bottom": "18%", "top": "13%","containLabel": "true"},"toolbox": {"feature": {"saveAsImage": { },"dataZoom": {"yAxisIndex": "none"} } }, "yAxis": {"type": "value"} }')
         else:
             if(self.type_graph.id==3):
                 __temp=('{"title": {"text": "'+self.title+'", "left": "center"}, "tooltip": { "trigger": "item" }, "legend": { "orient": "vertical", "top": "10%", "right": "right" ,"containLabel": "true", "textStyle":{"width": "70","overflow":"truncate"} }, "grid": {"left": "3%","right": "15%","bottom": "18%", "top": "13%","containLabel": "true"},"toolbox": {"feature": {"saveAsImage": { },"dataZoom": {"xAxisIndex": "none"} } }, "yAxis": {"type": "value"} }')
             else:
-                __temp=('{"title": {"text": "'+self.title+'", "left": "center"}, "tooltip": { "trigger": "item" }, "legend": { "orient": "vertical", "top": "10%", "right": "right" ,"containLabel": "true", "textStyle":{"width": "70","overflow":"truncate"} }, "grid": {"left": "3%","right": "15%","bottom": "18%", "top": "13%","containLabel": "true"},"toolbox": {"feature": {"saveAsImage": { },"dataZoom": {"yAxisIndex": "none"} } }, "yAxis": {"type": "value"} }')
+                __temp=('{"title": {"text": "'+self.title+'", "left": "center","textStyle":{"color":"rgba(255, 212, 205,1)"}}, "tooltip": { "trigger": "item" }, "legend": { "orient": "vertical", "top": "10%", "right": "right" ,"containLabel": "true", "textStyle":{"width": "70","overflow":"truncate"} }, "grid": {"left": "3%","right": "15%","bottom": "18%", "top": "13%","containLabel": "true"},"toolbox": {"feature": {"saveAsImage": { },"dataZoom": {"yAxisIndex": "none"} } }, "yAxis": {"type": "value"} }')
+
 
         __final=json.loads(str(__temp))
+
         __final["xAxis"]=[]
         __final["series"]=_json["series"]
         listaF={'data':[]}
@@ -232,7 +233,14 @@ class Graph (models.Model):
                 fecha=str(i[:4])+'-'+str(i[4:6])+'-'+str(i[6:])
             listaF['data'].append(fecha)
         __final["xAxis"]=listaF
-        
+
+        if "yAxis" in __final:
+            __final["yAxis"]['axisLabel']={}
+            __final["yAxis"]['axisLabel']['color']="rgba(255, 212, 205,1)"
+
+        __final["xAxis"]['axisLabel']={}
+        __final["xAxis"]['axisLabel']['color']="rgba(255, 212, 205,1)"
+
         if(self.type_graph.id==3):
             yAxis=__final["xAxis"]
             xAxis=__final["yAxis"]
@@ -240,9 +248,10 @@ class Graph (models.Model):
             __final["xAxis"]=xAxis
 
         #Jonathan
+        print('-----------')
+        print(__final)
+        print('-----------')
         return str((str(__final).replace("'", "\"")).replace("None", "0"))
-
-
 
     def getbarconcat(self, min=None, max=None,Tienda=None):
         yrow=YRow.objects.filter(graph=self).first()
@@ -259,13 +268,15 @@ class Graph (models.Model):
         for element in _json["series"]:
             element["type"]='bar'
             element["stack"]='Total'
+            # element["label"]='{\'color\':\'rgba(255, 255, 255, 1)\'}'
 
         #Jonathan
         #__temp=('{"title": {"text": "'+self.title+'", "subtext": "'+yrow.type_calculate.name+'", "left": "center"}, "tooltip": { "trigger": "item" }, "legend": { "orient": "vertical", "top": "10%", "right": "right" ,"containLabel": "true", "textStyle":{"width": "70","overflow":"truncate"} },"dataZoom": [{"startValue": "'+ _json["xAxis"]["data"][0] +'"}, {"type": "inside"}], "grid": {"left": "3%","right": "15%","bottom": "18%", "top": "13%","containLabel": "true"},"toolbox": {"feature": {"saveAsImage": { },"dataZoom": {"yAxisIndex": "none"} } }, "yAxis": {"type": "value"} }')
-        __temp=('{"title": {"text": "'+self.title+'", "subtext": "'+yrow.type_calculate.name+'", "left": "center"}, "tooltip": { "trigger": "item" }, "legend": { "type":"scroll","orient": "vertical", "top": "10%", "right": "right" ,"containLabel": "true", "textStyle":{"width": "70","overflow":"truncate"} }, "grid": {"left": "3%","right": "15%","bottom": "18%", "top": "13%","containLabel": "true"},"toolbox": {"feature": {"saveAsImage": { },"dataZoom": {"xAxisIndex": "none"} } }, "yAxis": {"type": "value"} }')
+        __temp=('{"title": {"text": "'+self.title+'", "textStyle":{"color":"rgba(255, 212, 205, 1)"}, "left": "center"}, "tooltip": { "trigger": "item" }, "legend": { "type":"scroll","orient": "vertical", "top": "10%", "right": "right" ,"containLabel": "true", "textStyle":{"width": "70","overflow":"truncate"} }, "grid": {"left": "3%","right": "15%","bottom": "18%", "top": "13%","containLabel": "true"},"toolbox": {"feature": {"saveAsImage": { },"dataZoom": {"xAxisIndex": "none"} } }, "yAxis": {"type": "value"} }')
 
         __final=json.loads(str(__temp))
         __final["xAxis"]=[]
+        #__final["color"]=[]
         __final["series"]=_json["series"]
         listaF={'data':[]}
         for i in _json["xAxis"]['data']: 
@@ -276,15 +287,19 @@ class Graph (models.Model):
                 fecha=str(i[:4])+'-'+str(i[4:6])+'-'+str(i[6:])
             listaF['data'].append(fecha)
         __final["xAxis"]=listaF
-        
-        #Jonathan
+
+        if "yAxis" in __final:
+            __final["yAxis"]['axisLabel']={}
+            __final["yAxis"]['axisLabel']['color']="rgba(255, 212, 205,1)"
+
+        __final["xAxis"]['axisLabel']={}
+        __final["xAxis"]['axisLabel']['color']="rgba(255, 212, 205,1)"
+
         return str((str(__final).replace("'", "\"")).replace("None", "0"))
-
-
 
     def getcard(self, min=None, max=None,Tienda=None):
         if(self.type_icon):
-            return '<div class="row"><div class="col-4"><div class="avatar-lg rounded-circle bg-'+self.type_icon.color+' border-'+self.type_icon.color+' border shadow" style="height: 3.5rem; width: 3.5rem;"><i class="'+self.type_icon.icon+' font-26 avatar-title text-white"></i></div></div><div class="col-8"><div class="text-end"><h3 class="text-dark mt-1"><span id="'+self.name()+'c" data-plugin="counterup"></span></h3><p class="text-muted mb-1 text-truncate">'+self.title+'</p></div></div></div>'
+            return '<div class="row"><div class="col-4"><div class="avatar-lg rounded-circle shadow" style="height: 3.5rem; width: 3.5rem; background: linear-gradient(94.23deg, #ffffff73 -15.75%, rgb(255 255 255 / 0%) 262.75%); filter: drop-shadow(0px 6px 20px rgba(0, 0, 0, 0.25));"><i class="'+self.type_icon.icon+' font-26 avatar-title text-crunch" style="color:"#ffffff69""></i></div></div><div class="col-8"><div class="text-end"><h3 class="text-dark mt-1"><span id="'+self.name()+'c" data-plugin="counterup"></span></h3><p class="text-muted mb-1 text-truncate">'+self.title+'</p></div></div></div>'
         return '<div class="row"><div class="col-4"></div><div class="col-8"><div class="text-end"><h3 class="text-dark mt-1"><span id="'+self.name()+'c" data-plugin="counterup"></span></h3><p class="text-muted mb-1 text-truncate">'+self.title+'</p></div></div></div>'
 
     def getcard2(self, min=None, max=None,Tienda=None):
@@ -311,7 +326,7 @@ class Graph (models.Model):
         #_json=json.loads(response.content)
         head=YRow.objects.filter(graph=self).order_by('id')
         #data=_json['data']
-        html='<h4 class="header-title" style="padding-bottom: 0.6em;">'+self.title+'</h4>'
+        html='<h4 class="text-muted" style="padding-bottom: 0.6em;">'+self.title+'</h4>'
         html+='<table id="'+self.name()+'" class="table dt-responsive nowrap w-100">'
         #html='<table id="datatable-buttons" class="table table-striped dt-responsive nowrap w-100">'
         html+='<thead>'

@@ -106,7 +106,6 @@
 		color: #FF6060;
 	}
 </style>
-
 {% endblock %}
 
 {% block content %}
@@ -114,13 +113,13 @@
 <div class="container-fluid">
 
     <!-- start page title -->
-    <div class="row" style="padding-top: 0.6em;">
-        <div class="col-12">
-            <div class="page-title-box">
-                <h4 class="page-title"><b>LISTA DE USUARIOS</b></h4>
-            </div>
-        </div>
-    </div>
+	<div class="row" style="padding-top: 0.6em;">
+		<div class="col-12">
+			<div class="page-title-box">
+				<h1 class="page-title"><b>Enviar Invitación</b></h1>
+			</div>
+		</div>
+	</div>   
     <!-- end page title --> 
 
     <!--Body-->
@@ -128,52 +127,33 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="card-widgets">
-                        <a href="javascript: void(0);" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
-                        <a data-bs-toggle="collapse" href="#cardCollpase1" role="button" aria-expanded="false" aria-controls="cardCollpase1"><i class="mdi mdi-minus"></i></a>
-                        <a href="javascript: void(0);" data-toggle="remove"><i class="mdi mdi-close"></i></a>
-                    </div>
-                    <h4 class="header-title mb-0">Usuarios</h4>
-
-                    <div id="cardCollpase1" class="collapse pt-3 show">
-                        <table id="list_users" class="table dt-responsive nowrap w-100">
-                            <thead>
-                                <tr>            
-                                    <th>Id</th>
-                                    <th>Correo</th>
-                                    <th>Usuario</th>
-                                    <th>Expiración</th>
-                                    <th>Rol</th>
-                                    <th style="text-align: end; padding-right: 3em;">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for user in usuarios %}
-                                <tr>
-                                    <td>{{ user.id }}</td>
-                                    <td>{{ user.email }}</td>
-                                    <td>{{ user }}</td>
-                                    <td>{{ user.expirate }}</td>
-                                    <td>{{ user.rol }}</td>
-                                    <td style="text-align: end; padding-right: 3em;">
-                                        <a href="{% url 'config_user'%}?user={{ user.id }}" class="btn btn-xs btn-light"><i class="mdi mdi-pencil"></i></a>
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div> 
-                </div> 
-            </div>
+                    <form action="#" method="POST" enctype="multipart/form-data">
+                       {% csrf_token %}
+                       {% if form.errors %}
+                          {% for field in form %}
+                              {% for error in field.errors %}
+                                  <div class="alert alert-danger">
+                                      <strong>{{ error|escape }}</strong>
+                                  </div>
+                              {% endfor %}
+                          {% endfor %}
+                          {% for error in form.non_field_errors %}
+                              <div class="alert alert-danger">
+                                  <strong>{{ error|escape }}</strong>
+                              </div>
+                          {% endfor %}
+                      {% endif %}
+                       {{ form | crispy }}
+                      <button type="submit" class="btn btn-primary">{{Text}}</button>
+                    </form>
+                </div>
+              </div>
         </div>
     </div> 
+    <!--End Body-->       
 </div>
 <!-- container -->
 {% endblock %}
 {% block extra_javascript %}
-<script>
-    var a=$('#list_users').DataTable({scrollY:'50em',scrollCollapse:!0,lengthChange:!1,language:{paginate:{previous:"<i class='mdi mdi-chevron-left'>",next:"<i class='mdi mdi-chevron-right'>"}},drawCallback:function(){$(".dataTables_paginate > .pagination").addClass("pagination-rounded")}});
-    a.buttons().container().appendTo('#list_users_wrapper .col-md-6:eq(0)')
-</script>
 
 {% endblock%}

@@ -130,10 +130,10 @@ class UserStoreModelForm(forms.ModelForm):
 		fields = ['user', 'store']
 
 class HomologationModelForm(forms.ModelForm):
-	store1 = ModelChoiceField(queryset=Store.objects.filter(),  empty_label='Please select an store',widget=CustomSelect(attrs={'class': 'form-control'}))
+	#store1 = ModelChoiceField(queryset=Store.objects.filter(),  empty_label='Please select an store',widget=CustomSelect(attrs={'class': 'form-control'}))
 	item1 = ModelChoiceField(queryset=Item.objects.filter(),  empty_label='Please select an item',widget=CustomSelect(attrs={'class': 'form-control','id':'item1'}))
 	item2 = ModelChoiceField(queryset=Item.objects.filter(),  empty_label='Please select an item',widget=CustomSelect(attrs={'class': 'form-control','id':'item2'}))
-	store2 = ModelChoiceField(queryset=Store.objects.filter(),  empty_label='Please select an store',widget=CustomSelect(attrs={'class': 'form-control'}))
+	#store2 = ModelChoiceField(queryset=Store.objects.filter(),  empty_label='Please select an store',widget=CustomSelect(attrs={'class': 'form-control'}))
 	class Meta:
 		model = Homologation
 		fields = ['item1','item2']

@@ -111,7 +111,7 @@ def send_invitation(request):
 		'form' : form
 		,'Text':'Invitar'
 	}
-	return render(request, "forms/application/add.html", context)
+	return render(request, "forms/invitacion/enviar.html", context)
 
 def list_social_application(request):
 	forms = SocialApplication.objects.all()
