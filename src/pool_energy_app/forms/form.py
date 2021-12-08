@@ -73,12 +73,6 @@ class StoreModelForm(forms.ModelForm):
 		model = Store
 		fields = ['client', 'name', 'blueprint', 'status']
 
-class ItemModelForm(forms.ModelForm):
-	store = ModelChoiceField(queryset=Store.objects.all(),  empty_label='Please select a store')
-	class Meta:
-		model = Item
-		fields = ['store', 'ktp', 'sku', 'nombre', 'plataforma', 'status','costo','marketplace']
-
 class LinioStoreModelForm(forms.ModelForm):
 	store = ModelChoiceField(queryset=Store.objects.filter(),  empty_label='Please select a store')
 	class Meta:
@@ -107,6 +101,13 @@ class CustomSelect(forms.Select):
         if value in self.custom_attrs:
             option['attrs'].update({k: v for k, v in self.custom_attrs[value].items()})
         return option
+
+class ItemModelForm(forms.ModelForm):
+	# store = ModelChoiceField(queryset=Store.objects.all(),  empty_label='Please select a store',widget=CustomSelect(attrs={'class': 'form-select'}))
+	store = ModelChoiceField(queryset=Store.objects.all(),  empty_label='Please select a store')
+	class Meta:
+		model = Item
+		fields = ['store', 'ktp', 'sku', 'nombre', 'plataforma', 'status','costo','marketplace']
 
 class ItemActionModelForm(forms.ModelForm):
 	store = ModelChoiceField(queryset=Store.objects.filter(),  empty_label='Please select a store')

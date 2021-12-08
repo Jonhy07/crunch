@@ -430,8 +430,6 @@ def delete_item(request, id):
 		item_to_delete[0].delete()
 	return HttpResponseRedirect("/forms/list_item")
 
-#---------------------------------LinioStore-----------------------------------------
-
 def list_liniostore(request, id):
 	#SocialApplicationPermission.objects.filter(social_application_id=sa.id):
 	forms = LinioStore.objects.filter(store_id=id)

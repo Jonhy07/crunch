@@ -13,7 +13,12 @@
 		.dropdown-item:focus, .dropdown-item:hover{
 			background: linear-gradient(94.23deg, rgba(255, 255, 255, 0.12) -15.75%, rgba(255, 255, 255, 0) 262.75%);
 		}
-
+		.logo-box {
+			width: 135px;
+		}
+		.nav-user {
+			padding: 0 5px!important;
+		}
 </style>
 {% endblock %}
 <!-- Topbar Start -->
@@ -320,8 +325,6 @@
 		{% endif %}
 
 
-
-
 		{% if  user.rol.get_rol == 'Admin' %}
 			<ul class="list-unstyled topnav-menu mb-0">
 				<li class="dropdown notification-list topbar-dropdown">
@@ -333,7 +336,6 @@
 				</li>
 			</ul>
 		{% endif %}
-
 
 
 		{% if 'forms.view_item' in user.get_permissions %}

@@ -1,7 +1,6 @@
 {% extends "pool_base.html" %}
 {% load static i18n %}
 {% load crispy_forms_tags %}
-
 {% block extra_css %}
 	<style>
 		@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
@@ -27,7 +26,7 @@
 		}
 
 		.border-bottom {
-    		border-bottom: 1px solid #66579161!important;
+			border-bottom: 1px solid #66579161!important;
 		}
 
 		.form-control {
@@ -37,7 +36,17 @@
 			border-radius: 4px;
 			color: #ffd4cd;
 		}
-
+		.form-select{
+			background-color: rgba(255, 255, 255, 0.091);
+			border: 1px solid rgba(255, 255, 255, 0.187);
+			box-sizing: border-box;
+			border-radius: 4px;
+			color: #ffd4cd;
+			background-image: url('/static/images/arrow-d.svg');
+			background-repeat: no-repeat;
+			background-position: right 0.9	rem center;
+			background-size: 14px 10px;
+		}
 		.form-control:focus {
 			color: #ffd4cd;
 			background-color: #3b306d;
@@ -92,6 +101,9 @@
 		.table thead th{
 			border-bottom: 1px solid #ffffff30!important;
 		}
+		option {
+			color: #FF6060;
+		}
 	</style>
 {% endblock %}
 
@@ -114,7 +126,6 @@
 		<div class="col-12">
 			<div class="card">
 				<div class="card-body">
-
 					<form action="#" method="POST" enctype="multipart/form-data">
 						{% csrf_token %}
 						<div class="row">
@@ -123,7 +134,7 @@
 									<i class="mdi mdi-plus-circle-outline"></i> Nuevo
 								</a>
 							</div>
-							<div class="col" style="margin-top:auto;margin-bottom:auto;text-align:right;">
+							<div class="col" style="margin-top:auto;margin-bottom:auto;">
 								<input
 								type="file"
 								title="Upload excel file"
@@ -136,15 +147,20 @@
 								style="padding:5px; border-radius: 2px; cursor: pointer;"
 								>
 							</div>
+							
+							<div class="align-items-end flex-column col" style="text-align:right;" >
+								<form method="GET" class="mt-2">
+									{{ Filtro.form }}
+									<button type="submit" class="btn btn-info ml-2 mr-3">Filtrar <i class="fas fa-search"> </i> </button>
+								</form>
+							</div>
 						</div>
+
+
 					</form>
 
-					<div class="d-flex align-items-end flex-column" >
-						<form method="GET" class="mt-2">
-							{{ Filtro.form }}
-							<button type="submit" class="btn btn-info ml-2 mr-3">	Buscar <i class="fas fa-search"> </i> </button>
-						</form>
-					</div>
+
+
 					<div id="cardCollpase1" class="collapse pt-3 show">
 						<table id="list_users" class="table dt-responsive nowrap w-100">
 						<!-- <table class="table-centered table-nowrap table-borderless mb-0" style="width:100%;"> -->
@@ -185,7 +201,7 @@
 							</tbody>
 						</table>
 					</div>
-					<nav aria-label="Page navigation example"></nav>
+					<!-- <nav aria-label="Page navigation example"></nav>
 						<ul class="pagination justify-content-end">
 							<li class="page-item">
 								{% if objects_list.has_previous %}
@@ -205,7 +221,7 @@
 								{% endif %}
 							</li>
 						</ul>
-					</nav>
+					</nav> -->
 				</div> 
 			</div>
 		</div>
