@@ -204,7 +204,6 @@ class Graph (models.Model):
                 element["type"]='line'
                 element["color"]=[colores[i]]
                 i +=1
-#            print(_json["series"])
         else:#(self.type_graph.id==2):
             for element in _json["series"]:
                 element["type"]='bar'
@@ -221,7 +220,6 @@ class Graph (models.Model):
                 __temp=('{"title": {"text": "'+self.title+'", "left": "center"}, "tooltip": { "trigger": "item" }, "legend": { "orient": "vertical", "top": "10%", "right": "right" ,"containLabel": "true", "textStyle":{"width": "70","overflow":"truncate"} }, "grid": {"left": "3%","right": "15%","bottom": "18%", "top": "13%","containLabel": "true"},"toolbox": {"feature": {"saveAsImage": { },"dataZoom": {"xAxisIndex": "none"} } }, "yAxis": {"type": "value"} }')
             else:
                 __temp=('{"title": {"text": "'+self.title+'", "left": "center","textStyle":{"color":"rgba(255, 212, 205,1)"}}, "tooltip": { "trigger": "item" }, "legend": { "orient": "vertical", "top": "10%", "right": "right" ,"containLabel": "true", "textStyle":{"width": "70","overflow":"truncate"} }, "grid": {"left": "3%","right": "15%","bottom": "18%", "top": "13%","containLabel": "true"},"toolbox": {"feature": {"saveAsImage": { },"dataZoom": {"yAxisIndex": "none"} } }, "yAxis": {"type": "value"} }')
-
 
         __final=json.loads(str(__temp))
 
@@ -240,7 +238,7 @@ class Graph (models.Model):
         if "yAxis" in __final:
             __final["yAxis"]['axisLabel']={}
             __final["yAxis"]['axisLabel']['color']="rgba(255, 212, 205,1)"
-
+            __final["yAxis"]["splitLine"]={"show":"true","lineStyle":{"color":"rgba(150,150,150,1)"}}
         __final["xAxis"]['axisLabel']={}
         __final["xAxis"]['axisLabel']['color']="rgba(255, 212, 205,1)"
 
@@ -250,10 +248,7 @@ class Graph (models.Model):
             __final["yAxis"]=yAxis
             __final["xAxis"]=xAxis
 
-        #Jonathan
-        print('-----------')
-        print(__final)
-        print('-----------')
+
         return str((str(__final).replace("'", "\"")).replace("None", "0"))
 
     def getbarconcat(self, min=None, max=None,Tienda=None):
