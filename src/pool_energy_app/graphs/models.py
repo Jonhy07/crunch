@@ -197,10 +197,13 @@ class Graph (models.Model):
 
         _json["xAxis"]['type']= 'category'
         _json["xAxis"]['boundaryGap']= 'true'
+        colores=["#FF6060","#F2CB05"]
+        i=0
         if(self.type_graph.id==1):
             for element in _json["series"]:
                 element["type"]='line'
-                element["color"]=["#FF6060"]
+                element["color"]=[colores[i]]
+                i +=1
 #            print(_json["series"])
         else:#(self.type_graph.id==2):
             for element in _json["series"]:
