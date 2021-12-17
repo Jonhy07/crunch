@@ -13,11 +13,8 @@
 		.dropdown-item:focus, .dropdown-item:hover{
 			background: linear-gradient(94.23deg, rgba(255, 255, 255, 0.12) -15.75%, rgba(255, 255, 255, 0) 262.75%);
 		}
-		.logo-box {
-			width: 135px;
-		}
-		.nav-user {
-			padding: 0 5px!important;
+		a.btn.btn-primary.collapsed {
+			border-bottom: 2px solid #FF6060;
 		}
 </style>
 {% endblock %}
@@ -74,6 +71,101 @@
                 </span>
             </a>
         </div>
+
+		{% if user.rol.get_rol == 'Optimizer' %}
+		<div class="d-flex justify-content-center">
+			<ul class="list-unstyled topnav-menu mb-0 center">
+				<li class="dropdown notification-list topbar-dropdown">
+					<a class="nav-link nav-user me-0 waves-effect waves-light" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+						<img src="{% static 'images/genio.png' %}" alt="" width="50%">
+						Genio
+					</a>
+				</li>
+			</ul>
+			<ul class="list-unstyled topnav-menu mb-0">
+				<li class="dropdown notification-list topbar-dropdown">
+					<a class="nav-link nav-user me-0 waves-effect waves-light" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+						<img src="{% static 'images/inventario.png' %}" alt="" width="50%">
+						Inventario
+					</a>
+				</li>
+			</ul>
+			<ul class="list-unstyled topnav-menu mb-0">
+				<li class="dropdown notification-list topbar-dropdown">
+					<a class="nav-link nav-user me-0 waves-effect waves-light" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+						<img src="{% static 'images/pagos.png' %}" alt="" width="50%">
+						Pagos
+					</a>
+				</li>
+			</ul>
+			<ul class="list-unstyled topnav-menu mb-0">
+				<li class="dropdown notification-list topbar-dropdown">
+					<a class="nav-link nav-user me-0 waves-effect waves-light" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+						<img src="{% static 'images/radiografia.png' %}" alt="" width="50%">
+						Radiografía
+					</a>
+				</li>
+			</ul>
+		</div>
+		<div class="collapse" id="collapseExample">
+			<div class="card card-body">
+
+				<ul class="list-unstyled topnav-menu mb-0">
+					<li class="dropdown notification-list topbar-dropdown">
+						<a class="nav-link nav-user me-0 waves-effect waves-light" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+							<img src="{% static 'images/radiografia.png' %}" alt="" width="50%">
+							Tiendas
+						</a>
+					</li>
+				</ul>
+
+			</div>
+		</div>
+		{% else %}
+
+
+
+		<!-- <ul class="list-unstyled topnav-menu mb-0">
+			<li class="dropdown notification-list topbar-dropdown">
+				<a class="nav-link nav-user me-0 waves-effect waves-light" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+					<img src="{% static 'images/genio.png' %}" alt="" width="50%">
+					Genio
+				</a>
+			</li>
+			  <div class="collapse" id="collapseExample">
+				<div class="card card-body">
+				  Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+				</div>
+			  </div>
+		</ul> -->
+
+		<!-- {% if 'forms.view_client' in user.get_permissions %}
+			<ul class="list-unstyled topnav-menu mb-0">
+				<li class="dropdown notification-list topbar-dropdown">
+					<a class="nav-link dropdown-toggle nav-user me-0 waves-effect waves-light" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+						<span class="pro-user-name ms-1">
+							Clientes
+						</span>
+					</a>
+					<div class="dropdown-menu dropdown-menu-end profile-dropdown">
+						{% if 'forms.view_client' in user.get_permissions %}
+							<a href="{% url 'list_client' %}" class="dropdown-item notify-item">
+								<i class="mdi mdi-table"></i>
+								<span>Lista</span>
+							</a>
+						{% endif %}
+						{% if 'forms.add_client' in user.get_permissions %}
+							<a href="{% url 'create_client' %}" class="dropdown-item notify-item">
+								<i class="mdi mdi-plus-circle-outline"></i>
+								<span>Agregar</span>
+							</a>
+						{% endif %}
+					</div>
+				</li>
+			</ul>
+		{% endif %} -->
+
+
 
 		{% if 'forms.view_client' in user.get_permissions %}
 			<ul class="list-unstyled topnav-menu mb-0">
@@ -231,7 +323,6 @@
 				</li>
 			</ul>
 		{% endif %} -->
-
 		{% if 'forms.view_action' in user.get_permissions %}
 			<ul class="list-unstyled topnav-menu mb-0">
 				<li class="dropdown notification-list topbar-dropdown">
@@ -357,7 +448,7 @@
 				</li>
 			</ul>
 		{% endif %}
-
+		{% endif %}
         <div class="clearfix"></div>
     </div>
 </div>

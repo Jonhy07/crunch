@@ -265,7 +265,7 @@ class Graph (models.Model):
         _json["xAxis"]['boundaryGap']= 'true'
         for element in _json["series"]:
             element["type"]='bar'
-            element["stack"]='Total'
+            #element["stack"]='Total'
             # element["label"]='{\'color\':\'rgba(255, 255, 255, 1)\'}'
 
         #Jonathan
@@ -292,7 +292,7 @@ class Graph (models.Model):
 
         __final["xAxis"]['axisLabel']={}
         __final["xAxis"]['axisLabel']['color']="rgba(255, 212, 205,1)"
-
+        print(__final)
         return str((str(__final).replace("'", "\"")).replace("None", "0"))
 
     def getcard(self, min=None, max=None,Tienda=None):

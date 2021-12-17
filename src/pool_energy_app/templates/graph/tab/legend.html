@@ -122,16 +122,16 @@
                                 <button type="submit" class="btn btn-primary" style="width: 8em;">{{Text}}</button>
                             </div>
                         </form>
-                        <div class="mb-3" style="padding-top: 1em;"> 
-                            <div id="div_id_filtros" class="form-check"> 
-                                <input type="checkbox" name="filtros" class="checkboxinput form-check-input" id="filtros"> 
-                                <label for="id_filtros" class="form-check-label requiredField">
-                                    Habilitar filtros<span class="asteriskField"></span> 
-                                </label> 
-                            </div> 
-                        </div>
                         <div style="padding-top: 0.5em;">
                             <form action="{% url 'create_tab_name' %}" method="POST", enctype="multipart/form-data">
+								<div class="mb-3" style="padding-top: 1em;"> 
+									<div id="div_id_filtros" class="form-check"> 
+										<input type="checkbox" name="filtros" class="checkboxinput form-check-input" id="filtros"> 
+										<label for="id_filtros" class="form-check-label requiredField">
+											Habilitar filtros<span class="asteriskField"></span>
+										</label>
+									</div>
+								</div>
                                 {% csrf_token %}
                                 <input type="hidden" name="id_graph" value={{ graph.id }}>
                                 <div style="text-align: center;">
