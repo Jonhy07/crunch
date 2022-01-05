@@ -253,14 +253,13 @@ def resp_token(request):
 	#return redirect('/forms/store/list')
 	#if msg == 'Se agregó conector exitosamente' and partner_id:
 	if msg == 'Se agregó conector exitosamente' and store_connector.id and partner_id:
-		url = reverse('oauth:marketplace_list', kwargs={'id': conn_id.id})
+		url = reverse('marketplace_list_new', kwargs={'id': conn_id.id})
 		return HttpResponseRedirect(url)
 	else:
 		return render(request, "store/list.html", context)
 
 def marketplace_list(request, id):
 	objects_list = []
-	
 	if request.method == 'POST':  # When the form is submitted
 		todo = dict(request.POST)
 		
@@ -293,4 +292,4 @@ def marketplace_list(request, id):
 		'connector_id' : id
 	}
 	
-	return render(request, "oauth/token/marketplace_list.html", context )
+	return render(request, "account/firstConnector/newMarketplace.html", context )

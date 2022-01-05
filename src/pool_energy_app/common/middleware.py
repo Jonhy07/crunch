@@ -31,7 +31,6 @@ class UsersPermissions():
                 return redirect('/accounts/login/')
 
         if str(request.user) != 'AnonymousUser':
-           #  lConnectors = .objects.filter(user__pk=nId).values_list('id',flat=True)
             perm_tuple=request.user.get_permissions()
             sep_path=request.path.split('/')
             if str(request.path).startswith('/accounts'):
@@ -41,7 +40,6 @@ class UsersPermissions():
             elif str(request.path) == '/403/':
                 return None
             elif (request.user.rol_id != 4):
-                #pendiente de incluir la conexión aouth
                 nId=request.user.id
                 lConnectors = Connector.objects.filter(user__pk=nId).values_list('id',flat=True)
                 nConnectors = Connector.objects.filter(user__pk=nId).count()
