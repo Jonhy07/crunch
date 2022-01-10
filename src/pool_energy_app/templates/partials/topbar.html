@@ -410,7 +410,7 @@
 		{% endif %}
 
 
-		{% if 'forms.view_item' in user.get_permissions %}
+		{% if user.rol.get_rol == 'Client' or user.rol.get_rol == 'Optimizer' or user.rol.get_rol == 'Admin' %}
 			<ul class="list-unstyled topnav-menu mb-0">
 				<li class="dropdown notification-list topbar-dropdown">
 					<a class="nav-link dropdown-toggle nav-user me-0 waves-effect waves-light" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
