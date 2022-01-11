@@ -127,9 +127,11 @@
 		<div class="col-12">
 			<div class="card">
 				<div class="card-body">
-					<a href="/forms/create_store" class="btn btn-blue btn">
-						<i class="mdi mdi-plus-circle-outline"></i> Nuevo
-					</a>
+					{% if 'forms.add_store' in user.get_permissions %}
+						<a href="/forms/create_store" class="btn btn-blue btn">
+							<i class="mdi mdi-plus-circle-outline"></i> Nuevo
+						</a>
+					{% endif %}
 					<div id="cardCollpase1" class="collapse pt-3 show">
 						<table id="list_users" class="table dt-responsive nowrap w-100">
 						<!-- <table class="table-centered table-nowrap table-borderless mb-0" style="width:100%;"> -->
