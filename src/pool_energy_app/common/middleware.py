@@ -39,7 +39,7 @@ class UsersPermissions():
                 return None
             elif str(request.path) == '/403/':
                 return None
-            elif (request.user.rol_id != 4):
+            elif (request.user.rol_id == 0):
                 nId=request.user.id
                 lConnectors = Connector.objects.filter(user__pk=nId).values_list('id',flat=True)
                 nConnectors = Connector.objects.filter(user__pk=nId).count()
@@ -70,7 +70,8 @@ class UsersPermissions():
                             else:
                                 return None
             elif not(request.user.is_superuser):
-                #No tiene rol le asigna uno
+                print('asignandole un usuario')
+				#No tiene rol le asigna uno
                 if (request.user.rol.id==0):
                     rol=Rol.objects.filter(id=1).first()
                     d = timedelta(days=rol.duration)
