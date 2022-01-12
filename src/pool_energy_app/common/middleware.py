@@ -72,7 +72,7 @@ class UsersPermissions():
                                 return None
             elif not(request.user.is_superuser):
                 print('asignandole un usuario')
-				#No tiene rol le asigna uno
+                #No tiene rol le asigna uno
                 if (request.user.rol.id==0):
                     rol=Rol.objects.filter(id=1).first()
                     d = timedelta(days=rol.duration)
@@ -81,6 +81,10 @@ class UsersPermissions():
                     request.user.save()
                     #Si tiene rol Verifica la expiracion
                 else:
+                    stores = UserStore.objects.filter(user=request.user.id).values_list('store',flat=True)
+                    nTiendas = Store.objects.filter(pk__in=[stores]).count()
+                    if (request.user.rol.id==3 and str(request.path).startswith('/dashboard/') and nTiendas == 0):
+                        return redirect('/')
                     return None
             else:
                 return None
