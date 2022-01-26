@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from datetime import datetime
 from django.contrib.auth.models import Group,Permission
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.hashers import make_password
 
 class Rol(models.Model):
     id=models.AutoField(primary_key=True)
@@ -45,9 +46,8 @@ class User (AbstractUser):
         dashboards=pool_energy_app.charts.models.Dashboard.objects.filter(rol__lte=self.rol).exclude(Assigned_dashboard__user=self)
         return len(dashboards)
 
-    #def save(self,*args,**kwargs):
-     #   t=Rol(self.rol).duration
-      #  d = timedelta(days=t)
-       # if not self.id:
-        #    self.expirate = datetime.now() + d
-         #   super(User,self).save(*args,**kwargs)
+    def save(self,*args,**kwargs):
+        if not self.id:
+            if 'argon2$argon2i' not in self.password:
+               self.password=make_password(self.password)
+            super(User,self).save(*args,**kwargs)

@@ -750,3 +750,13 @@ def delete_homologation(request, id):
 	if item_to_delete.exists():
 		item_to_delete[0].delete()
 	return HttpResponseRedirect("/forms/list_homologation")
+
+def view_notifications(request):
+	API_V2_STR = os.environ.get('API_V2_STR')
+	context = {
+		'API_V2_STR' : API_V2_STR
+	}
+	return render(request, "forms/genio/view.html",context)
+
+def view_notificationsDetail(request, id):
+	print('ok')

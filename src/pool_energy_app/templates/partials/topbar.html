@@ -16,7 +16,7 @@
 		a.btn.btn-primary.collapsed {
 			border-bottom: 2px solid #FF6060;
 		}
-</style>
+	</style>
 {% endblock %}
 <!-- Topbar Start -->
 <div class="navbar-custom" style="background-color: none !important">
@@ -72,48 +72,48 @@
             </a>
         </div>
 
-		{% if user.rol.get_rol == 'Optimizerr' %}
-		<div class="d-flex justify-content-center">
-			<ul class="list-unstyled topnav-menu mb-0 center">
-				<li class="dropdown notification-list topbar-dropdown">
-					<a class="nav-link nav-user me-0 waves-effect waves-light" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-						<img src="{% static 'images/genio.png' %}" alt="" width="50%">
-						Genio
-					</a>
-				</li>
-				<li class="dropdown notification-list topbar-dropdown">
-					<a class="nav-link nav-user me-0 waves-effect waves-light" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-						<img src="{% static 'images/inventario.png' %}" alt="" width="50%">
-						Inventario
-					</a>
-				</li>
-				<li class="dropdown notification-list topbar-dropdown">
-					<a class="nav-link nav-user me-0 waves-effect waves-light" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-						<img src="{% static 'images/pagos.png' %}" alt="" width="50%">
-						Pagos
-					</a>
-				</li>
-				<li class="dropdown notification-list topbar-dropdown">
-					<a class="nav-link nav-user me-0 waves-effect waves-light" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-						<img src="{% static 'images/radiografia.png' %}" alt="" width="50%">
-						Radiografía
-					</a>
-				</li>
-			</ul>
-		</div>
-
-		<div class="collapse" id="collapseExample">
-			<div class="card card-body">
-				<ul class="list-unstyled topnav-menu mb-0">
+		{% if user.rol.get_rol == 'Optimizer' %}
+			<div class="d-flex justify-content-center">
+				<ul class="list-unstyled topnav-menu mb-0 center">
+					<li class="dropdown notification-list topbar-dropdown">
+						<a class="nav-link nav-user me-0 waves-effect waves-light" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+							<img src="{% static 'images/genio.png' %}" alt="" width="50%">
+							Genio
+						</a>
+					</li>
+					<li class="dropdown notification-list topbar-dropdown">
+						<a class="nav-link nav-user me-0 waves-effect waves-light" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+							<img src="{% static 'images/inventario.png' %}" alt="" width="50%">
+							Inventario
+						</a>
+					</li>
+					<li class="dropdown notification-list topbar-dropdown">
+						<a class="nav-link nav-user me-0 waves-effect waves-light" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+							<img src="{% static 'images/pagos.png' %}" alt="" width="50%">
+							Pagos
+						</a>
+					</li>
 					<li class="dropdown notification-list topbar-dropdown">
 						<a class="nav-link nav-user me-0 waves-effect waves-light" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
 							<img src="{% static 'images/radiografia.png' %}" alt="" width="50%">
-							Tiendas
+							Radiografía
 						</a>
 					</li>
 				</ul>
 			</div>
-		</div>
+
+			<div class="collapse" id="collapseExample">
+				<div class="card card-body">
+					<ul class="list-unstyled topnav-menu mb-0">
+						<li class="dropdown notification-list topbar-dropdown">
+							<a class="nav-link nav-user me-0 waves-effect waves-light" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+								<img src="{% static 'images/radiografia.png' %}" alt="" width="50%">
+								Tiendas
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
 		{% else %}
 
 
@@ -436,6 +436,17 @@
 					<a class="nav-link nav-user me-0 waves-effect waves-light" href="https://datastudio.google.com/reporting/629c74b9-0c2b-4046-8a2d-7516d53ca13e/page/p_az7cd1womc" role="button" aria-haspopup="false" aria-expanded="false">
 						<span class="pro-user-name ms-1">
 							Optimización
+						</span>
+					</a>
+				</li>
+			</ul>
+		{% endif %}
+		{% if  user.rol.get_rol == 'Admin' %}
+			<ul class="list-unstyled topnav-menu mb-0">
+				<li class="dropdown notification-list topbar-dropdown">
+					<a class="nav-link nav-user me-0 waves-effect waves-light" href="/genio/notifications" role="button" aria-haspopup="false" aria-expanded="false">
+						<span class="pro-user-name ms-1">
+							Genio
 						</span>
 					</a>
 				</li>

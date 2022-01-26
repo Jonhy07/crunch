@@ -368,8 +368,8 @@ class Graph (models.Model):
         html+="}"
         html+="});"
         html+="table_"+self.name()+".buttons().container().appendTo('#"+self.name()+"_wrapper .col-md-6:eq(0)')"
-        html+="</script>"    
-        return  html
+        html+="</script>"
+        return html
 
 class YRow (models.Model):
     id=models.AutoField(primary_key=True)

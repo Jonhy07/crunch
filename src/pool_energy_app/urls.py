@@ -32,6 +32,7 @@ from pool_energy_app.forms.views import list_monthgoals, create_monthgoals, upda
 from pool_energy_app.forms.views import list_action, create_action, update_action, delete_action
 from pool_energy_app.forms.views import list_itemaction, create_itemaction, update_itemaction, delete_itemaction
 from pool_energy_app.forms.views import list_userstore, create_userstore, update_userstore, delete_userstore
+from pool_energy_app.forms.views import view_notifications,view_notificationsDetail
 from pool_energy_app.forms.views import list_homologation,create_homologation, update_homologation, delete_homologation,itemsStore,itemsS2,itemsStoreAction
 
 #aouth
@@ -122,7 +123,6 @@ urlpatterns = [
 	url(r'forms/itemaction/(?P<id>\d+)/change/', update_itemaction, name='update_itemaction'),#--
 	url(r'forms/itemaction/(?P<id>\d+)/delete/', delete_itemaction, name='delete_itemaction'),#--
 	path('forms/itemaction/cargarStore/', itemsStoreAction, name='cargarStoreAction'),#--
-
 #-----------------------------------------------------------------------UserStore------------------------------------------------------------------------#
 	path('forms/list_userstore', list_userstore, name='list_userstore'),
 	path('forms/create_userstore', create_userstore, name='create_userstore'),
@@ -135,6 +135,12 @@ urlpatterns = [
 	url(r'forms/homologation/(?P<id>\d+)/delete/', delete_homologation, name='delete_homologation'),#--
 	#url(r'^homologation/cargarStore/', itemsStore, name='cargarStore'),
 	#url(r'^homologation/cargar2/',itemsS2, name='cargarS'),
+
+
+	url(r'genio/notifications/', view_notifications, name='view_notifications'),
+
+	# url(r'genio/notificationsDetail/', view_notificationsDetail, name='view_notificationsDetail'),
+
 
 	#############################################
 	################### AOUTH ###################
