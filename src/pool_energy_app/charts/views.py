@@ -165,9 +165,8 @@ def print_dashboard(id_dashboard, request, min, max, edit, delete,tienda,flag,in
         min=str(start_day_of_prev_month)
         max=str(last_day_of_prev_month)
     tiendas=tienda
-    if len(tienda)>1:
+    if (type(tienda) == list):
         tienda = tienda[indice]
-
     dashboard=Dashboard.objects.filter(id=id_dashboard).first()
     json_name = json.dumps(dashboard.names())
     #Aqui
@@ -218,6 +217,7 @@ def dashboard(request):
     if getTienda != "":
         indice = nTiendas.index(getTienda)
         flag=True
+
     min=None
     max=None
     edit=0
@@ -248,6 +248,5 @@ def dashboard(request):
             else:
                 messages.error(request, "No tiene acceso a este lienzo." )
                 return redirect ('/')
-
     context=print_dashboard(id_dashboard, request, min, max, edit, delete,tienda,flag,indice)
     return render(request, "dashboard/dashboard_dinamico.html", context)

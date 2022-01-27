@@ -291,6 +291,7 @@
                 }
             }).change();
         });
+
         $(function() {
             $("#store_select").on('change', function() {
                 var tiendaSelect = document.getElementById("store_select");
@@ -299,6 +300,9 @@
                 var min=0;
                 var store='';
                 var searchParams = new URLSearchParams(window.location.search);
+                console.log('---------------------')
+                console.log(tienda)
+                console.log('---------------------')
                 if(tienda){
                     if (tienda.length > 8)
                     {
@@ -310,7 +314,6 @@
                 }
             }).change();
         });
-
         /*document.querySelector('#example-date').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 var date = $(this).val();
