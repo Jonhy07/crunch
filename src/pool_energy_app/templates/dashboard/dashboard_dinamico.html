@@ -300,13 +300,8 @@
                 var store='';
                 var searchParams = new URLSearchParams(window.location.search);
                 if(tienda){
-                    console.log('primer if')
                     if (tienda.length > 8)
                     {
-                        console.log('segundo if')
-                        console.log('.................')
-                        console.log(tienda)
-                        console.log('.................')
                         searchParams.set("max", max);
                         searchParams.set("min", min);
                         searchParams.set("tienda", tienda);

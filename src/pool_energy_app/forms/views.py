@@ -752,8 +752,33 @@ def delete_homologation(request, id):
 	return HttpResponseRedirect("/forms/list_homologation")
 
 def view_notifications(request):
+	getTienda =request.GET.get("tienda","")
+	stores=[]
+	indice=1
+	flag=False
+	if (request.user.rol_id == 4):
+		nTiendas = list(Store.objects.filter(status='Activado').values_list('name',flat=True))
+	else:
+		stores = UserStore.objects.filter(user=request.user.id).values_list('store',flat=True)
+		nTiendas = list(Store.objects.filter(pk__in=[stores],status='Activado').values_list('name',flat=True))
+
+	if getTienda != "":
+		obtenerStore=Store.objects.get(name=getTienda)
+		indice = obtenerStore.id
+	else:
+		obtenerStore=Store.objects.get(name=nTiendas[1])
+		indice = obtenerStore.id
+	if(len(nTiendas)==1):
+		nTiendas=nTiendas[0]
+		flag=False
+	elif (len(nTiendas)>1):
+		flag=True
+
 	API_V2_STR = os.environ.get('API_V2_STR')
 	context = {
+		'stores':nTiendas,
+		'flag':flag,
+		'indice':indice,
 		'API_V2_STR' : API_V2_STR
 	}
 	return render(request, "forms/genio/view.html",context)

@@ -56,6 +56,9 @@ class UsersPermissions():
                     return None
                 stores = UserStore.objects.filter(user=nId).values_list('store',flat=True)
                 nTiendas = Store.objects.filter(pk__in=[stores]).count()
+                print('--------------------')
+                print(nTiendas)
+                print('--------------------')
                 if nTiendas == 0:
                     return redirect("/forms/newClient/")
                 else:

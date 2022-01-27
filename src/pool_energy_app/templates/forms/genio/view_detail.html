@@ -26,6 +26,12 @@
 			border-radius: 10px;
 			box-shadow: 0 0 8px 0 rgb(0 0 0 / 25%);
 		}
+		.card-header {
+			background-color: transparent;
+			background-image: linear-gradient(160deg,#FFFFFF45 0%,#FFFFFF00 160%);
+			border-radius: 10px;
+			box-shadow: 0 0 8px 0 rgb(0 0 0 / 25%);
+		}
 
 		.border-bottom {
     		border-bottom: 1px solid #66579161!important;
@@ -69,8 +75,8 @@
 			font-family: Poppins;
 			font-style: normal;
 			font-weight: bold;
-			font-size: 26.7245px;
-			line-height: 32px;
+			font-size: 16.7245px;
+			line-height: 12px;
 			color: #FF6060;
 		}
 
@@ -108,8 +114,6 @@
 		}
 	</style>
 {% endblock %}
-
-
 
 {% block content %}
 
@@ -151,6 +155,11 @@
 				responseCut = items
 
 				str_html = `<div class="card">
+									<div class="text-right">
+										<h5>
+										${fecha}
+										</h5>
+									</div>
 									<div class="card-body">
 									<p class="card-text">${response['mensaje']}</p>
 									<hr/>
