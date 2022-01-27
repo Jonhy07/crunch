@@ -136,10 +136,11 @@ urlpatterns = [
 	#url(r'^homologation/cargarStore/', itemsStore, name='cargarStore'),
 	#url(r'^homologation/cargar2/',itemsS2, name='cargarS'),
 
+	#path('check_submanifest/detail/<int:id>/<int:fecha>/<int:id>', check_submanifest_detail, name='check_submanifest_detail'),
 
 	url(r'genio/notifications/', view_notifications, name='view_notifications'),
 
-	# url(r'genio/notificationsDetail/', view_notificationsDetail, name='view_notificationsDetail'),
+	url(r'genio/notificationsDetail/(?P<store>[\w-]+)/(?P<fecha>[\w-]+)/(?P<funcion>[\w-]+)/', view_notificationsDetail, name='view_notificationsDetail'),
 
 
 	#############################################

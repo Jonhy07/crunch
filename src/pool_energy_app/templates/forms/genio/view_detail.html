@@ -1,0 +1,188 @@
+{% extends "pool_base.html" %}
+{% load static i18n %}
+{% load crispy_forms_tags %}
+
+
+{% block extra_css %}
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+		*{
+			font-family: Poppins;
+			color: #FFD4CD;
+		}
+
+		body
+		{
+			background-image: url("https://crunchdna.com/wp-content/uploads/2021/11/noise-35.png"), url("https://crunchdna.com/wp-content/uploads/2021/09/bg-nograin.jpg")!important;
+			background-repeat: repeat, no-repeat!important;
+			background-size: auto, cover!important;
+			background-color:  #100C7B!important;
+		}
+
+		.card {
+			background-color: transparent;
+			background-image: linear-gradient(160deg,#FFFFFF45 0%,#FFFFFF00 160%);
+			border-radius: 10px;
+			box-shadow: 0 0 8px 0 rgb(0 0 0 / 25%);
+		}
+
+		.border-bottom {
+    		border-bottom: 1px solid #66579161!important;
+		}
+
+		.form-control {
+			background: rgba(255, 255, 255, 0.091);
+			border: 1px solid rgba(255, 255, 255, 0.187);
+			box-sizing: border-box;
+			border-radius: 4px;
+			color: #ffd4cd;
+		}
+
+		.form-control:focus {
+			color: #ffd4cd;
+			background-color: #3b306d;
+			border-color: #60588a;
+			outline: 0;
+		}
+
+		.btn {
+			background: linear-gradient(286.07deg, #FF5A8C -27.13%, #FF7F58 80.7%);
+			border-radius: 100px;
+			color: #FFE3DE;
+			border: none;
+			text-transform: uppercase;
+			font-weight: 700;
+			letter-spacing: 1.5px;
+		}
+
+		h1 {
+			font-family: Poppins;
+			font-style: normal;
+			font-weight: bold;
+			font-size: 26.7245px;
+			line-height: 32px;
+			color: #FF6060;
+		}
+
+		h5 {
+			font-family: Poppins;
+			font-style: normal;
+			font-weight: bold;
+			font-size: 26.7245px;
+			line-height: 32px;
+			color: #FF6060;
+		}
+
+		.modal-content {
+			background-image: url("https://crunchdna.com/wp-content/uploads/2021/11/noise-35.png"), url("https://crunchdna.com/wp-content/uploads/2021/09/bg-nograin.jpg");
+			background-repeat: repeat, no-repeat;
+			background-size: auto, cover;
+			background-color:  #100C7B;
+			border-radius: 8px;
+		}
+
+		.alert-danger {
+			color: #f6cdc9!important;
+			background-color: #716393;
+			border-color: #8a80a5;
+		}
+		table {
+			border-color:#ffffff30!important;
+		}
+		.table thead th{
+			border-bottom: 1px solid #ffffff30!important;
+		}
+		.page-item.disabled .page-link {
+			color: #FFD4CD!important;
+			pointer-events: none;
+			background-color: transparent!important;
+			border-color: transparent!important;
+		}
+		.page-item.active .page-link {
+  			background-color: #ff6960!important;
+    		border-color: #ff6960!important;
+		}
+		.pagination a {
+    		line-height: 1.08!important;
+		}
+	</style>
+{% endblock %}
+
+
+
+{% block content %}
+
+<div id="listado">
+
+</div>
+		
+{% endblock %}
+
+{% block extra_javascript %}
+
+<script>
+    $(document).ready( function ()
+    {
+		var context = "{{ API_V2_STR }}";
+		var store = "{{ store }}";
+		var fecha = "{{ fecha }}";
+		var funcion = "{{ funcion }}";
+
+		$.ajax({
+			type: 'POST',
+			dataType: "json",
+			contentType: "application/json",
+			url:`${context}notificaciones_detalle`,
+			data: JSON.stringify({
+				store: store,
+				fecha : fecha,
+				funcion : funcion
+			}),
+			success: function(response){
+
+				var newDiv = document.createElement("div");
+				var elem = document.getElementById('listado');
+
+				var nameFunction=response['funcion']
+				var items=response['items']
+				var fecha=response['fecha']
+
+				responseCut = items
+
+				str_html = `<div class="card">
+									<div class="card-body">
+									<p class="card-text">${response['mensaje']}</p>
+									<hr/>
+									<div class="justify-content-center">`
+
+				for(var k in responseCut) {
+					var sku = responseCut[k]['sku']
+					str_html += `<span class="badge badge-dark" style="margin-right:15px;">${sku}</span>`
+				}
+
+				str_html += `</div>
+							</div>
+							</div>`
+
+				newDiv.innerHTML += str_html
+				elem.appendChild(newDiv)
+
+
+
+
+			},
+			error:function (error){
+				$('#id_value').empty();
+				$('#id_value').append('<option value="" selected="">Please select column.</option>');
+			}
+		})
+	});
+    
+</script>
+{% endblock%}
+
+
+<script>
+var table_id_75 = $('#id_75').DataTable({scrollY:'13.5em',scrollCollapse:!0,lengthChange:!1,buttons:[{extend:'copy',className:'btn-light'},{extend:'print',className:'btn-light'},{extend:'pdf',className:'btn-light'}],language:{paginate:{previous:'<i class="mdi mdi-chevron-left">',next:'<i class="mdi mdi-chevron-right">'}},drawCallback:function(){$('.dataTables_paginate > .pagination').addClass('pagination-rounded')},'processing': true,'serverSide': true,'filter':false,'orderMulti':false,'ajax': 
+	{type: 'POST',url:'http://127.0.0.1:3000/api/v1/charts/tab_front',contentType:'application/json','data': function (d) {return JSON.stringify( {dataset:'ventas_ordenadas',type:'2',columns:[{"field": "DxOrderId"}, {"field": "DxOrderStatus"}, {"field": "DnFechaVenta"}, {"field": "DnQuantityShipped"}, {"field": "DfOrderTotal"}, {"field": "DfShipping"}, {"field": "DfTax"}, {"field": "DfFeeCommission"}, {"field": "DfSubTotal"}, {"field": "DxStoreName"}, {"field": "DxIdDataFrame"}, {"field": "DxFulfillmentChannel"}, {"field": "DxMarketplaceName"}],filters:[{"field": "DxStoreName", "equal": "=", "value": "\"CD91 - Andr\u00f3meda\""}],length:d.length,start:d.start});}}});table_id_75.buttons().container().appendTo('#id_75_wrapper .col-md-6:eq(0)')</script>

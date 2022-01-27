@@ -758,5 +758,12 @@ def view_notifications(request):
 	}
 	return render(request, "forms/genio/view.html",context)
 
-def view_notificationsDetail(request, id):
-	print('ok')
+def view_notificationsDetail(request,store,fecha,funcion):
+	API_V2_STR = os.environ.get('API_V2_STR')
+	context = {
+		'API_V2_STR' : API_V2_STR,
+		'store' : store,
+		'fecha' : fecha,
+		'funcion' : funcion,
+	}
+	return render(request, "forms/genio/view_detail.html",context)
