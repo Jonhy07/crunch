@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from datetime import datetime, timedelta
 from pool_energy_app.users.models import Rol
-from pool_energy_app.forms.models import Marketplace, MarketplaceConnector, Store
+from pool_energy_app.forms.models import Marketplace, MarketplaceConnector, Store, StoreConnector
 from pool_energy_app.forms.models import UserStore
 from pool_energy_app.forms.models import Connector
 from django.contrib.auth.models import Group,Permission
@@ -60,6 +60,7 @@ class UsersPermissions():
                     return redirect("/forms/newClient/")
                 else:
                     lastStore = UserStore.objects.filter(user=nId).order_by('-id').values_list('store',flat=True)[0]
+                    nConnectors = StoreConnector.objects.filter(store_id=lastStore).count()
                     print('--------------------')
                     print(nTiendas)
                     print(lastStore)
