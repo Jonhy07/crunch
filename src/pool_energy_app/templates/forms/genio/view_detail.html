@@ -2,7 +2,6 @@
 {% load static i18n %}
 {% load crispy_forms_tags %}
 
-
 {% block extra_css %}
 	<style>
 		@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
@@ -21,12 +20,6 @@
 		}
 
 		.card {
-			background-color: transparent;
-			background-image: linear-gradient(160deg,#FFFFFF45 0%,#FFFFFF00 160%);
-			border-radius: 10px;
-			box-shadow: 0 0 8px 0 rgb(0 0 0 / 25%);
-		}
-		.card-header {
 			background-color: transparent;
 			background-image: linear-gradient(160deg,#FFFFFF45 0%,#FFFFFF00 160%);
 			border-radius: 10px;
@@ -66,18 +59,19 @@
 			font-family: Poppins;
 			font-style: normal;
 			font-weight: bold;
-			font-size: 26.7245px;
-			line-height: 32px;
-			color: #FF6060;
+			font-size: 14px;
+			color: #ffd4cd;
 		}
 
 		h5 {
 			font-family: Poppins;
 			font-style: normal;
 			font-weight: bold;
-			font-size: 16.7245px;
-			line-height: 12px;
+			font-size: 22.7245px;
+			line-height: 15px;
 			color: #FF6060;
+			margin-right: 22px;
+			margin-top: 22px;
 		}
 
 		.modal-content {
@@ -111,6 +105,42 @@
 		}
 		.pagination a {
     		line-height: 1.08!important;
+		}
+		.form-select{
+			background-color: rgba(255, 255, 255, 0.091);
+			border: 1px solid rgba(255, 255, 255, 0.187);
+			box-sizing: border-box;
+			border-radius: 2px;
+			margin-top: 15px;
+			color: #ffd4cd;
+			background-image: url('/static/images/arrow-d.svg');
+			background-repeat: no-repeat;
+			background-position: right 0.9	rem center;
+			background-size: 16px 14px;
+		}
+		.input-group-sm,.input-group{
+			background-color: rgba(255, 255, 255, 0.091)!important;
+			border: 1px solid rgba(255, 255, 255, 0.187)!important;
+			box-sizing: border-box!important;
+			border-radius: 4px!important;
+			color: #ffd4cd!important;
+			background-repeat: no-repeat!important;
+			background-position: right 0.9	rem center;
+			background-size: 14px 10px;
+		}
+		option {
+			color: #FF6060;
+		}
+		.botones {
+			position: absolute;
+			right: 0;
+			bottom: -38px;
+		}
+		.botones img {
+    		width: 29px;
+		}
+		hr{
+			color:#ffffff30!important;
 		}
 	</style>
 {% endblock %}
@@ -154,21 +184,31 @@
 
 				responseCut = items
 
-				str_html = `<div class="card">
+				str_html = `<div class="card" style="margin-top:25px;">
 									<div class="text-right">
 										<h5>
 										${fecha}
 										</h5>
 									</div>
-									<div class="card-body">
-									<p class="card-text">${response['mensaje']}</p>
+									<div class="card-body" style="margin-top:-25px;">
+										<h1>
+											${response['mensaje']}
+										</h1>
 									<hr/>
 									<div class="justify-content-center">`
 
-				for(var k in responseCut) {
-					var sku = responseCut[k]['sku']
-					str_html += `<span class="badge badge-dark" style="margin-right:15px;">${sku}</span>`
-				}
+					for(var k in responseCut) {
+						var sku = responseCut[k]['sku']
+						var marketplace = responseCut[k]['marketplace']
+						if (marketplace == 'A2EUQ1WTGCTBG2')
+							str_html += `<span class="badge badge-dark" style="margin-right:15px; margin-bottom:10px; border-bottom: 2px solid white; color:#FFD4CD; background-color: transparent; background-image: linear-gradient(160deg,#FFFFFF45 0%,#FFFFFF00 160%); border-radius: 5px; box-shadow: 0 0 8px 0 rgb(0 0 0 / 25%); padding:10px;" >${sku}</span>`
+						else if (marketplace == 'ATVPDKIKX0DER')
+							str_html += `<span class="badge badge-dark" style="margin-right:15px; margin-bottom:10px; border-bottom: 2px solid red; color:#FFD4CD; background-color: transparent; background-image: linear-gradient(160deg,#FFFFFF45 0%,#FFFFFF00 160%); border-radius: 5px; box-shadow: 0 0 8px 0 rgb(0 0 0 / 25%); padding:10px;" >${sku}</span>`
+						else if (marketplace == 'A1AM78C64UM0Y8')
+							str_html += `<span class="badge badge-dark" style="margin-right:15px; margin-bottom:10px; border-bottom: 2px solid green; color:#FFD4CD; background-color: transparent; background-image: linear-gradient(160deg,#FFFFFF45 0%,#FFFFFF00 160%); border-radius: 5px; box-shadow: 0 0 8px 0 rgb(0 0 0 / 25%); padding:10px;" >${sku}</span>`
+						else
+							str_html += `<span class="badge badge-dark" style="margin-right:15px; margin-bottom:10px; border-bottom: 2px solid #F7DC6F; color:#FFD4CD; background-color: transparent; background-image: linear-gradient(160deg,#FFFFFF45 0%,#FFFFFF00 160%); border-radius: 5px; box-shadow: 0 0 8px 0 rgb(0 0 0 / 25%); padding:10px;" >${sku}</span>`
+					}
 
 				str_html += `</div>
 							</div>
@@ -176,9 +216,6 @@
 
 				newDiv.innerHTML += str_html
 				elem.appendChild(newDiv)
-
-
-
 
 			},
 			error:function (error){

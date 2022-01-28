@@ -3,6 +3,8 @@ import pyarrow
 import xlsxwriter
 import pandas as pd
 from io import BytesIO
+import requests
+import json
 
 from .filters import ItemFilter
 from django.conf.urls import url
@@ -775,10 +777,19 @@ def view_notifications(request):
 		flag=True
 
 	API_V2_STR = os.environ.get('API_V2_STR')
+
+	_txt='"store":"{}"'.format(indice)
+	_txt= '{' + _txt + '}' 
+	_json=json.loads(_txt)
+	token=""
+	_headers={'Content-Type':'application/json', 'Autorization':token}
+	response=requests.post(API_V2_STR+'ultima_fecha', data=json.dumps(_json), headers=_headers)
+	fecha=response.json()[0]['fecha']
 	context = {
 		'stores':nTiendas,
 		'flag':flag,
 		'indice':indice,
+		'fecha' :fecha,
 		'API_V2_STR' : API_V2_STR
 	}
 	return render(request, "forms/genio/view.html",context)
