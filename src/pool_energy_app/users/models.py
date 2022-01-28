@@ -4,6 +4,7 @@ from datetime import datetime
 from django.contrib.auth.models import Group,Permission
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.hashers import make_password
+from allauth.account.models import EmailAddress
 
 class Rol(models.Model):
     id=models.AutoField(primary_key=True)
@@ -49,5 +50,11 @@ class User (AbstractUser):
     def save(self,*args,**kwargs):
         if not self.id:
             if 'argon2$argon2i' not in self.password:
-               self.password=make_password(self.password)
+                self.password=make_password(self.password)
+            super(User,self).save(*args,**kwargs)
+            self.user_id=self.id
+            emailAddress1=EmailAddress.objects.create(email=self.email, verified=False, primary=True, user=self)
+            emailAddress1.save()
+            emailAddress1.send_confirmation()
+        else:
             super(User,self).save(*args,**kwargs)
