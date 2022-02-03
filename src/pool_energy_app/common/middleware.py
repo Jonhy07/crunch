@@ -1,3 +1,4 @@
+from urllib.request import Request
 from django.shortcuts import redirect
 from datetime import datetime, timedelta
 from pool_energy_app.users.models import Rol
@@ -72,8 +73,6 @@ class UsersPermissions():
                             else:
                                 return None
             elif not(request.user.is_superuser):
-                print('asignandole un usuario')
-                #No tiene rol le asigna uno
                 if (request.user.rol.id==0):
                     rol=Rol.objects.filter(id=1).first()
                     d = timedelta(days=rol.duration)
@@ -117,7 +116,6 @@ class UsersPermissions():
             elif (str(request.path)=='forms.download_store'):
                 return None
             else:
-                print('no tiene permisos para ver esto... ')
                 return redirect('/403/')
 
             # perm_tuple = request.user.get_group_permissions()
@@ -146,4 +144,3 @@ class UsersPermissions():
             #     return None
             # else:
             #     return redirect('/403/')
-

@@ -316,6 +316,7 @@
 				</li>
 			</ul>
 		{% endif %} -->
+
 		{% if 'forms.view_action' in user.get_permissions %}
 			<ul class="list-unstyled topnav-menu mb-0">
 				<li class="dropdown notification-list topbar-dropdown">
@@ -408,8 +409,7 @@
 			</ul>
 		{% endif %}
 
-
-		{% if user.rol.get_rol == 'Client' or user.rol.get_rol == 'Optimizer' or user.rol.get_rol == 'Admin' %}
+		{% if user.rol.get_rol == 'Client' or user.rol.get_rol == 'Optimizer' or user.rol.get_rol == 'Admin' or user.rol.get_rol == 'Account Manager' %}
 			<ul class="list-unstyled topnav-menu mb-0">
 				<li class="dropdown notification-list topbar-dropdown">
 					<a class="nav-link dropdown-toggle nav-user me-0 waves-effect waves-light" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
@@ -428,7 +428,6 @@
 				</li>
 			</ul>
 		{% endif %}
-
 
 		{% if  user.rol.get_rol == 'Admin' %}
 			<ul class="list-unstyled topnav-menu mb-0">

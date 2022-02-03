@@ -340,67 +340,74 @@ def list_item(request):
 		return render(request, "forms/item/list.html", context)
 	else:
 		excel_file = request.FILES["excel_file"]
-		df = pd.read_excel(excel_file,converters={'ktp':str})
-		if 'Marketplace' in df.columns:
-			df['Marketplace'].fillna(-1,inplace=True)
-		if 'marketplace' in df.columns:
-			df['marketplace'].fillna(-1,inplace=True)
-		numero=0
-		for i in range(df.shape[0]):
-			if (df.iloc[i][1]==-1):
-				numero=i
-				break
-			elif (i==df.shape[0]-1):
-				numero=i+1
-		df=df.iloc[:numero,:]
-		for i in range(df.shape[0]):
-			flag=1
-			try:
-				store=Store.objects.get(name=df.iloc[i][0])
-			except Exception as e:
-				flag=0
-			try:
-				deStore=Item.objects.filter(store_id=store.id,marketplace=df.iloc[i][1])
-				contador=0
-				item={}
-				for j in deStore:
-					if (j.ktp == df.iloc[i][2]):
-						contador+=1
-						item=j
-				if (contador > 1):
+		if not excel_file.name.endswith('.csv'):
+			df = pd.read_excel(excel_file,converters={'ktp':str})
+			if 'Marketplace' in df.columns:
+				df['Marketplace'].fillna(-1,inplace=True)
+			if 'marketplace' in df.columns:
+				df['marketplace'].fillna(-1,inplace=True)
+			numero=0
+			for i in range(df.shape[0]):
+				if (df.iloc[i][1]==-1):
+					numero=i
+					break
+				elif (i==df.shape[0]-1):
+					numero=i+1
+			df=df.iloc[:numero,:]
+			for i in range(df.shape[0]):
+				flag=1
+				try:
+					store=Store.objects.get(name=df.iloc[i][0])
+				except Exception as e:
 					flag=0
-				else:
-					item.costo=float(df.iloc[i][5])
+				try:
+					deStore=Item.objects.filter(store_id=store.id,marketplace=df.iloc[i][1])
+					contador=0
+					item={}
+					for j in deStore:
+						if (j.ktp == df.iloc[i][2]):
+							contador+=1
+							item=j
+					if (contador > 1):
+						flag=0
+					else:
+						item.costo=float(df.iloc[i][5])
 
-			except Exception as e:
-				flag=0
+				except Exception as e:
+					flag=0
 
-			if flag:
-				item.save()
-		forms = Item.objects.all()
-		nPagina=1
-		filtroItems= ItemFilter(request.GET,queryset=forms)
-		storeId=0
-		ktp=''
-		if 'store' in request.GET :
-			storeId=request.GET['store']
-			if storeId != 0:
-				forms = filtroItems.qs
-		if 'ktp' in request.GET :
-			ktp=request.GET['ktp']
-		paginacion=Paginator(forms,10)
-		pagina1=paginacion.page(1)
-		if 'page' in request.GET :
-			nPagina=int(request.GET['page'])
-		if int(nPagina) >= int(paginacion.num_pages):
+				if flag:
+					item.save()
+			forms = Item.objects.all()
 			nPagina=1
-		pagina1=paginacion.page(nPagina)
-		context = {
-			'objects_list' : pagina1,
-			'Filtro':filtroItems,
-			'storeId':storeId,
-			'ktp':ktp
-		}
+			filtroItems= ItemFilter(request.GET,queryset=forms)
+			storeId=0
+			ktp=''
+			if 'store' in request.GET :
+				storeId=request.GET['store']
+				if storeId != 0:
+					forms = filtroItems.qs
+			if 'ktp' in request.GET :
+				ktp=request.GET['ktp']
+			paginacion=Paginator(forms,10)
+			pagina1=paginacion.page(1)
+			if 'page' in request.GET :
+				nPagina=int(request.GET['page'])
+			if int(nPagina) >= int(paginacion.num_pages):
+				nPagina=1
+			pagina1=paginacion.page(nPagina)
+			context = {
+				'objects_list' : pagina1,
+				'Filtro':filtroItems,
+				'storeId':storeId,
+				'ktp':ktp
+			}
+		else:
+			df = pd.read_csv(excel_file,converters={'ktp':str})
+			print('---------')
+			print(df)
+
+			print('---------')
 		return render(request, "forms/item/list.html", context)
 
 def create_item(request):
@@ -524,7 +531,9 @@ def list_monthgoals(request):
 				if flag:
 					MonthGoals.objects.create(store=store, mes=mes, anio=df.iloc[i,2], fee=df.iloc[i,3],sales_goal=df.iloc[i,4],units_goal=df.iloc[i,5],ads_spend_limit=df.iloc[i,6])
 		except Exception as e:
+			print('---')
 			print(e)
+			print('---')
 		forms = MonthGoals.objects.all()
 		context = {
 			'objects_list' : forms
@@ -733,6 +742,9 @@ def create_homologation(request):
 		'form' : form
 		,'Text' : 'Crear'
 	}
+	print('--*-*-*-*-')
+	print(form)
+	print('--*-*-*-*-')
 	return render(request, "forms/homologation/add.html", context)
 
 def update_homologation(request, id):
@@ -803,3 +815,11 @@ def view_notificationsDetail(request,store,fecha,funcion):
 		'funcion' : funcion,
 	}
 	return render(request, "forms/genio/view_detail.html",context)
+
+def view_history(request,store):
+	API_V2_STR = os.environ.get('API_V2_STR')
+	context = {
+		'API_V2_STR' : API_V2_STR,
+		'store' : store,
+	}
+	return render(request, "forms/genio/view_historico.html",context)
