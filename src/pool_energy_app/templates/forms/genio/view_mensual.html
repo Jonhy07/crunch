@@ -1,0 +1,204 @@
+{% extends "pool_base.html" %}
+{% load static i18n %}
+{% load crispy_forms_tags %}
+
+
+{% block extra_css %}
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+		*{
+			font-family: Poppins;
+			color: #FFD4CD;
+		}
+
+		body
+		{
+			background-image: url("https://crunchdna.com/wp-content/uploads/2021/11/noise-35.png"), url("https://crunchdna.com/wp-content/uploads/2021/09/bg-nograin.jpg")!important;
+			background-repeat: repeat, no-repeat!important;
+			background-size: auto, cover!important;
+			background-color:  #100C7B!important;
+		}
+
+		.card {
+			background-color: transparent;
+			background-image: linear-gradient(160deg,#FFFFFF45 0%,#FFFFFF00 160%);
+			border-radius: 10px;
+			box-shadow: 0 0 8px 0 rgb(0 0 0 / 25%);
+		}
+
+		.border-bottom {
+    		border-bottom: 1px solid #66579161!important;
+		}
+
+		.form-control {
+			background: rgba(255, 255, 255, 0.091);
+			border: 1px solid rgba(255, 255, 255, 0.187);
+			box-sizing: border-box;
+			border-radius: 4px;
+			color: #ffd4cd;
+		}
+
+		.form-control:focus {
+			color: #ffd4cd;
+			background-color: #3b306d;
+			border-color: #60588a;
+			outline: 0;
+		}
+
+		.btn {
+			background: linear-gradient(286.07deg, #FF5A8C -27.13%, #FF7F58 80.7%);
+			border-radius: 100px;
+			color: #FFE3DE;
+			border: none;
+			text-transform: uppercase;
+			font-weight: 700;
+			letter-spacing: 1.5px;
+		}
+
+		h1 {
+			font-family: Poppins;
+			font-style: normal;
+			font-weight: bold;
+			font-size: 26.7245px;
+			line-height: 32px;
+			color: #FF6060;
+		}
+
+		h5 {
+			font-family: Poppins;
+			font-style: normal;
+			font-weight: bold;
+			font-size: 26.7245px;
+			line-height: 32px;
+			color: #FF6060;
+		}
+
+		.modal-content {
+			background-image: url("https://crunchdna.com/wp-content/uploads/2021/11/noise-35.png"), url("https://crunchdna.com/wp-content/uploads/2021/09/bg-nograin.jpg");
+			background-repeat: repeat, no-repeat;
+			background-size: auto, cover;
+			background-color:  #100C7B;
+			border-radius: 8px;
+		}
+
+		.alert-danger {
+			color: #f6cdc9!important;
+			background-color: #716393;
+			border-color: #8a80a5;
+		}
+		table {
+			border-color:#ffffff30!important;
+		}
+		.table thead th{
+			border-bottom: 1px solid #ffffff30!important;
+		}
+		.page-item.disabled .page-link {
+			color: #FFD4CD!important;
+			pointer-events: none;
+			background-color: transparent!important;
+			border-color: transparent!important;
+		}
+		.page-item.active .page-link {
+  			background-color: #ff6960!important;
+    		border-color: #ff6960!important;
+		}
+		.pagination a {
+    		line-height: 1.08!important;
+		}
+		.form-select{
+			background-color: rgba(255, 255, 255, 0.091);
+			border: 1px solid rgba(255, 255, 255, 0.187);
+			box-sizing: border-box;
+			border-radius: 2px;
+			color: #ffd4cd;
+			background-image: url('/static/images/arrow-d.svg');
+			background-repeat: no-repeat;
+			background-position: right 0.9	rem center;
+			background-size: 16px 14px;
+		}
+		.input-group-sm,.input-group{
+			background-color: rgba(255, 255, 255, 0.091)!important;
+			border: 1px solid rgba(255, 255, 255, 0.187)!important;
+			box-sizing: border-box!important;
+			border-radius: 4px!important;
+			color: #ffd4cd!important;
+			background-repeat: no-repeat!important;
+			background-position: right 0.9	rem center;
+			background-size: 14px 10px;
+		}
+		option {
+			color: #FF6060;
+		}
+		.center {
+			margin: auto;
+			width: 20%;
+			padding: 10px;
+		}
+	</style>
+{% endblock %}
+
+
+{% block content %}
+
+<div id="listado">
+
+</div>
+
+{% endblock %}
+
+{% block extra_javascript %}
+
+<script>
+    $(document).ready( function ()
+    {
+		var context = "{{ API_V2_STR }}";
+		var store = "{{ store }}"
+		var mes = "{{ mes }}"
+		var anio = "{{ anio }}"
+		$.ajax({
+			type: 'POST',
+			dataType: "json",
+			contentType: "application/json",
+			url:`${context}historico_mensual`,
+			data: JSON.stringify({
+				store: store,
+				mes: mes,
+				anio: anio
+			}),
+			success: function(response){
+				var newDiv = document.createElement("div");
+				var elem = document.getElementById('listado');
+				var dias_mes=response['dias_mes']
+				var str_html
+				str_html = `<div class="center">
+								<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+									<li class="nav-item">
+										<a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Días del mes</a>
+									</li>
+								</ul>
+							<div class="tab-content" id="pills-tabContent">
+								<div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">`
+				for (var i in dias_mes)
+				{
+					str_html += `<div class="card">
+									<div class="card-body">
+										<h5 class="card-text">${dias_mes[i]}</h5>
+										<div class="float-right" style="margin-top:20px;">
+											<a href="/genio/notifications_store/?s=${store}&f=${dias_mes[i]}" class="btn btn-xs btn-warning">VER</a>
+										</div>
+									</div>
+								</div>`
+				}
+				newDiv.innerHTML += str_html
+				elem.appendChild(newDiv)
+			},
+			error:function (error){
+				$('#id_value').empty();
+				$('#id_value').append('<option value="" selected="">Please select column.</option>');
+			}
+		})
+	});
+</script>
+
+{% endblock%}

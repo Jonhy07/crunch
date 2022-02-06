@@ -32,7 +32,7 @@ from pool_energy_app.forms.views import list_monthgoals, create_monthgoals, upda
 from pool_energy_app.forms.views import list_action, create_action, update_action, delete_action
 from pool_energy_app.forms.views import list_itemaction, create_itemaction, update_itemaction, delete_itemaction
 from pool_energy_app.forms.views import list_userstore, create_userstore, update_userstore, delete_userstore
-from pool_energy_app.forms.views import view_notifications,view_notificationsDetail,view_history
+from pool_energy_app.forms.views import view_notifications,view_notificationsDetail,view_history,view_notifications_specific,view_historyMonth
 from pool_energy_app.forms.views import list_homologation,create_homologation, update_homologation, delete_homologation,itemsStore,itemsS2,itemsStoreAction
 
 #aouth
@@ -139,8 +139,10 @@ urlpatterns = [
 	#path('check_submanifest/detail/<int:id>/<int:fecha>/<int:id>', check_submanifest_detail, name='check_submanifest_detail'),
 
 	url(r'genio/notifications/', view_notifications, name='view_notifications'),
+	url(r'genio/notifications_store/', view_notifications_specific, name='view_notifications'),
 
 	url(r'genio/historico/(?P<store>[\w-]+)', view_history, name='view_notifications_history'),
+	url(r'genio/historicoMensual/', view_historyMonth, name='view_notifications_history_month'),
 
 	url(r'genio/notificationsDetail/(?P<store>[\w-]+)/(?P<fecha>[\w-]+)/(?P<funcion>[\w-]+)/', view_notificationsDetail, name='view_notificationsDetail'),
 

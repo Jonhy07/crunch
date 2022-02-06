@@ -160,7 +160,7 @@
 			</select>
 		</div>
 		<div class="float-right" style="margin-top:20px;">
-			<a href="/genio/historico/14/" class="btn btn-xs btn-warning">Ver historico</a>
+			<a href="/genio/historico/{{indice}}/" class="btn btn-xs btn-warning">Ver historico</a>
 		</div>
 	</div>
 {% endif %}
@@ -171,13 +171,12 @@
 {% block extra_javascript %}
 
 <script>
-    $(document).ready( function ()
-    {
+	$(document).ready( function ()
+	{
 		var context = "{{ API_V2_STR }}";
 		var storeId = "{{ indice }}"
 		var fecha = "{{ fecha }}";
-
-		$.ajax({
+	$.ajax({
 			type: 'POST',
 			dataType: "json",
 			contentType: "application/json",
@@ -198,14 +197,14 @@
 					var nameFunction=response[k]['funcion']
 					var items=response[k]['items']
 					var fecha=response[k]['fecha']
-
+					var utilidad=response[k]['util']
 					if (items.length > 10)
 						responseCut = items.slice(1,10)
 					else
 						responseCut = items
 
 					str_html += `<div class="card">
-										<div class="card-body">
+									<div class="card-body">
 										<p class="card-text">${response[k]['mensaje']}</p>
 										<hr/>
 										<div class="mb-3">`
@@ -234,20 +233,29 @@
 					else
 						str_html += `.`
 
-					str_html +=	`</div>
+						str_html += `</div>
 									<div class="col-sm">
-										<div class="botones">
-											<a href="/genio/notificationsDetail/">
-												<img src="/static/images/Group_123.png" style="" />
-											</a>
-											<img src="/static/images/Group_124.png" style="" />
-										</div>
+										<div class="botones">`
+					if (utilidad  == false)
+					{
+						str_html += `<img src="/static/images/Group_123_1.png" onClick="positivo(${storeId},'${fecha}','${nameFunction}','False')"/>
+									<img src="/static/images/Group_124.png" onClick="positivo(${storeId},'${fecha}','${nameFunction}','True')"/>`
+					} else if (utilidad  == true )
+					{
+						str_html += `<img src="/static/images/Group_123.png" onClick="positivo(${storeId},'${fecha}','${nameFunction}','False')"/>
+									<img src="/static/images/Group_124_1.png" onClick="positivo(${storeId},'${fecha}','${nameFunction}','True')"/>`
+					}
+					else
+					{
+						str_html +=`<img src="/static/images/Group_123.png" onClick="positivo(${storeId},'${fecha}','${nameFunction}','False')"/>
+									<img src="/static/images/Group_124.png" onClick="positivo(${storeId},'${fecha}','${nameFunction}','True')"/>`
+					}
+							str_html += `</div>
 									</div>
 								</div>
-							</div>`
-
-					str_html += `</div>
-								</div>`
+							</div>
+						</div>
+					</div>`
 				}
 				str_html += `</div>`
 				newDiv.innerHTML += str_html
@@ -259,7 +267,28 @@
 			}
 		})
 	});
-    
+	function positivo(store,fecha,funcion,estado)
+	{
+		var context = "{{ API_V2_STR }}";
+		$.ajax({
+			type: 'POST',
+			dataType: "json",
+			contentType: "application/json",
+			url:`${context}confirmacion_utilidad`,
+			data: JSON.stringify({
+				store: store,
+				fecha : fecha,
+				tipo : funcion,
+				estado : estado
+			}),success: function(response){
+				location.reload();
+			},
+			error:function (error){
+				$('#id_value').empty();
+				$('#id_value').append('<option value="" selected="">Please select column.</option>');
+			}
+		})
+	}
 </script>
 
 

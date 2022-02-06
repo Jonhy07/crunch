@@ -130,6 +130,11 @@
 		option {
 			color: #FF6060;
 		}
+		.center {
+			margin: auto;
+			width: 20%;
+			padding: 10px;
+		}
 	</style>
 {% endblock %}
 
@@ -137,16 +142,7 @@
 {% block content %}
 
 <div id="listado">
-	{% if flag %}
-	<div class="col-2">
-		<select class="form-select" id="store_select">
-			<option selected>Tiendas</option>
-			{% for s in stores %}
-			<option value="{{s}}">{{s}}</option>
-			{% endfor %}
-		</select>
-	</div>
-	{% endif %}
+
 </div>
 
 {% endblock %}
@@ -157,18 +153,71 @@
     $(document).ready( function ()
     {
 		var context = "{{ API_V2_STR }}";
-		var storeId = "{{ indice }}"
+		var storeId = "{{ store }}"
 		$.ajax({
 			type: 'POST',
 			dataType: "json",
 			contentType: "application/json",
-			url:`${context}notificaciones_detalle`,
+			url:`${context}notificaciones_historico`,
 			data: JSON.stringify({
-				store: storeId,
-				fecha : "2022-01-24"
+				store: storeId
 			}),
 			success: function(response){
-				
+				var newDiv = document.createElement("div");
+				var elem = document.getElementById('listado');
+				var semana=response['semana']
+				var mes=response['mes']
+				var str_html
+				var iPorSemana=7
+				var iPorMes=3
+				str_html = `<div class="center">
+								<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+									<li class="nav-item">
+										<a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Semanal</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Mensual</a>
+									</li>
+								</ul>
+							<div class="tab-content" id="pills-tabContent">
+								<div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">`
+				for (var i in semana)
+				{
+					str_html += `<div class="card">
+									<div class="card-body">
+										<h5 class="card-text">${semana[i]}</h5>
+										<div class="float-right" style="margin-top:20px;">
+											<a href="/genio/notifications_store/?s=${storeId}&f=${semana[i]}" class="btn btn-xs btn-warning">VER</a>
+										</div>
+									</div>
+								</div>`
+				}
+				str_html += `<div class="row" id="botonRow">`
+				if (semana.length >= iPorSemana){
+					str_html += `<a onClick="masSemanas(${storeId},'${semana[iPorSemana-1]}')" id="boton_semanal" class="btn btn-xs btn-warning">CARGAR MÁS</a>`
+				}
+				str_html += `</div>
+						</div>
+						<div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">`
+				for (var i in mes)
+				{
+					str_html += `<div class="card">
+									<div class="card-body">
+										<h5 class="card-text">${mes[i]['mes']} ${mes[i]['anio']}</h5>
+										<div class="float-right" style="margin-top:20px;">
+											<a href="/genio/historicoMensual/?s=${storeId}&a=${mes[i]['anio']}&m=${mes[i]['mes']}" class="btn btn-xs btn-warning">VER</a>
+										</div>
+									</div>
+								</div>`
+				}
+				str_html += `<div class="row" id="botonRowMes">`
+				if (mes.length >= iPorMes){
+					str_html += `<a onClick="masMeses(${storeId},${mes[i]['mes']},${mes[i]['anio']})" id="boton_mensual" class="btn btn-xs btn-warning">CARGAR MÁS</a>`
+				}
+				str_html += `</div>`
+
+				newDiv.innerHTML += str_html
+				elem.appendChild(newDiv)
 			},
 			error:function (error){
 				$('#id_value').empty();
@@ -202,5 +251,105 @@
 	});
 </script>
 
+<script>
+	function masSemanas(store,fecha)
+	{
+		document.getElementById("botonRow").remove();
+		var context = "{{ API_V2_STR }}";
+		var iPorSemana=7
+		$.ajax({
+			type: 'POST',
+			dataType: "json",
+			contentType: "application/json",
+			url:`${context}semana_desde`,
+			data: JSON.stringify({
+				store: store,
+				fecha : fecha,
+			}),success: function(response){
+				var elem = document.getElementById('pills-home');
+				var semana=response['semana']
+				for (var i in semana)
+				{
+					var newDiv = document.createElement("div");
+					newDiv.className = "card";
+					var str_html = `<div class="card-body">
+										<h5 class="card-text">${semana[i]}</h5>
+										<div class="float-right" style="margin-top:20px;">
+											<a href="/genio/notifications_store/?s=${store}&f=${semana[i]}" class="btn btn-xs btn-warning">VER</a>
+										</div>
+									</div>`
+					newDiv.innerHTML += str_html
+					elem.appendChild(newDiv)
+				}
+				var elem = document.getElementById('pills-home');
+				var NewRow = document.createElement("div");
+				NewRow.setAttribute("id", "botonRow");
+				NewRow.setAttribute("class", "row");
+				if (semana.length >= iPorSemana){
+					var str_html = `<a onClick="masSemanas(${store},'${semana[iPorSemana-1]}')" id="boton_semanal" class="btn btn-xs btn-warning">CARGAR MÁS</a>`
+					NewRow.innerHTML += str_html
+					elem.appendChild(NewRow)
+				}
+			},
+			error:function (error){
+				$('#id_value').empty();
+				$('#id_value').append('<option value="" selected="">Please select column.</option>');
+			}
+		})
+	}
+</script>
 
+
+<script>
+	function masMeses(store,mes,anio)
+	{
+		document.getElementById("botonRowMes").remove();
+		var context = "{{ API_V2_STR }}";
+		var iPorMes=3
+		$.ajax({
+			type: 'POST',
+			dataType: "json",
+			contentType: "application/json",
+			url:`${context}mes_desde`,
+			data: JSON.stringify({
+				store: store,
+				mes : mes,
+				anio : anio,
+			}),success: function(response){
+				var elem = document.getElementById('pills-profile');
+				var mes=response['mes']
+
+
+				for (var i in mes)
+				{
+					var newDiv = document.createElement("div");
+					newDiv.className = "card";
+					var str_html = `<div class="card-body">
+										<h5 class="card-text">${mes[i]['mes']} ${mes[i]['anio']}</h5>
+										<div class="float-right" style="margin-top:20px;">
+											<a href="/genio/historico/14/" class="btn btn-xs btn-warning">VER</a>
+										</div>
+									</div>`
+					newDiv.innerHTML += str_html
+					elem.appendChild(newDiv)
+				}
+
+				var elem = document.getElementById('pills-profile');
+				var NewRow = document.createElement("div");
+				NewRow.setAttribute("id", "botonRowMes");
+				NewRow.setAttribute("class", "row");
+				if (mes.length >= iPorMes){
+					var str_html = `<a onClick="masMeses(${store},${mes[iPorMes-1]['mes']},${mes[iPorMes-1]['anio']})" id="boton_mensual" class="btn btn-xs btn-warning">CARGAR MÁS</a>`
+					NewRow.innerHTML += str_html
+					elem.appendChild(NewRow)
+				}
+			},
+
+			error:function (error){
+				$('#id_value').empty();
+				$('#id_value').append('<option value="" selected="">Please select column.</option>');
+			}
+		})
+	}
+</script>
 {% endblock%}

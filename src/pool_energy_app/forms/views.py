@@ -58,6 +58,23 @@ from .form import SocialApplicationModelForm
 #from codigo import display_table_objs
 #---------------------------------------------------------------------Network---------------------------------------------------------------------#
 
+def month_to_name(mes):
+	switcher = {
+		"Enero":1,
+		"Febrero":2,
+		"Marzo":3,
+		"Abril":4,
+		"Mayo":5,
+		"Junio":6,
+		"Julio":7,
+		"Agosto":8,
+		"Septiembre":9,
+		"Octubre":10,
+		"Noviembre":11,
+		"Diciembre":12
+	}
+	return switcher[mes]
+
 def create_network(request):
 	form = NetworkModelForm(request.POST or None, request.FILES or None)
 	if form.is_valid():
@@ -780,7 +797,7 @@ def view_notifications(request):
 		obtenerStore=Store.objects.get(name=getTienda)
 		indice = obtenerStore.id
 	else:
-		obtenerStore=Store.objects.get(name=nTiendas[1])
+		obtenerStore=Store.objects.get(name=nTiendas[0])
 		indice = obtenerStore.id
 	if(len(nTiendas)==1):
 		nTiendas=nTiendas[0]
@@ -805,6 +822,32 @@ def view_notifications(request):
 		'API_V2_STR' : API_V2_STR
 	}
 	return render(request, "forms/genio/view.html",context)
+
+def view_notifications_specific(request):
+	API_V2_STR = os.environ.get('API_V2_STR')
+	getTienda =request.GET.get("s","")
+	getFecha =request.GET.get("f","")	
+	context = {
+		'stores':[],
+		'flag':False,
+		'indice':getTienda,
+		'fecha' :getFecha,
+		'API_V2_STR' : API_V2_STR
+	}
+	return render(request, "forms/genio/view.html",context)
+
+def view_historyMonth(request):
+	API_V2_STR = os.environ.get('API_V2_STR')
+	getTienda =request.GET.get("s","")
+	getAnio =request.GET.get("a","")
+	getMonth =request.GET.get("m","")
+	context = {
+		'store':getTienda,
+		'anio' :getAnio,
+		'mes':month_to_name(getMonth),
+		'API_V2_STR' : API_V2_STR
+	}
+	return render(request, "forms/genio/view_mensual.html",context)
 
 def view_notificationsDetail(request,store,fecha,funcion):
 	API_V2_STR = os.environ.get('API_V2_STR')
