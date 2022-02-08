@@ -68,6 +68,7 @@ class Graph (models.Model):
         return"/row/graph/{}/delete".format(self.pk)
     def name(self):
         return ('id_'+str(self.id))
+
     def send_json(self, min=None, max=None,Tienda=None):
         filters=Graph_Filter.objects.filter(graph=self)
         send=''
@@ -355,9 +356,7 @@ class Graph (models.Model):
         html+="'data': function (d) {"
         html+="return JSON.stringify( "
         html+="{"
-        html+="dataset:'"+_json['dataset']+"',"
         html+="type:'"+_json['type']+"',"
-        html+="columns:"+json.dumps(_json['columns'])+","
         html+="filters:"+json.dumps(_json['filters'])+","
         html+="length:d.length,"
         html+="start:d.start"

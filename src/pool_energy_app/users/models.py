@@ -49,12 +49,15 @@ class User (AbstractUser):
 
     def save(self,*args,**kwargs):
         if not self.id:
+            seteada=False
             if 'argon2$argon2i' not in self.password:
                 self.password=make_password(self.password)
+                seteada=True
             super(User,self).save(*args,**kwargs)
-            self.user_id=self.id
-            emailAddress1=EmailAddress.objects.create(email=self.email, verified=False, primary=True, user=self)
-            emailAddress1.save()
-            emailAddress1.send_confirmation()
+            if seteada:
+                self.user_id=self.id
+                emailAddress1=EmailAddress.objects.create(email=self.email, verified=False, primary=True, user=self)
+                emailAddress1.save()
+                emailAddress1.send_confirmation()
         else:
             super(User,self).save(*args,**kwargs)

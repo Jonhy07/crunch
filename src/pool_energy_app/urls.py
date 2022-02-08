@@ -1,17 +1,17 @@
 """pool_energy_app URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/3.2/topics/http/urls/
+	https://docs.djangoproject.com/en/3.2/topics/http/urls/
 Examples:
 Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+	1. Add an import:  from my_app import views
+	2. Add a URL to urlpatterns:  path('', views.home, name='home')
 Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+	1. Add an import:  from other_app.views import Home
+	2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
 Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+	1. Import the include() function: from django.urls import include, path
+	2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django import forms
 from django.contrib import admin
@@ -46,15 +46,15 @@ from pool_energy_app.config.views import users, usereditindex, update_user, list
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('accounts/', include('allauth.urls')),
-    path('', list_store, name='home'),
+	path('admin/', admin.site.urls),
+	path('accounts/', include('allauth.urls')),
+	path('', list_store, name='home'),
 
 	#############################################
 	################### FORMS ###################
 	#############################################
 #---------------------------------------------------------------------network---------------------------------------------------------------------#
-    #path('forms/list_network', list_network, name='list_network'),
+	#path('forms/list_network', list_network, name='list_network'),
 	#url(r'^network.list/', list_network, name='list'),#---
 	#url(r'^network.(?P<id>\d+)/change/', update_network, name='update'),#---
 	#url(r'^network.(?P<id>\d+)/delete/', delete_network, name='delete'),#---
@@ -160,77 +160,77 @@ urlpatterns = [
 	#############################################
 	#############################################
 
-    #Usuarios
-    path('config/list_users', users, name='list_users'),
-    path('config/users', usereditindex, name='config_user'),
-    path('config/updateuser', update_user, name='config_update_user'),
+	#Usuarios
+	path('config/list_users', users, name='list_users'),
+	path('config/users', usereditindex, name='config_user'),
+	path('config/updateuser', update_user, name='config_update_user'),
 
-    #Dashboards
-    path('config/list_dashboards', list_dashboards, name='list_dashboards'),
-    path('config/dashboard/<int:id>/delete', deleteDashboardconfig,name='confi_dashboard_delete'),
+	#Dashboards
+	path('config/list_dashboards', list_dashboards, name='list_dashboards'),
+	path('config/dashboard/<int:id>/delete', deleteDashboardconfig,name='confi_dashboard_delete'),
 
-    #------------Control----------
-    path('expired/', expired, name='expired'),
+	#------------Control----------
+	path('expired/', expired, name='expired'),
 
-    #------------Charts-----------
-    path('dashboard/add', newdashboard, name='dashboard_add'),
-    path('dashboard/', dashboard, name='dashboard'),
-    path('dashboard/add/row', newrow, name='dashboard_add_row'),
-    path('dashboard/<int:id>/delete/', deleteDashboard,name='delete_dashboard'),
-    path('dashboard/row/<int:id>/delete/', deleteRow,name='delete_row'),
+	#------------Charts-----------
+	path('dashboard/add', newdashboard, name='dashboard_add'),
+	path('dashboard/', dashboard, name='dashboard'),
+	path('dashboard/add/row', newrow, name='dashboard_add_row'),
+	path('dashboard/<int:id>/delete/', deleteDashboard,name='delete_dashboard'),
+	path('dashboard/row/<int:id>/delete/', deleteRow,name='delete_row'),
 
-    #------------Grpahs-------------
-    path('dashboard/row/graph/<int:id>/new', newgraph,name='new_graph'),
-    path('dashboard/row/graph/add', addgraph,name='add_graph'),
-    path('dashboard/row/graph/<int:id>/delete', deletegraph,name='delete_graph'),
+	#------------Grpahs-------------
+	path('dashboard/row/graph/<int:id>/new', newgraph,name='new_graph'),
+	path('dashboard/row/graph/add', addgraph,name='add_graph'),
+	path('dashboard/row/graph/<int:id>/delete', deletegraph,name='delete_graph'),
 
-    #------------Type_Grpahs-------------
-    #Pie
-    path('dashboard/row/graph/add/<int:id>/pie', pie,name='pie'),
-    path('dashboard/row/graph/update/pie', update_pie,name='update_graph_pie'),
+	#------------Type_Grpahs-------------
+	#Pie
+	path('dashboard/row/graph/add/<int:id>/pie', pie,name='pie'),
+	path('dashboard/row/graph/update/pie', update_pie,name='update_graph_pie'),
 
-    #Bar
-    path('dashboard/row/graph/add/<int:id>/bar', bar,name='bar'),
-    path('dashboard/row/graph/update/bar', update_bar,name='update_graph_bar'),
-    path('dashboard/row/graph/add/<int:id>/bar/legend', legend,name='legend_bar'),
-    path('dashboard/row/graph/create/bar/legend', create_bar_legend,name='create_bar_legend'),
+	#Bar
+	path('dashboard/row/graph/add/<int:id>/bar', bar,name='bar'),
+	path('dashboard/row/graph/update/bar', update_bar,name='update_graph_bar'),
+	path('dashboard/row/graph/add/<int:id>/bar/legend', legend,name='legend_bar'),
+	path('dashboard/row/graph/create/bar/legend', create_bar_legend,name='create_bar_legend'),
 
-    path('dashboard/row/graph/add/<int:id>/barconcat', barconcat,name='barconcat'),
-    path('dashboard/row/graph/update/barconcat', update_barconcat,name='update_graph_barconcat'),
+	path('dashboard/row/graph/add/<int:id>/barconcat', barconcat,name='barconcat'),
+	path('dashboard/row/graph/update/barconcat', update_barconcat,name='update_graph_barconcat'),
 
-    #Bar name
-    path('dashboard/row/graph/add/<int:id>/bar/name', namebar,name='name_bar'),
-    path('dashboard/row/graph/create/bar/name', add_yrow,name='add_yrow'),
-    path('dashboard/row/graph/create/bar/finish', create_bar_name,name='create_bar_name'),
+	#Bar name
+	path('dashboard/row/graph/add/<int:id>/bar/name', namebar,name='name_bar'),
+	path('dashboard/row/graph/create/bar/name', add_yrow,name='add_yrow'),
+	path('dashboard/row/graph/create/bar/finish', create_bar_name,name='create_bar_name'),
 
-    #Card
-    path('dashboard/row/graph/add/<int:id>/card', card,name='card'),
-    path('dashboard/row/graph/update/card', update_card,name='update_graph_card'),
+	#Card
+	path('dashboard/row/graph/add/<int:id>/card', card,name='card'),
+	path('dashboard/row/graph/update/card', update_card,name='update_graph_card'),
 
-    #Tab
-    path('dashboard/row/graph/add/<int:id>/tab', tab,name='tab'),
-    path('dashboard/row/graph/update/tab', update_tab,name='update_graph_tab'),
-    path('dashboard/row/graph/add/<int:id>/tab/legend', legendtab,name='legend_tab'),
-    path('dashboard/row/graph/create/tab/legend', add_col_legend,name='add_col_legend'),
+	#Tab
+	path('dashboard/row/graph/add/<int:id>/tab', tab,name='tab'),
+	path('dashboard/row/graph/update/tab', update_tab,name='update_graph_tab'),
+	path('dashboard/row/graph/add/<int:id>/tab/legend', legendtab,name='legend_tab'),
+	path('dashboard/row/graph/create/tab/legend', add_col_legend,name='add_col_legend'),
 
-    #Tab name
-    path('dashboard/row/graph/add/<int:id>/tab/name', nametab,name='name_tab'),
-    path('dashboard/row/graph/create/tab/name', add_col,name='add_col'),
-    path('dashboard/row/graph/create/tab/finish', create_tab_name,name='create_tab_name'),
+	#Tab name
+	path('dashboard/row/graph/add/<int:id>/tab/name', nametab,name='name_tab'),
+	path('dashboard/row/graph/create/tab/name', add_col,name='add_col'),
+	path('dashboard/row/graph/create/tab/finish', create_tab_name,name='create_tab_name'),
 
-    #Filtros bar, tab
-    path('dashboard/row/graph/add/<int:id>/filter/bar', filterlegendbar,name='filter_legend_bar'),
+	#Filtros bar, tab
+	path('dashboard/row/graph/add/<int:id>/filter/bar', filterlegendbar,name='filter_legend_bar'),
 
-    #Filtros pie
-    path('dashboard/row/graph/add/<int:id>/filter/pie', filterlegendpie,name='filter_legend_pie'),
+	#Filtros pie
+	path('dashboard/row/graph/add/<int:id>/filter/pie', filterlegendpie,name='filter_legend_pie'),
 
-    #Filtros pie
-    path('dashboard/row/graph/add/<int:id>/filter/card', filterlegendcard,name='filter_legend_card'),
+	#Filtros pie
+	path('dashboard/row/graph/add/<int:id>/filter/card', filterlegendcard,name='filter_legend_card'),
 
-    #filtros general
-    path('dashboard/row/graph/create/filter', create_filter,name='create_filter'),
-    path('dashboard/row/graph/create/filter/finish', filter_finsh,name='filter_finsh'),
+	#filtros general
+	path('dashboard/row/graph/create/filter', create_filter,name='create_filter'),
+	path('dashboard/row/graph/create/filter/finish', filter_finsh,name='filter_finsh'),
 
-    #AJAX
-    path('dashboard/row/graph/filter/campo/<str:id_graph>/<str:id_filtro>', filtercampo,name='filter_campo'),
+	#AJAX
+	path('dashboard/row/graph/filter/campo/<str:id_graph>/<str:id_filtro>', filtercampo,name='filter_campo')
 ]
