@@ -423,7 +423,6 @@ def list_item(request):
 			df = pd.read_csv(excel_file,converters={'ktp':str})
 			print('---------')
 			print(df)
-
 			print('---------')
 		return render(request, "forms/item/list.html", context)
 

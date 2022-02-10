@@ -105,8 +105,9 @@ class Row(models.Model):
         tab=[]
         import pool_energy_app.graphs.models
         graphs=pool_energy_app.graphs.models.Graph.objects.filter(row=self.id).order_by('id')
+        print('no llega aca o si?')
         for object in graphs:
-            if(object.type_graph.id==5):
+            if(object.type_graph.id==5 or object.type_graph.id==8):
                 if(object.finish):
                     tab.append(object.name())
         return tab
@@ -116,7 +117,7 @@ class Row(models.Model):
         import pool_energy_app.graphs.models
         graphs=pool_energy_app.graphs.models.Graph.objects.filter(row=self.id).order_by('id')
         for object in graphs:
-            if(object.type_graph.id==5):
+            if(object.type_graph.id==5 or object.type_graph.id==8):
                 if(object.finish):
                     #tab.append(object.row.high.value*0.54)
                     tab.append((object.row.high.value-16.5))
@@ -134,7 +135,6 @@ class Row(models.Model):
 
     def to_html(self, min=None, max=None,Tienda=None):
         html=''
-
         #Pintar Graficas
         import pool_energy_app.graphs.models
         graphs=pool_energy_app.graphs.models.Graph.objects.filter(row=self.id).order_by('id')

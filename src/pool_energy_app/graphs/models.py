@@ -1,6 +1,7 @@
 from django.contrib.messages.api import error
 from django.db import models
 from pool_energy_app.charts.models import Row
+from pool_energy_app.forms.models import Store
 from pool_energy_app.endpoint.models import Endpoint, Detail
 from pool_energy_app.filter.models import Filter, Type_comparation
 
@@ -86,6 +87,15 @@ class Graph (models.Model):
                 send['filters'].append({'field':filter.value.name_db, 'equal':filter.type_comparation.signo, 'value':filter.comparate_value})
         return send
 
+    def send_json_sp(self, min=None, max=None,Tienda=None):
+        filters=Graph_Filter.objects.filter(graph=self)
+        send=''
+        send=self.send
+        send['filters']=[]
+        diccionario_sp={'max':max.replace('-',''),'min':min.replace('-',''),'store':Tienda}
+        send['filters'].append(diccionario_sp)
+        return send
+
     def to_html(self, min=None, max=None,Tienda=None):
         html="<div class=\"col-"+str (self.column*self.row.column.value)+"\" style=\"height: "+str(self.row.high.value)+"em;\">"
         if (self.type_graph.id<1):
@@ -120,7 +130,7 @@ class Graph (models.Model):
             else:
                 #Meter aqui la grafica
                 #html+='<div id="id_'+str(self.id)+'" style="width: content-box; height: '+str(self.row.high.value*0.92)+'em; margin-top: '+str(self.row.high.value*0.03)+'em;"></div>'
-                if (self.type_graph.id==5):
+                if (self.type_graph.id==5 or self.type_graph.id==8):
                     html+='<div id="id_'+str(self.id)+'_tab" style="width: content-box; height: '+str(self.row.high.value)+'em; margin-top: '+str(self.row.high.value*0.03)+'em;">'
                     html+=self.gettab(min, max,Tienda)
                 else:
@@ -128,8 +138,7 @@ class Graph (models.Model):
                     html+='<div id="id_'+str(self.id)+'" style="width: content-box; height: '+str(self.row.high.value)+'em; margin-top: '+str(self.row.high.value*0.03)+'em;">'
                     if (self.type_graph.id==6):
                         html+=self.getcard(min, max,Tienda)
-                
-                
+
             html+='</div>'
             html+='</div>'
             html+='</div>'
@@ -141,6 +150,8 @@ class Graph (models.Model):
         html=''
         if (self.type_graph.id==5):
             html+=self.gettab2(min, max,Tienda, size)
+        if (self.type_graph.id==8):
+            html+=self.gettab3(min, max,Tienda, size)
         if (self.type_graph.id==6):
             html+=self.getcard2(min, max,Tienda)
         return "%s" % (html)
@@ -359,6 +370,41 @@ class Graph (models.Model):
         html+="dataset:'"+_json['dataset']+"',"
         html+="type:'"+_json['type']+"',"
         html+="columns:"+json.dumps(_json['columns'])+","
+        html+="filters:"+json.dumps(_json['filters'])+","
+        html+="length:d.length,"
+        html+="start:d.start"
+        html+="}"
+        html+=");"
+        html+="}"
+        html+="}"
+        html+="});"
+        html+="table_"+self.name()+".buttons().container().appendTo('#"+self.name()+"_wrapper .col-md-6:eq(0)')"
+        html+="</script>"
+        return html
+
+    def gettab3(self, min=None, max=None,Tienda=None, size=None):
+        html=''
+        nTienda = list(Store.objects.filter(name=Tienda).values_list('id',flat=True))[0]
+        API_V1_STR = os.environ.get('API_V1_STR')
+        url=API_V1_STR+"tab_front_sp"
+        _json=self.send_json_sp(min, max,nTienda)
+        html+="<script>"
+        html+="var table_"+self.name()+" = $('#"+self.name()+"').DataTable({"   
+        html+="scrollY:'"+str(size)+"em',scrollCollapse:!0,lengthChange:!1,buttons:[{extend:'copy',className:'btn-light'},{extend:'print',className:'btn-light'},{extend:'pdf',className:'btn-light'}],"
+        html+="language:{paginate:{previous:'<i class=\"mdi mdi-chevron-left\">',next:'<i class=\"mdi mdi-chevron-right\">'}},drawCallback:function(){$('.dataTables_paginate > .pagination').addClass('pagination-rounded')},"
+        html+="'processing': true,"
+        html+="'serverSide': true,"
+        html+="'filter':false,"
+        html+="'orderMulti':false,"
+        html+="'ajax': {"
+        html+="type: 'POST',"
+        html+="url:'"+url+"',"
+        html+="contentType:'application/json',"
+        html+="'data': function (d) {"
+        html+="return JSON.stringify( "
+        html+="{"
+        html+="dataset:'"+_json['dataset']+"',"
+        html+="type:'"+_json['type']+"',"
         html+="filters:"+json.dumps(_json['filters'])+","
         html+="length:d.length,"
         html+="start:d.start"
