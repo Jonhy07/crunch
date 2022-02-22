@@ -31,7 +31,7 @@ from pool_energy_app.forms.views import list_liniostore, create_liniostore, upda
 from pool_energy_app.forms.views import list_monthgoals, create_monthgoals, update_monthgoals, delete_monthgoals
 from pool_energy_app.forms.views import list_action, create_action, update_action, delete_action
 from pool_energy_app.forms.views import list_itemaction, create_itemaction, update_itemaction, delete_itemaction
-from pool_energy_app.forms.views import list_userstore, create_userstore, update_userstore, delete_userstore
+from pool_energy_app.forms.views import list_userstore, create_userstore, update_userstore, delete_userstore,view_cargasesiones
 from pool_energy_app.forms.views import view_notifications,view_notificationsDetail,view_history,view_notifications_specific,view_historyMonth
 from pool_energy_app.forms.views import list_homologation,create_homologation, update_homologation, delete_homologation,itemsStore,itemsS2,itemsStoreAction
 
@@ -146,6 +146,7 @@ urlpatterns = [
 
 	url(r'genio/notificationsDetail/(?P<store>[\w-]+)/(?P<fecha>[\w-]+)/(?P<funcion>[\w-]+)/', view_notificationsDetail, name='view_notificationsDetail'),
 
+	url(r'forms/cargaSesiones/', view_cargasesiones, name='view_cargasesiones'),
 
 	#############################################
 	################### AOUTH ###################

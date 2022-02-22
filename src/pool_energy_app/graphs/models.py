@@ -87,12 +87,12 @@ class Graph (models.Model):
                 send['filters'].append({'field':filter.value.name_db, 'equal':filter.type_comparation.signo, 'value':filter.comparate_value})
         return send
 
-    def send_json_sp(self, min=None, max=None,Tienda=None):
+    def send_json_sp_filter(self, min=None, max=None,Tienda=None,Marketplace=None,Plataforma=None):
         filters=Graph_Filter.objects.filter(graph=self)
         send=''
         send=self.send
         send['filters']=[]
-        diccionario_sp={'max':max.replace('-',''),'min':min.replace('-',''),'store':Tienda}
+        diccionario_sp={'max':max.replace('-',''),'min':min.replace('-',''),'store':Tienda,'Marketplace':Marketplace,'Plataforma':Plataforma}
         send['filters'].append(diccionario_sp)
         return send
 
@@ -146,7 +146,7 @@ class Graph (models.Model):
         html+='</div>'
         return "%s" % (html)
 
-    def to_html2(self, min=None, max=None,Tienda=None, size=None):
+    def to_html2(self, min=None, max=None,Tienda=None, size=None,dashboard_flag=False):
         html=''
         if (self.type_graph.id==5):
             html+=self.gettab2(min, max,Tienda, size)
@@ -382,12 +382,13 @@ class Graph (models.Model):
         html+="</script>"
         return html
 
-    def gettab3(self, min=None, max=None,Tienda=None, size=None):
+    def gettab3(self, min=None, max=None,Filtros=None, size=None):
         html=''
+        Tienda=Filtros[0]
         nTienda = list(Store.objects.filter(name=Tienda).values_list('id',flat=True))[0]
         API_V1_STR = os.environ.get('API_V1_STR')
         url=API_V1_STR+"tab_front_sp"
-        _json=self.send_json_sp(min, max,nTienda)
+        _json=self.send_json_sp_filter(min, max,nTienda,Filtros[2],Filtros[1])
         html+="<script>"
         html+="var table_"+self.name()+" = $('#"+self.name()+"').DataTable({"   
         html+="scrollY:'"+str(size)+"em',scrollCollapse:!0,lengthChange:!1,buttons:[{extend:'copy',className:'btn-light'},{extend:'print',className:'btn-light'},{extend:'pdf',className:'btn-light'}],"

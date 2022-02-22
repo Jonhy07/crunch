@@ -149,12 +149,56 @@
 			<h1 class="page-title"><b>{{dashboard.name}}</b></h1>
 			<p>{{dashboard.description}}</p>
 		</div>
-		{% if flag %}
+		{% if dashboard_flag %}
+		<h1></h1>
+			<div class="col">
+				<form action="forms/cargaSesiones/" method="POST" enctype="multipart/form-data">
+					{% csrf_token %}
+					<div class="col" style="margin-top:auto;margin-bottom:auto;">
+						<input
+						type="file"
+						title="Upload excel file"
+						name="excel_file"
+						required="required">
+						&nbsp;
+						<input type="submit"
+						class="btn btn-dark" 
+						value="Upload"
+						style="padding:5px; border-radius: 2px; cursor: pointer;"
+						>
+					</div>
+				</form>
+			</div>
+
 			<div class="col-2">
-				<select class="form-select" id="store_select" aria-label="Default select example">
-					<option selected>Tiendas</option>
+				<select class="form-select" id="market_select">
+					{% for m in marketplaces %}
+						<option value="{{m}}"{% if m == market %} selected{% endif %}>{{m}}</option>
+					{% endfor %}
+				</select>
+			</div>
+
+			<div class="col-2">
+				<select class="form-select" id="plataform_select">
+					{% for p in plataformas %}
+						<option value="{{p}}"{% if p == plataforma %} selected{% endif %}>{{p}}</option>
+					{% endfor %}
+				</select>
+			</div>
+
+			<div class="col-2">
+				<select class="form-select" id="store_select">
 					{% for s in stores %}
-					<option value="{{s}}">{{s}}</option>
+						<option value="{{s}}"{% if s == tienda %} selected{% endif %}>{{s}}</option>
+					{% endfor %}
+				</select>
+			</div>
+
+		{% elif flag %}
+			<div class="col-2">
+				<select class="form-select" id="store_select">
+					{% for s in stores %}
+						<option value="{{s}}"{% if s == tienda %} selected{% endif %}>{{s}}</option>
 					{% endfor %}
 				</select>
 			</div>
@@ -182,7 +226,6 @@
 									</span>Dashboard Settings
 								</h5>
 							</div>
-			
 							<div class="noti-scroll" data-simplebar>
 								<!-- item-->
 								<a href="#" class="dropdown-item notify-item  btn-abrir-popup" id="btn-abrir-popup-newrow">
@@ -197,7 +240,7 @@
 										</div>
 									</div>
 								</a>
-									<!-- item-->
+								<!-- item-->
 								<a href="#" class="dropdown-item notify-item">
 									<div class="row">
 										<div class="col-8"> 
@@ -208,7 +251,6 @@
 										<div class="col-4">
 											<label class="switch"><input type="checkbox"><span class="slider round hide-off"></span></label>
 										</div>
-
 									</div>
 								</a>
 								<!-- item-->
@@ -255,73 +297,55 @@
             $('#dash-daterange').val('2021-07-01');
             console.log(max);
             console.log(min);
-
         });
 </script-->
 
 <script>
 	$(document).ready( function ()
 	{
+		const queryString = window.location.search;
+		const urlParams = new URLSearchParams(queryString);
+
 		$(function() {
 			$("#dash-daterange").on('change', function() {
 				var date = $(this).val();
-				var max=0;
-				var min=0;
-				var searchParams = new URLSearchParams(window.location.search);
 				if(date){
-					if (date.length<11){
-						//date=date.replace("-","").replace("-","");
-						//max=date;
-						//searchParams.set("max", max);
-						//window.location.search = searchParams.toString();
-					}else{
-						var date1=date.substring(0,10).replace("-","").replace("-","");
-						var date2=date.substring(14,24).replace("-","").replace("-","");
-						max=date1;
-						min=date2;
-						if(date2>date1){
-							max=date2;
-							min=date1;
-						}
-						searchParams.set("max", max);
-						searchParams.set("min", min);
-						window.location.search = searchParams.toString();   
+					var date1=date.substring(0,10).replace("-","").replace("-","");
+					var date2=date.substring(14,24).replace("-","").replace("-","");
+					max=date1;
+					min=date2;
+					if(date2>date1){
+						max=date2;
+						min=date1;
 					}
+					enviarFiltros(false,max,min,false,false)	
 				}
-			}).change();
+			}).select();
 		});
 
 		$(function() {
 			$("#store_select").on('change', function() {
 				var tiendaSelect = document.getElementById("store_select");
 				var tienda = tiendaSelect.value;
-				var max=0;
-				var min=0;
-				var store='';
-				var searchParams = new URLSearchParams(window.location.search);
-				if(tienda){
-					if (tienda.length > 8)
-					{
-						searchParams.set("max", max);
-						searchParams.set("min", min);
-						searchParams.set("tienda", tienda);
-						window.location.search = searchParams.toString();   
-					}
-				}
-			}).change();
+				enviarFiltros(tienda,false,false,false,false)
+			}).select()
 		});
-		/*document.querySelector('#example-date').addEventListener('keypress', function (e) {
-			if (e.key === 'Enter') {
-				var date = $(this).val();
-				if(date){
-					date=date.replace("-","")
-					date=date.replace("-","")
-					var searchParams = new URLSearchParams(window.location.search);
-					searchParams.set("date", date);
-					window.location.search = searchParams.toString();
-				}
-			}
-		});*/    
+
+		$(function() {
+			$("#market_select").on('change', function() {
+				var marketSelect = document.getElementById("market_select");
+				var market = marketSelect.value;
+				enviarFiltros(false,false,false,market,false)
+			}).select()
+		});
+
+		$(function() {
+			$("#plataform_select").on('change', function() {
+				var plataformSelect = document.getElementById("plataform_select");
+				var plataforma = plataformSelect.value;
+				enviarFiltros(false,false,false,false,plataforma)
+			}).select()
+		});
 	});
 </script>
 
@@ -361,6 +385,72 @@
 	}
 </script>
 
+
+<script>
+	function enviarFiltros(store,fecha_max,fecha_min,marketplace,plataforma)
+	{
+		var __store = "{{ tienda }}";
+		var __max = 0;
+		var __min = 0;
+		var __marketplace = "{{ indice_marketplaces }}";
+		var __plataforma = "{{ indice_plataformas }}";
+		const queryString = window.location.search;
+		const urlParams = new URLSearchParams(queryString);
+		if (marketplace==false)
+		{
+			var _marketplace = urlParams.get('marketplace')
+			if(_marketplace == null)
+			{
+				_marketplace = __marketplace;
+			}
+			urlParams.set("marketplace", _marketplace);
+		}else{
+			urlParams.set("marketplace", marketplace);
+		}
+		if (plataforma==false)
+		{
+			var _plataforma = urlParams.get('plataforma')
+			if(_plataforma == null)
+			{
+				_plataforma = __plataforma;
+			}
+			urlParams.set("plataforma", _plataforma);
+		}else{
+			urlParams.set("plataforma", plataforma);
+		}
+		if (fecha_max==false || fecha_min==false )
+		{
+			var _max = urlParams.get('max')
+			var _min = urlParams.get('min')
+			if(_min == null)
+			{
+				_max = __max;
+				_min = __min;
+			}
+			urlParams.set("max", _max);
+			urlParams.set("min", _min);
+		}else{
+			urlParams.set("max", fecha_max);
+			urlParams.set("min", fecha_min);
+			urlParams.delete('plataforma')
+			urlParams.delete('marketplace')
+		}
+		if (store==false)
+		{
+			var _store = urlParams.get('store')
+			if(_store == null)
+			{
+				_store = __store;
+			}
+			urlParams.set("tienda", _store);
+		}else{
+			urlParams.set("tienda", store);
+			urlParams.delete('plataforma')
+			urlParams.delete('marketplace')
+		}
+		window.location.search = urlParams.toString();
+	}
+</script>
 <!-- Enviar Tablas-->
 {{script_tables | safe}}
 

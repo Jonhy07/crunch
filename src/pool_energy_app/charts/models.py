@@ -22,12 +22,13 @@ class Dashboard(models.Model):
             html+="</div>"
         return "%s" % (html)
 
-    def to_html2(self, min=None, max=None,Tienda=None):
+    def to_html2(self, min=None, max=None,Filtros=None,Dashboard_flag=False):
         html=''
         row=Row.objects.filter(dashboard=self).order_by('id')
         for object in row:
-            html+=object.to_html2(min, max,Tienda)
+            html+=object.to_html2(min, max,Filtros,Dashboard_flag)
         return "%s" % (html)
+
     def names(self):
         row=Row.objects.filter(dashboard=self).order_by('id')
         name=[]
@@ -105,7 +106,6 @@ class Row(models.Model):
         tab=[]
         import pool_energy_app.graphs.models
         graphs=pool_energy_app.graphs.models.Graph.objects.filter(row=self.id).order_by('id')
-        print('no llega aca o si?')
         for object in graphs:
             if(object.type_graph.id==5 or object.type_graph.id==8):
                 if(object.finish):
@@ -170,13 +170,14 @@ class Row(models.Model):
         return "%s" % (html)
 
 
-    def to_html2(self, min=None, max=None,Tienda=None):
+    def to_html2(self, min=None, max=None,Tienda=None,dashboard_flag=False):
         html=''
         #Pintar Graficas
         import pool_energy_app.graphs.models
         graphs=pool_energy_app.graphs.models.Graph.objects.filter(row=self.id).order_by('id')
+
         for object in graphs:
-            html+=object.to_html2(min, max,Tienda, object.row.high.value-16.5)
+            html+=object.to_html2(min, max,Tienda, object.row.high.value-16.5,dashboard_flag)
         return "%s" % (html)
 
 class User_Dashboard(models.Model):
