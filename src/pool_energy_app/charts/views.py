@@ -267,7 +267,7 @@ def dashboard(request):
         flag=True
     
     if getTienda != "":
-        indice = nTiendas.index(getTienda)
+        indice = nTiendas.index(getTienda.replace('&amp;','&'))
         flag=True
 
     min = int(request.GET.get ('min', "0"))
