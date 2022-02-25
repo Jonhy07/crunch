@@ -862,9 +862,29 @@ def view_history(request,store):
 
 def view_cargasesiones(request):
 	excel_file = request.FILES["excel_file"]
-	df = pd.read_csv(excel_file,converters={'ktp':str})
-	print('---------')
-	print(df)
-	print('---------')
-	print('*-*-*-*-*-*-*-*-*-')
-	#return render(request, "forms/homologation/list.html", context)
+	df = pd.read_csv(excel_file,converters={"(Parent) ASIN":str,"(Child) ASIN":str,"Title":str})
+	aNumero=['Sessions','Session Percentage','Page Views','Page Views Percentage','Featured Offer (Buy Box) Percentage','Units Ordered','Units Ordered - B2B','Unit Session Percentage','Unit Session Percentage - B2B','Ordered Product Sales','Ordered Product Sales - B2B','Total Order Items','Total Order Items - B2B']
+	getTienda =request.GET.get("st","")
+	getMarketplace =request.GET.get("mk","")
+	getPlataforma =request.GET.get("plt","")
+	print('-----')
+	print(getTienda)
+	print(getMarketplace)
+	print(getPlataforma)
+	print('-----')
+	for i in aNumero:
+		if i in list(df.columns):
+			df[i].replace('[a-zA-Z]','',inplace=True,regex=True)
+			df[i].replace('%','',inplace=True,regex=True)
+			df[i].replace(',','',inplace=True,regex=True)
+			df[i]=df[i].astype(float)
+			df[i].replace('\$','',inplace=True,regex=True)
+	
+	#"Sessions":str,"Session Percentage":str,"Page Views":str,	"Page Views Percentage":str,"Featured Offer (Buy Box) Percentage":str,"Units Ordered":str,"Units Ordered - B2B":str,"Unit Session Percentage":str,"Unit Session Percentage - B2B":str,"Ordered Product Sales":str,"Ordered Product Sales - B2B":str,"Total Order Items":str,"Total Order Items - B2B":str,#API_V2_STR = os.environ.get('API_V2_STR')
+	#_txt='"store":"{}"'.format(indice)
+	#_txt= '{' + _txt + '}' 
+	#_json=json.loads(_txt)
+	#token=""
+	#_headers={'Content-Type':'application/json', 'Autorization':token}
+	#response=requests.post(API_V2_STR+'ultima_fecha', data=json.dumps(_json), headers=_headers)
+	return redirect('/dashboard/?id_dashboard=8')
