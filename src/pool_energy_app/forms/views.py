@@ -871,6 +871,7 @@ def view_cargasesiones(request):
 	print(getTienda)
 	print(getMarketplace)
 	print(getPlataforma)
+	#list(Store.objects.filter(name=getTienda).values_list('id',flat=True))[0]
 	print('-----')
 	for i in aNumero:
 		if i in list(df.columns):

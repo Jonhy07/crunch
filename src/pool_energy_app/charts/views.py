@@ -313,6 +313,7 @@ def dashboard(request):
         tienda_str = tienda[indice]
     else:
         tienda_str=tienda
+        tienda=[tienda]
     filtros_tienda=obtener_filtros_tienda(tienda_str,min,max)
     if getMarketplace != "":
         indice_marketplace=getMarketplace
@@ -331,7 +332,4 @@ def dashboard(request):
         flag_dashboard=False
 
     context=print_dashboard(id_dashboard, request, min, max, edit, delete,tienda,flag,indice,indice_plataforma,indice_marketplace,plataformas,marketplaces,flag_dashboard)
-    print('*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-')
-    print(context)
-    print('*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-')
     return render(request, "dashboard/dashboard_dinamico.html", context)
