@@ -313,6 +313,8 @@ def dashboard(request):
         tienda_str = tienda[indice]
     else:
         tienda=[tienda]
+        tienda_str=tienda[0]
+
     filtros_tienda=obtener_filtros_tienda(tienda_str,min,max)
     if getMarketplace != "":
         indice_marketplace=getMarketplace
