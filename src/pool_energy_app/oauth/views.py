@@ -256,7 +256,7 @@ def resp_token(request):
 		url = reverse('marketplace_list_new', kwargs={'id': conn_id.id})
 		return HttpResponseRedirect(url)
 	else:
-		return render(request, "store/list.html", context)
+		return render(request, "forms/store/list.html", context)
 
 def marketplace_list(request, id):
 	objects_list = []
@@ -281,7 +281,7 @@ def marketplace_list(request, id):
 			'objects_list' : forms,
 			'msg' : msg
 		}
-		return render(request, "store/list.html", context)
+		return render(request, "forms/store/list.html", context)
 	else:
 		for mkplc in Marketplace.objects.all():
 			chk_dict = {'id': mkplc.id, 'country': mkplc.country, 'mkplc_id': mkplc.marketplace_id, 'country_code':mkplc.country_code}

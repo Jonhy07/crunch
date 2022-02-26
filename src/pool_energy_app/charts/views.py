@@ -312,7 +312,6 @@ def dashboard(request):
     if (type(tienda) == list):
         tienda_str = tienda[indice]
     else:
-        tienda_str=tienda
         tienda=[tienda]
     filtros_tienda=obtener_filtros_tienda(tienda_str,min,max)
     if getMarketplace != "":
